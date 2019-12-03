@@ -1,0 +1,33 @@
+.toast-message {
+  position: fixed;
+  z-index: 999;
+  top: 12px;
+  right: 12px;
+}
+#toastmessageouter {
+    position: relative;
+    display: block;
+    background: rgb(0,0,0,0.9) none repeat scroll 0 0;
+    color: #fff;
+    font-weight: bold;
+    margin-top: 10px;
+    margin-right: 10px;
+    padding: 20px;
+    width: 300px;
+    padding: 16px;
+    border-radius: 3px;
+    text-align: center;
+}
+.success-toast {
+    background: #44be75 none repeat scroll 0 0 !important;
+}
+.error-toast {
+    background: #c33c3c none repeat scroll 0 0 !important;
+}
+#closetoast {
+    cursor: context-menu;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    padding: 4px 8px;
+}
