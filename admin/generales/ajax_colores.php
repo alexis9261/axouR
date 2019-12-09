@@ -9,11 +9,5 @@ $hex=$_GET['color_hex'];
 $sql="INSERT INTO COLOR (`COLOR`,`HEX`) VALUES ('$color','$hex')";
 if($conn->query($sql)===TRUE){$respuesta=1;}else{$respuesta=2;}
 }
-}else{
-if(isset($_GET['delete']) & !empty($_GET['delete'])){
-$idcolor=$_GET['delete'];
-$sql="DELETE FROM COLOR WHERE IDCOLOR='$idcolor'";
-if($conn->query($sql)===TRUE){$respuesta=1;}else{$respuesta=2;}
-}
 }
 echo "$respuesta";

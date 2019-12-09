@@ -1,9 +1,25 @@
 <?php
 include '../common/sesion.php';
-if($_SESSION['nivel']==6 || $_SESSION['nivel']==1){
-}else{ header('Location: ../principal.php');}
+if($_SESSION['nivel']==6 || $_SESSION['nivel']==1){}else{ header('Location: ../principal.php');}
 require '../../common/conexion.php';
 include '../../common/datosGenerales.php';
+if(isset($_GET['estatus']) && !empty($_GET['estatus'])){$estatus=$_GET['estatus'];}else{$estatus=0;}
+//pausar o activar categoria
+$activar=3;
+$pausar=3;
+if(isset($_GET['id']) && !empty($_GET['id'])){
+  $Id_categoria=$_GET['id'];
+  if(isset($_GET['band'])){
+    $band=$_GET['band'];
+    if($band==0){
+      $sql="UPDATE `categorias` SET `ESTATUS`=1 WHERE IDCATEGORIA=$Id_categoria";
+      if($conn->query($sql)===TRUE){$pausar=1;}else{$pausar=2;}
+    }elseif($band==1){
+      $sql="UPDATE `categorias` SET `ESTATUS`=0 WHERE IDCATEGORIA=$Id_categoria";
+      if($conn->query($sql)===TRUE){$activar=1;}else{$activar=2;}
+    }
+  }
+}
 #paginacion
 $perpage=25;
 if(isset($_GET['page']) & !empty($_GET['page'])){$curpage=$_GET['page'];}else{$curpage=1;}
@@ -52,6 +68,13 @@ $previouspage=$curpage - 1;
           <div class="col-auto align-self-center">
             <h4 class="page-title">Categorias</h4>
           </div>
+          <div class="col-auto ml-auto">
+            <?php if (isset($_GET['estatus']) && $_GET['estatus']==1){ ?>
+                <a href="?estatus=0">Ver activas</a>
+            <?php }else{ ?>
+              <a href="?estatus=1">Ver pausadas</a>
+            <?php } ?>
+          </div>
         </div>
       </div>
       <div class="container-fluid">
@@ -59,20 +82,18 @@ $previouspage=$curpage - 1;
           <div class="col-12">
             <div class="card">
               <div class="card-body">
-                <h4 class="card-title">Agregar Categorias</h4>
-                <h6 class="card-subtitle">Estas son las categorias que estarán disponibles al momento de agregar productos en el sistema</h6>
-                <h6>Ademas, estas serán visibles en el segundo (2do) menu de la pagina principal. Unicamente serán visibles aquellas cuya <b>Categoria Padre</b> sea "Principal"</h6>
+                <h4>Estas categorias estarán disponibles para agregar productos.</h4>
               </div>
                 <div class="row px-3">
                   <div class="input-group mb-3 col-sm-5">
                     <div class="input-group-append">
-                      <span class="input-group-text"><b>Nombre de categoria</b></span>
+                      <span class="input-group-text" title="Estas categorias serán visibles en el segundo (2do) menu de la pagina principal." data-toggle="tooltip"><b>Nombre de categoria</b></span>
                     </div>
-                    <input type="text" id="nombre_categoria" class="form-control text-secondary" placeholder="Ej: Impresoras" required>
+                    <input type="text" id="nombre_categoria" class="form-control text-secondary" placeholder="Ej: Impresoras" required maxlength="30">
                   </div>
                   <div class="input-group mb-3 col-sm-5">
                     <div class="input-group-append">
-                      <span class="input-group-text" data-toggle="tooltip" title="Indica de cual categoria dependerá, en caso de ser principal no dependerá de ninguna categoria."><b>Categoria Padre</b></span>
+                      <span class="input-group-text" data-toggle="tooltip" title="Unicamente serán visibles aquellas cuya 'Categoria Padre' sea 'Principal'"><b>Categoria Padre</b></span>
                     </div>
                     <select class="form-control text-secondary" id="padre_categoria" required>
                       <option value="0">Principal</option>
@@ -116,18 +137,22 @@ $previouspage=$curpage - 1;
         <div class="row justify-content-center">
           <div class="col-12">
             <div class="card">
-              <div class="card-body  p-0 p-2">
-                <h4 class="card-title">Categorias en el Sistema</h4>
-                <h6 class="card-subtitle">A continuación todas las categorias que se encuentrán registradas en el sistema</h6>
+              <div class="card-body p-0 p-2">
+                <?php if (isset($_GET['estatus']) && $_GET['estatus']==1){ ?>
+                  <h4 class="card-title">Categorias Pausadas</h4>
+                <?php }else{ ?>
+                  <h4 class="card-title">Categorias Activas</h4>
+                <?php } ?>
               </div>
               <?php
-              $sql="SELECT * FROM CATEGORIAS ORDER BY IDCATEGORIA LIMIT $start, $perpage";
+              $sql="SELECT * FROM categorias WHERE ESTATUS=$estatus ORDER BY IDCATEGORIA LIMIT $start, $perpage";
               $result=$conn->query($sql);
               if($result->num_rows>0){?>
                 <div class="table-responsive">
                   <table class="table table-hover">
                     <thead class="thead-light">
-                      <tr  class="text-center">
+                      <tr class="text-center">
+                        <th class="text-center">#</th>
                         <th scope="col">Nombre de categoria</th>
                         <th scope="col">Categoria padre</th>
                         <th scope="col"></th>
@@ -135,7 +160,9 @@ $previouspage=$curpage - 1;
                     </thead>
                     <tbody>
                       <?php
+                      $cont=0;
                       while($row=$result->fetch_assoc()){
+                        ++$cont;
                         $idpadre=$row['PADRE'];
                         $nombre=$row['NOMBRE'];
                         $id=$row['IDCATEGORIA'];
@@ -147,61 +174,50 @@ $previouspage=$curpage - 1;
                         }else{$padre='Principal';}
                         ?>
                         <tr class="text-center">
+                          <td class="p-0 p-2 font-weight-bold"><?=$cont?></td>
                           <td class="p-0 p-2"><?=$nombre?></td>
                           <td class="p-0 p-2"><?=$padre?></td>
-                          <td class="p-0 p-2"><a href="javascript:void(0)" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#eli_<?=$id?>">Eliminar</a></td>
+                          <td class="p-0 p-2">
+                            <?php if (isset($_GET['estatus']) && $_GET['estatus']==1){ ?>
+                              <a class="btn btn-link" href="?id=<?php echo $id;?>&band=1">
+                                <svg title="Activar" data-toggle="tooltip" xmlns="http://www.w3.org/2000/svg" width='14px' viewBox="0 0 448 512"><path fill="#4aff36" d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"/></svg>
+                            <?php }else{ ?>
+                              <a class="btn btn-link" href="?id=<?php echo $id;?>&band=0">
+                                <svg title="Pausar" data-toggle="tooltip" xmlns="http://www.w3.org/2000/svg" width='14px' viewBox="0 0 448 512"><path fill="#ff5922" d="M144 479H48c-26.5 0-48-21.5-48-48V79c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v352c0 26.5-21.5 48-48 48zm304-48V79c0-26.5-21.5-48-48-48h-96c-26.5 0-48 21.5-48 48v352c0 26.5 21.5 48 48 48h96c26.5 0 48-21.5 48-48z"/></svg>
+                            <?php } ?>
+                            </a>
+                          </td>
                         </tr>
-                        <!-- Modal Eliminar -->
-                        <div class="modal fade" id="eli_<?=$id?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title">¿Desea eliminar la categoria?</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close_modal<?=$id?>">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body">
-                                <div class="container">
-                                  <div class="row justify-content-around">
-                                    <div class="col-auto">
-                                      <b>Categoria:</b> <?=$nombre?>
-                                    </div>
-                                    <div class="col-auto">
-                                      <b>Categoria Padre:</b> <?=$padre?>
-                                    </div>
-                                  </div>
-                                </div>
-                              </br>
-                              Tenga en cuenta no se podrá agregar prendas de este tipo al sistema.</br>
-                              Consulte con su supervisor antes de realizar esta acción.
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                              <a href="#" class="btn btn-primary" id="eliminar<?=$id?>">Eliminar</a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <script>
-                        $("#eliminar<?=$id?>").click(function(){
-                          var id_categoria=<?=$id?>;
-                          $.get('ajax_categorias.php',{delete:id_categoria,band:0},verificar,'text');
-                          function verificar(respuesta){
-                          if(respuesta==1){
-                          const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
-                          toast({type:'success',title:'¡La categoria fue eliminada Exitosamente!'});
-                          }else{
-                          const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
-                          toast({type:'error',title:'¡Hubo un pequeño problema! \n Inténtalo de nuevo'})
+                        <!-- alert Activar -->
+                        <script>
+                        $(document).ready(function(){
+                          var activar=<?php echo $activar;?>;
+                          if(activar==1){
+                            const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+                            toast({type:'success',title:'¡La categoria fue activada exitosamente!'})
+                          }else if(activar==2){
+                            const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+                            toast({type:'error',title:'¡Hubo un pequeño problema! \n Inténtalo de nuevo'})
                           }
-                          $("#close_modal<?=$id?>").click();
-                        }
                         });
-                      </script>
-                    <?php } ?>
-                  </tbody>
-                </table>
+                        </script>
+                        <!-- alert Pausar -->
+                        <script>
+                        $(document).ready(function(){
+                          var pausar=<?php echo $pausar;?>;
+                          if(pausar==1){
+                            const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+                            toast({type:'success',title:'¡La categoria fue pausada exitosamente!'})
+                          }else if(pausar==2){
+                            const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+                            toast({type:'error',title:'¡Hubo un pequeño problema! \n Inténtalo de nuevo'})
+                          }
+                        });
+                        </script>
+                      <?php } ?>
+                    </tbody>
+                  </table>
+                </div>
                 <center>
                   <nav aria-label="Page navigation example">
                     <ul class="pagination justify-content-center">

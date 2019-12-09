@@ -6,7 +6,7 @@ include '../common/datosGenerales.php';
 $array_favoritos=array();
 if(isset($_SESSION['USER'])){
   $user=$_SESSION['USER'];
-  $sql="SELECT * FROM FAVORITOS WHERE USERID='$user'";
+  $sql="SELECT * FROM favoritos WHERE USERID='$user'";
   $result=$conn->query($sql);
   if($result->num_rows>0){
     while($row=$result->fetch_assoc()){
@@ -17,8 +17,7 @@ if(isset($_SESSION['USER'])){
 $lista_tallas='';
 if(isset($_GET['idmodelo'])){
   $idmodelo=$_GET['idmodelo'];
-  //p.NOMBRE_P,p.DESCRIPCION,p.CATEGORIAID,p.PRECIO,p.MARCAID
-  $sql="SELECT IDPRODUCTO,IMAGEN,COLOR1,COLOR2 FROM MODELOS WHERE IDMODELO=$idmodelo";
+  $sql="SELECT IDPRODUCTO,IMAGEN,COLOR1,COLOR2 FROM modelos WHERE IDMODELO='$idmodelo'";
   $res=$conn->query($sql);
   if($res->num_rows>0){
     while($f=$res->fetch_assoc()){
@@ -28,10 +27,11 @@ if(isset($_GET['idmodelo'])){
       $color2= $f['COLOR2'];
     }
   }
-  $sql="SELECT NOMBRE_P,DESCRIPCION,PRECIO,CATEGORIAID,MARCAID FROM PRODUCTOS WHERE IDPRODUCTO=$id_producto";
+  $sql="SELECT NOMBRE_P,DESCRIPCION,PRECIO,CATEGORIAID,MARCAID,ESTATUS FROM productos WHERE IDPRODUCTO='$id_producto'";
   $res=$conn->query($sql);
   if($res->num_rows>0){
     while($f=$res->fetch_assoc()){
+      $estatus=$f['ESTATUS'];
       $titulo=$f['NOMBRE_P'];
       $descripcion=$f['DESCRIPCION'];
       $precio=$f['PRECIO'];
@@ -49,28 +49,31 @@ if(isset($_GET['idmodelo'])){
       }
     }
   }
-  //buscar las tallas del modelo
-  $id_inventario=array();
-  $id_tallas_stock=array();
-  $cantidades_tallas=array();
-  $sql="SELECT * FROM INVENTARIO WHERE IDMODELO=$idmodelo";
-  $res=$conn->query($sql);
-  if($res->num_rows>0){
-    while($row=$res->fetch_assoc()){
-      array_push($id_inventario,$row['IDINVENTARIO']);
-      array_push($id_tallas_stock,$row['TALLAID']);
-      array_push($cantidades_tallas,$row['CANTIDAD']);
+  //si el producto esta disponible busco todas las caracteristicas
+  if($estatus==0){
+    //buscar las tallas del modelo
+    $id_inventario=array();
+    $id_tallas_stock=array();
+    $cantidades_tallas=array();
+    $sql="SELECT * FROM inventario WHERE IDMODELO=$idmodelo";
+    $res=$conn->query($sql);
+    if($res->num_rows>0){
+      while($row=$res->fetch_assoc()){
+        array_push($id_inventario,$row['IDINVENTARIO']);
+        array_push($id_tallas_stock,$row['TALLAID']);
+        array_push($cantidades_tallas,$row['CANTIDAD']);
+      }
     }
-  }
-  //buscar los nombres de las tallas
-  $nombre_tallas=array();
-  $id_tallas_bd=array();
-  $sql="SELECT * FROM TALLAS";
-  $res=$conn->query($sql);
-  if($res->num_rows>0){
-    while($row=$res->fetch_assoc()){
-      array_push($nombre_tallas,$row['TALLA']);
-      array_push($id_tallas_bd,$row['IDTALLA']);
+    //buscar los nombres de las tallas
+    $nombre_tallas=array();
+    $id_tallas_bd=array();
+    $sql="SELECT * FROM tallas";
+    $res=$conn->query($sql);
+    if($res->num_rows>0){
+      while($row=$res->fetch_assoc()){
+        array_push($nombre_tallas,$row['TALLA']);
+        array_push($id_tallas_bd,$row['IDTALLA']);
+      }
     }
   }
 }else{header('Location: ../vitrina');}
@@ -125,6 +128,11 @@ if(isset($_GET['idmodelo'])){
         <div class="col-md-4">
           <!--div id="myresult" class="img-zoom-result"></div-->
           <div class="container-fluid">
+            <?php if($estatus==1){ ?>
+              <div class="row justify-content-center mb-2">
+                <h3 class="lead"><strong>El producto no se encuentra disponible</strong> </h3>
+              </div>
+            <?php } ?>
             <div class="row">
               <div class="col-10">
                 <p class="text-muted"><?=ucfirst($categ)?>
@@ -142,42 +150,44 @@ if(isset($_GET['idmodelo'])){
                 <h3 class="lead d-inline" style="font-size:35px;color:#3d3d3d;font-weight:500;">Bs. <?=number_format($precio*$dolar, '2', ',', '.')?></h3>
               </div>
             </div>
-            <div class="row">
-              <div class="col-8 mb-2">
-                Selecciona la Talla
-              </div>
-              <div class="col-4 mb-2">
-                Cantidad
-              </div>
-            </div>
-            <form action="../carrito/index.php" method="post" onsubmit="return validacion()">
+            <?php if($estatus==0){ ?>
               <div class="row">
-                <div class="col-5">
-                  <select class="lista-talla" name="talla" id="tallas" onchange="talla_dis()" required>
-                    <?php for($i=0;$i<count($id_tallas_stock);$i++){ ?>
-                      <option value="<?php echo $id_tallas_stock[$i]."|".$id_inventario[$i];?>">
-                        <?php $key=array_search($id_tallas_stock[$i],$id_tallas_bd);
-                              echo $nombre_tallas[$key];
-                         ?>
-                      </option>
-                      <?php } ?>
-                  </select>
+                <div class="col-8 mb-2">
+                  Selecciona la Talla
                 </div>
-                <div class="col-2 offset-3" id="cantidad">
-                  <?php
-                    $key=array_search($id_tallas_stock[0],$id_tallas_bd);
-                    if($cantidades_tallas[$key]>10){$cantidad_real=10;}else{$cantidad_real=$cantidades_tallas[$key];}
-                  ?>
-                  <input type='number' max='<?php echo $cantidad_real;?>' min='1' maxlength='2' value='1' name='cantidad' id='input_cantidad' required />
+                <div class="col-4 mb-2">
+                  Cantidad
                 </div>
               </div>
-              <div class="row mt-3">
-                <div class="col-12">
-                  <button class="btn btn-outline-dark" type="submit" >AÑADIR AL CARRITO</button>
+              <form action="../carrito/index.php" method="post" onsubmit="return validacion()">
+                <div class="row">
+                  <div class="col-5">
+                    <select class="lista-talla" name="talla" id="tallas" onchange="talla_dis()" required>
+                      <?php for($i=0;$i<count($id_tallas_stock);$i++){ ?>
+                        <option value="<?php echo $id_tallas_stock[$i]."|".$id_inventario[$i];?>">
+                          <?php $key=array_search($id_tallas_stock[$i],$id_tallas_bd);
+                                echo $nombre_tallas[$key];
+                           ?>
+                        </option>
+                        <?php } ?>
+                    </select>
+                  </div>
+                  <div class="col-2 offset-3" id="cantidad">
+                    <?php
+                      $key=array_search($id_tallas_stock[0],$id_tallas_bd);
+                      if($cantidades_tallas[$key]>10){$cantidad_real=10;}else{$cantidad_real=$cantidades_tallas[$key];}
+                    ?>
+                    <input type='number' max='<?php echo $cantidad_real;?>' min='1' maxlength='2' value='1' name='cantidad' id='input_cantidad' required />
+                  </div>
                 </div>
-              </div>
-              <input type="hidden" name="id" value="<?php echo $idmodelo;?>">
-            </form>
+                <div class="row mt-3">
+                  <div class="col-12">
+                    <button class="btn btn-outline-dark" type="submit" >AÑADIR AL CARRITO</button>
+                  </div>
+                </div>
+                <input type="hidden" name="id" value="<?php echo $idmodelo;?>">
+              </form>
+            <?php } ?>
             <hr>
             <div class="row">
               <div class="col-12">
@@ -244,7 +254,7 @@ if(isset($_GET['idmodelo'])){
         <div class="row">
           <?php
           $rand=rand();
-          $sql="SELECT p.NOMBRE_P,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.CATEGORIAID=$id_categ ORDER BY Rand($rand) LIMIT 6";
+          $sql="SELECT p.NOMBRE_P,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.CATEGORIAID=$id_categ AND p.ESTATUS=0 ORDER BY Rand($rand) LIMIT 6";
           $result=$conn->query($sql);
           $cant_products=$result->num_rows;
           if($cant_products>0){

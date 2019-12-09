@@ -57,7 +57,7 @@ if($res->num_rows>0){
               <h3 class="lead"><strong>Compra realizada el <?php echo $stingDate;?></strong></h3>
             </div>
             <div class="col-3 ml-auto text-right">
-              <a href="#">Ver Detalles de la compra</a>
+              <a href="detalles.php?id=<?php echo $idPedido;?>">Ver Detalles de la compra</a>
             </div>
           <?php
           $sql2="SELECT i.INVENTARIOID,i.CANTIDAD,t.IDMODELO,t.TALLAID FROM `items` i INNER JOIN `inventario` t ON i.INVENTARIOID=t.IDINVENTARIO WHERE i.PEDIDOID='$idPedido'";
@@ -81,12 +81,12 @@ if($res->num_rows>0){
                 $band=1;
                 ?>
                 <div class="col-2 text-center">
-                  <img class="" src="../admin/inventario/img/<?php echo $imagen;?>" alt="<?php echo $titulo;?>" width="100vw">
+                  <img src="../admin/inventario/img/<?php echo $imagen;?>" alt="<?php echo $titulo;?>" width="100vw">
                 </div>
                 <div class="col-8">
               <?php } ?>
                 <div class="row">
-                  <span>( <strong class="text-muted"><?php echo $cantidad.$talla;?></strong> ) <a href="../vitrina/detalles.php?idmodelo=<?php echo $idModelo?>"><?php echo $titulo;?></a></span>
+                  <span>(<?php echo $cantidad.$talla;?>) <a href="../vitrina/detalles.php?idmodelo=<?php echo $idModelo?>"><?php echo $titulo;?></a></span>
                 </div>
               <?php
             }
@@ -101,7 +101,7 @@ if($res->num_rows>0){
           ?>
         </div>
         <div class="col-2 ml-auto text-right">
-          <?php echo $montoPedido; ?> Bs
+            <?php echo number_format($montoPedido,2,',','.');?> Bs
         </div>
       </div>
           <?php

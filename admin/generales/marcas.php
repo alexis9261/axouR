@@ -3,6 +3,23 @@ include '../common/sesion.php';
 if($_SESSION['nivel']==6 || $_SESSION['nivel']==1){}else{header('Location: ../principal.php');}
 require '../../common/conexion.php';
 include '../../common/datosGenerales.php';
+if(isset($_GET['estatus']) && !empty($_GET['estatus'])){$estatus=$_GET['estatus'];}else{$estatus=0;}
+//pausar o activar marca
+$activar=3;
+$pausar=3;
+if(isset($_GET['id']) && !empty($_GET['id'])){
+  $Id_marca=$_GET['id'];
+  if(isset($_GET['band'])){
+    $band=$_GET['band'];
+    if($band==0){
+      $sql="UPDATE `marcas` SET `ESTATUS`=1 WHERE IDMARCA=$Id_marca";
+      if($conn->query($sql)===TRUE){$pausar=1;}else{$pausar=2;}
+    }elseif($band==1){
+      $sql="UPDATE `marcas` SET `ESTATUS`=0 WHERE IDMARCA=$Id_marca";
+      if($conn->query($sql)===TRUE){$activar=1;}else{$activar=2;}
+    }
+  }
+}
 #paginacion
 $perpage=25;
 if(isset($_GET['page']) & !empty($_GET['page'])){$curpage=$_GET['page'];}else{$curpage=1;}
@@ -51,22 +68,25 @@ $previouspage=$curpage - 1;
           <div class="col-5 align-self-center">
             <h4 class="page-title">Marcas</h4>
           </div>
+          <div class="col-auto ml-auto">
+            <?php if (isset($_GET['estatus']) && $_GET['estatus']==1){ ?>
+                <a href="?estatus=0">Ver activas</a>
+            <?php }else{ ?>
+              <a href="?estatus=1">Ver pausadas</a>
+            <?php } ?>
+          </div>
         </div>
       </div>
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
             <div class="card">
-              <div class="card-body">
-                <h4 class="card-title">Agregar nueva Marca</h4>
-                <h6 class="card-subtitle">Las marcas acá registradas serviran de filtro en la vitrina. Además todos tus productos se regirán por estas marcas.</h6>
-              </div>
-                <div class="row justify-content-center mb-3">
+                <div class="row justify-content-center my-3">
                   <div class="input-group col-6">
                     <div class="input-group-append">
-                      <span class="input-group-text" data-toggle="tooltip" title="Ej. Ford"><b>Nombre de la Marca</b></span>
+                      <span class="input-group-text"><b>Nombre de la Marca</b></span>
                     </div>
-                    <input type="text" id="nombre_marca" class="form-control text-secondary" placeholder="Ingrese el nombre de la marca" required>
+                    <input type="text" id="nombre_marca" class="form-control text-secondary" placeholder="Ingrese el nombre de la marca" maxlength="25" required>
                   </div>
                   <div class="col-2">
                     <button type="submit" class="btn btn-outline-primary" id="agregar_marca">Agregar</button>
@@ -90,121 +110,118 @@ $previouspage=$curpage - 1;
           }
           });
         </script>
-        <?php
-        $sql="SELECT * FROM MARCAS LIMIT $start,$perpage";
-        $result=$conn->query($sql);
-        if($result->num_rows>0){
-          ?>
-          <div class="row justify-content-center">
-            <div class="col-12">
-              <div class="card">
-                <div class="card-body p-0 p-2">
-                  <h4 class="card-title">Marcas registradas</h4>
-                  <h6 class="card-subtitle"></h6>
-                </div>
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="card">
+              <div class="card-body p-0 p-2">
+                <?php if (isset($_GET['estatus']) && $_GET['estatus']==1){ ?>
+                  <h4 class="card-title">Tallas Pausadas</h4>
+                <?php }else{ ?>
+                  <h4 class="card-title">Tallas Activas</h4>
+                <?php } ?>
+              </div>
+              <?php
+              $sql="SELECT * FROM MARCAS WHERE ESTATUS=$estatus LIMIT $start,$perpage";
+              $result=$conn->query($sql);
+              if($result->num_rows>0){
+                ?>
                 <div class="table-responsive">
                   <table class="table table-hover">
                     <thead class="thead-light">
-                      <tr  class="text-center">
+                      <tr class="text-center">
+                        <th class="text-center">#</th>
                         <th scope="col">Nombre de la Marca</th>
                         <th></th>
                       </tr>
                     </thead>
                     <tbody>
                       <?php
+                      $cont=0;
                       while($row=$result->fetch_assoc()){
+                        ++$cont;
                         $idmarca=$row['IDMARCA'];
                         $nombreMarca=$row['NOMBREMARCA'];
                         ?>
                         <tr class="text-center">
+                          <td class="p-0 p-2 font-weight-bold"><?=$cont?></td>
                           <td class="p-0 p-2"><?php echo $nombreMarca;?></td>
-                          <td class="p-0 p-2"><a href="javascript:void(0)" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#eli<?php echo $idmarca;?>">Eliminar</a></td>
+                          <td class="p-0 p-2">
+                            <?php if (isset($_GET['estatus']) && $_GET['estatus']==1){ ?>
+                              <a class="btn btn-link" href="?id=<?php echo $idmarca;?>&band=1">
+                                <svg title="Activar" data-toggle="tooltip" xmlns="http://www.w3.org/2000/svg" width='14px' viewBox="0 0 448 512"><path fill="#4aff36" d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"/></svg>
+                            <?php }else{ ?>
+                              <a class="btn btn-link" href="?id=<?php echo $idmarca;?>&band=0">
+                                <svg title="Pausar" data-toggle="tooltip" xmlns="http://www.w3.org/2000/svg" width='14px' viewBox="0 0 448 512"><path fill="#ff5922" d="M144 479H48c-26.5 0-48-21.5-48-48V79c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v352c0 26.5-21.5 48-48 48zm304-48V79c0-26.5-21.5-48-48-48h-96c-26.5 0-48 21.5-48 48v352c0 26.5 21.5 48 48 48h96c26.5 0 48-21.5 48-48z"/></svg>
+                            <?php } ?>
+                            </a>
+                          </td>
                         </tr>
-                        <div class="modal fade" id="eli<?php echo $idmarca;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title">¿Desea eliminar el producto?</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close<?php echo $idmarca;?>">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body">
-                                <div class="container">
-                                  <div class="row justify-content-around">
-                                    <div class="col-auto">
-                                      <?php echo $nombreMarca;?>
-                                    </div>
-                                  </div>
-                                </div>
-                              </br>
-                              Tenga en cuenta no se podrá filtrar en la pagina por esta marca.</br>
-                              Consulte con su supervisor antes de realizar esta acción.
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                              <a href="#" class="btn btn-primary" id="eliminar<?php echo $idmarca;?>">Eliminar</a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <script>
-                        $("#eliminar<?php echo $idmarca;?>").click(function(){
-                          var id_marca=<?php echo $idmarca;?>;
-                          $.get('ajax_marcas.php',{delete:id_marca,band:0},verificar,'text');
-                          function verificar(respuesta){
-                          if(respuesta==1){
-                          const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
-                          toast({type:'success',title:'¡La marca fue eliminada Exitosamente!'})
-                          }else{
-                          const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
-                          toast({type:'error',title:'¡Hubo un pequeño problema! \n Inténtalo de nuevo'})
-                          }
-                          $("#close<?php echo $idmarca;?>").click();
-                        }
-                        });
-                      </script>
-                    </tr>
-                    <?php
-                  }
-                  ?>
-                </tbody>
-              </table>
-              <center>
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination justify-content-center">
-                    <?php if($curpage != $startpage){ ?>
-                      <li class="page-item">
-                        <a class="page-link" href="?page=<?php echo $startpage ?>" tabindex="-1" aria-label="Previous">
-                          <span aria-hidden="true">&laquo;</span>
-                          <span class="sr-only">firts</span>
-                        </a>
-                      </li>
-                    <?php }
-                    if($curpage >=2){ ?>
-                      <li class="page-item"><a class="page-link" href="?page=<?php echo $previouspage ?>"><?php echo $previouspage ?></a></li>
-                    <?php }  ?>
-                    <li class="page-item active"><a class="page-link" href="?page=<?php echo $curpage ?>"><?php echo $curpage ?></a></li>
-                    <?php if($curpage != $endpage){ ?>
-                      <li class="page-item"><a class="page-link" href="?page=<?php echo $nextpage ?>"><?php echo $nextpage ?></a></li>
-                    <?php }
-                    if($curpage != $endpage){ ?>
-                      <li class="page-item">
-                        <a class="page-link" href="?page=<?php echo $endpage ?>" aria-label="Next">
-                          <span aria-hidden="true">&raquo;</span>
-                          <span class="sr-only">Last</span>
-                        </a>
-                      </li>
-                    <?php } ?>
-                  </ul>
-                </nav>
-              </center>
+                        <!-- alert Activar -->
+                        <script>
+                          $(document).ready(function(){
+                            var activar=<?php echo $activar;?>;
+                            if(activar==1){
+                              const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+                              toast({type:'success',title:'¡La marca fue activada exitosamente!'})
+                            }else if(activar==2){
+                              const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+                              toast({type:'error',title:'¡Hubo un pequeño problema! \n Inténtalo de nuevo'})
+                            }
+                          });
+                        </script>
+                        <!-- alert Pausar -->
+                        <script>
+                          $(document).ready(function(){
+                            var pausar=<?php echo $pausar;?>;
+                            if(pausar==1){
+                              const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+                              toast({type:'success',title:'¡La marca fue pausada exitosamente!'})
+                            }else if(pausar==2){
+                              const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+                              toast({type:'error',title:'¡Hubo un pequeño problema! \n Inténtalo de nuevo'})
+                            }
+                          });
+                        </script>
+                        <?php
+                      }
+                      ?>
+                    </tbody>
+                  </table>
+                  <center>
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination justify-content-center">
+                        <?php if($curpage != $startpage){ ?>
+                          <li class="page-item">
+                            <a class="page-link" href="?page=<?php echo $startpage ?>" tabindex="-1" aria-label="Previous">
+                              <span aria-hidden="true">&laquo;</span>
+                              <span class="sr-only">firts</span>
+                            </a>
+                          </li>
+                        <?php }
+                        if($curpage >=2){ ?>
+                          <li class="page-item"><a class="page-link" href="?page=<?php echo $previouspage ?>"><?php echo $previouspage ?></a></li>
+                        <?php }  ?>
+                        <li class="page-item active"><a class="page-link" href="?page=<?php echo $curpage ?>"><?php echo $curpage ?></a></li>
+                        <?php if($curpage != $endpage){ ?>
+                          <li class="page-item"><a class="page-link" href="?page=<?php echo $nextpage ?>"><?php echo $nextpage ?></a></li>
+                        <?php }
+                        if($curpage != $endpage){ ?>
+                          <li class="page-item">
+                            <a class="page-link" href="?page=<?php echo $endpage ?>" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                              <span class="sr-only">Last</span>
+                            </a>
+                          </li>
+                        <?php } ?>
+                      </ul>
+                    </nav>
+                  </center>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
     <?php }else{ ?>
-      <h4 class="card-title text-center">No hay marcas registradas</h4>
+      <h4 class="card-title text-center">No hay marcas</h4>
     <?php } ?>
   </div>
   <?php include '../common/footer.php';?>

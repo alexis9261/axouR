@@ -8,11 +8,5 @@ $marca=$_GET['marca'];
 $sql="INSERT INTO MARCAS (`NOMBREMARCA`) VALUES ('$marca')";
 if($conn->query($sql)===TRUE){$respuesta=1;}else{$respuesta=2;}
 }
-}else{
-if(isset($_GET['delete']) & !empty($_GET['delete'])){
-$idmarca=$_GET['delete'];
-$sql="DELETE FROM MARCAS WHERE IDMARCA='$idmarca'";
-if($conn->query($sql)===TRUE){$respuesta=1;}else{$respuesta=2;}
-}
 }
 echo "$respuesta";

@@ -95,7 +95,7 @@ if($result->num_rows>0){
     <div class="owl-carousel owl-theme py-1 my-2" id="productoCarousel">
       <?php
       $id_categoria=$id_categorias_padres[0];
-      $sql="SELECT p.NOMBRE_P,p.CATEGORIAID,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.CATEGORIAID=$id_categoria ORDER BY Rand() LIMIT 5";
+      $sql="SELECT p.NOMBRE_P,p.CATEGORIAID,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.CATEGORIAID='$id_categoria' AND p.ESTATUS=0 ORDER BY Rand() LIMIT 5";
       $result=$conn->query($sql);
       if($result->num_rows>0){
         while($row=$result->fetch_assoc()){
@@ -139,7 +139,7 @@ if($result->num_rows>0){
             <div class="owl-carousel owl-theme px-2 py-1 my-2" id="productoCarousel2">
           <?php
           $id_categoria=$id_categorias_padres[1];
-          $sql="SELECT p.NOMBRE_P,p.CATEGORIAID,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.CATEGORIAID=$id_categoria ORDER BY Rand() LIMIT 5";
+          $sql="SELECT p.NOMBRE_P,p.CATEGORIAID,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.CATEGORIAID='$id_categoria' AND p.ESTATUS=0 ORDER BY Rand() LIMIT 5";
           $result=$conn->query($sql);
           if($result->num_rows>0){
             while($row=$result->fetch_assoc()){
@@ -188,7 +188,7 @@ if($result->num_rows>0){
             <div class="owl-carousel owl-theme px-2 py-1 my-2" id="productoCarousel3">
           <?php
           $id_categoria=$id_categorias_padres[2];
-          $sql="SELECT p.NOMBRE_P,p.CATEGORIAID,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.CATEGORIAID=$id_categoria ORDER BY Rand() LIMIT 5";
+          $sql="SELECT p.NOMBRE_P,p.CATEGORIAID,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.CATEGORIAID='$id_categoria' AND p.ESTATUS=0 ORDER BY Rand() LIMIT 5";
           $result=$conn->query($sql);
           if($result->num_rows>0){
             while($row=$result->fetch_assoc()){
@@ -240,7 +240,7 @@ if($result->num_rows>0){
             <div class="owl-carousel owl-theme px-2 py-1 my-2" id="productoCarousel4">
           <?php
           $id_categoria=$id_categorias_padres[3];
-          $sql="SELECT p.NOMBRE_P,p.CATEGORIAID,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.CATEGORIAID=$id_categoria ORDER BY Rand() LIMIT 5";
+          $sql="SELECT p.NOMBRE_P,p.CATEGORIAID,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.CATEGORIAID='$id_categoria' AND p.ESTATUS=0 ORDER BY Rand() LIMIT 5";
           $result=$conn->query($sql);
           if($result->num_rows>0){
             while($row=$result->fetch_assoc()){
@@ -284,7 +284,7 @@ if($result->num_rows>0){
             <div class="owl-carousel owl-theme px-2 py-1 my-2" id="productoCarousel6">
           <?php
           $id_categoria=$id_categorias_padres[4];
-          $sql="SELECT p.NOMBRE_P,p.CATEGORIAID,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.CATEGORIAID=$id_categoria ORDER BY Rand() LIMIT 5";
+          $sql="SELECT p.NOMBRE_P,p.CATEGORIAID,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.CATEGORIAID='$id_categoria' AND p.ESTATUS=0 ORDER BY Rand() LIMIT 5";
           $result=$conn->query($sql);
           if($result->num_rows>0){
             while($row=$result->fetch_assoc()){
@@ -324,7 +324,7 @@ if($result->num_rows>0){
   <!-- Productos varios -->
   <?php if(count($categorias_padres)>1){ ?>
       <?php
-      $sql="SELECT * FROM MODELOS ORDER BY Rand() LIMIT 8";
+      $sql="SELECT * FROM modelos m INNER JOIN productos p ON m.IDPRODUCTO=p.IDPRODUCTO WHERE p.ESTATUS=0 ORDER BY Rand() LIMIT 8";
       $result=$conn->query($sql);
       if($result->num_rows>0){
         ?>

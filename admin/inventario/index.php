@@ -56,7 +56,7 @@ if($result->num_rows>0){
           </div>
         </div>
             <div class="container-fluid">
-              <form action="addItem.php" method="POST" enctype="multipart/form-data">
+              <form action="addItem.php" method="POST" enctype="multipart/form-data" id="formulario">
                 <div class="row mt-3">
                   <div class="input-group mb-3 col-sm-12">
                     <div class="input-group-append">
@@ -130,7 +130,7 @@ if($result->num_rows>0){
                     <div class="input-group-append">
                       <span class="input-group-text"><b>Material</b></span>
                     </div>
-                    <input type="text" name="material" class="form-control text-dark" placeholder="Ej: Algodon" required>
+                    <input type="text" name="material" class="form-control text-dark" placeholder="Ej: Algodon" required maxlength="25">
                   </div>
                   <div class="input-group mb-3 col-sm-3">
                     <div class="input-group-prepend">
@@ -255,6 +255,27 @@ if($result->num_rows>0){
             <?php include '../common/footer.php';?>
         </div>
     </div>
+    <!-- Modal esperar -->
+    <input type="hidden" data-toggle="modal" data-target="#loader_modal" id="loader_now">
+    <div class="modal fade" id="loader_modal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true" data-backdrop="static" data-keyboard="false" id="loader_real">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content bg-transparent mt-5 pt-5" style="border:0px;">
+          <button type="button" class="close bg-transparent" data-dismiss="modal" aria-label="Close" id="close_loader"></button>
+          <div class="container mt-5 text-center text-white">
+            <strong>
+              Espere <br>
+              ¡¡Puede tardar unos segundos!!
+            </strong>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script>
+      $("#formulario").submit(function(){
+        $("#loader_now").click();
+        $(this).submit();
+      });
+    </script>
     <!-- Agregar Modelos -->
     <script>
       $(document).on('click','#agregar_modelo',function(){

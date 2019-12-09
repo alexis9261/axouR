@@ -9,11 +9,5 @@ $padre=$_GET['padre'];
 $sql="INSERT INTO `CATEGORIAS`(`NOMBRE`,`PADRE`) VALUES ('$nombre','$padre')";
 if($conn->query($sql)===TRUE){$respuesta=1;}else{$respuesta=2;}
 }
-}else{
-if(isset($_GET['delete']) & !empty($_GET['delete'])){
-$id=$_GET['delete'];
-$sql="DELETE FROM CATEGORIAS WHERE IDCATEGORIA='$id'";
-if($conn->query($sql)===TRUE){$respuesta=1;}else{$respuesta=2;}
-}
 }
 echo "$respuesta";

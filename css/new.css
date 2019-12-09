@@ -528,3 +528,7 @@ cursor: pointer;
 .input_datos:focus{
   border: 2px solid #b71c1c !important;
 }
+.text_monto_details{
+  font-size: 25px !important;
+  font-weight: 300;
+}

@@ -50,7 +50,7 @@ if(isset($_SESSION['total_items'])){$cantidad_total=$_SESSION['total_items'];}
       <form action="cuentas_bancarias.php" method="POST" onsubmit="return validacion() && captch()">
         <div class="container">
           <div class="row">
-            <div class="col-8 pt-5">
+            <div class="col-8 pt-3">
               <div class="row mb-4">
                 <div class="col-6">
                   <h3 class="lead"><strong>Datos de envío</strong></h3>
@@ -117,7 +117,7 @@ if(isset($_SESSION['total_items'])){$cantidad_total=$_SESSION['total_items'];}
                   <input class="form-control input_datos" type="text" name="direccion" id="direccion" maxlength="254"/>
                 </div>
               </div>
-              <div class="row mb-5">
+              <div class="row">
                 <div class="input-group mb-2 col-sm-5">
                   <div class="input-group-prepend">
                     <span class="input-group-text">Código Postal</span>
@@ -137,9 +137,29 @@ if(isset($_SESSION['total_items'])){$cantidad_total=$_SESSION['total_items'];}
                   </select>
                 </div>
               </div>
+              <div class="row ml-3">
+                <small class="text-muted"><input id="isfacture" type="checkbox" onclick="Factura()" name="isfacture" value="true"> <label for="isfacture">Yo, deseo factura fiscal</label> </small>
+              </div>
+              <div class="row">
+                <div class="input-group mb-2 col-sm-6">
+                  <input type="text" placeholder="Razon Social" name="razon-social" id="razon-social" style="display: none" class="form-control" maxlength="255">
+                </div>
+                <div class="input-group mb-2 col-sm-6">
+                  <select class="text-center" name="type-identidad" id="type-identidad" style="display: none; border: 1px solid #ddd; width:20%; border-radius: 4px 0 0 4px;">
+                    <option>J</option>
+                    <option>P</option>
+                    <option>G</option>
+                  </select>
+                  <input type="text" placeholder="Registro Único de Información Fiscal(RIF)" name="doc-identidad" id="doc-identidad" maxlength="22" style="display: none"  class="form-control">
+                </div>
+                <div class="input-group mb-2 col-12">
+                  <input type="text" placeholder="Dirección Fiscal" name="dir-fiscal" id="dir-fiscal" style="display: none" class="form-control" maxlength="255">
+                </div>
+              </div>
+              <div id="auxiliares"></div>
             </div>
-            <div class="col-4 border_lateral pt-5">
-              <h3 class="lead mb-5"><strong>Vas a comprar (<?php echo $cantidad_total;?>) artículo(s)</strong></h3>
+            <div class="col-4 border_lateral pt-3">
+              <h3 class="lead mb-4"><strong>Vas a comprar (<?php echo $cantidad_total;?>) artículo(s)</strong></h3>
               <?php
               $datos=$_SESSION['carrito'];
               $peso=0;
@@ -158,12 +178,12 @@ if(isset($_SESSION['total_items'])){$cantidad_total=$_SESSION['total_items'];}
                 ?>
                 <div class="row">
                   <div class="col-3 text-center">
-                    <img class="img-fluid" src="../admin/inventario/img/<?php echo $imagen;?>" width="50px" height="50px" style="border:#dfdfdf solid 1px;border-radius:2px;">
+                    <img class="img-fluid" src="../admin/inventario/img/<?php echo $imagen;?>" width="50px" height="50px">
                   </div>
                   <div class="col-9">
                     <div class="row">
-                      <small><?php echo $titulo;?></small>
-                      <span class="ml-auto pr-4">Bs. <?php echo number_format($total_modelo*$dolar,2,',','.');?></span>
+                      <small><?php echo substr($titulo,0,20);?></small>
+                      <span class="ml-auto ">Bs. <?php echo number_format($total_modelo*round($dolar),2,',','.');?></span>
                     </div>
                     <div class="row">
                       <small class="text-muted"><?php echo $cantidad." (".$talla.")";?></small>
@@ -172,14 +192,14 @@ if(isset($_SESSION['total_items'])){$cantidad_total=$_SESSION['total_items'];}
                 </div>
                 <br>
               <?php } ?>
-              <hr>
-              <div class="container mb-4">
-                <div class="row justify-content-between">
+              <hr class="mt-0">
+              <div class="container mb-3">
+                <div class="row justify-content-between align-items-center">
                   <strong class="col-auto lead">
                     Total:
                   </strong>
                   <strong class="col-auto">
-                    Bs. <?php echo number_format($monto*$dolar,2,',','.');?>
+                    Bs. <?php echo number_format($monto*round($dolar),2,',','.');?>
                   </strong>
                 </div>
               </div>
@@ -187,37 +207,15 @@ if(isset($_SESSION['total_items'])){$cantidad_total=$_SESSION['total_items'];}
           </div>
         </div>
         <hr class="my-0">
-        <div class="container mt-3">
-          <div class="row justify-content-center">
-            <p><input id="isfacture" type="checkbox" onclick="Factura()" name="isfacture" value="true"> <label for="isfacture">Yo, deseo factura fiscal</label> </p>
+        <div class="row justify-content-center mb-2 mt-4">
+          <div class="col-auto text-center mb-3">
+            <button class="btn btn-outline-success px-5" type="submit">Confirmar</button>
           </div>
-          <div class="row">
-            <div class="input-group mb-2 col-sm-6">
-              <input type="text" placeholder="Razon Social" name="razon-social" id="razon-social" style="display: none" class="form-control">
-            </div>
-            <div class="input-group mb-2 col-sm-6">
-              <select class="text-center" name="type-identidad" id="type-identidad" style="display: none; border: 1px solid #ddd; width:20%; border-radius: 4px 0 0 4px;">
-                <option>J</option>
-                <option>P</option>
-                <option>G</option>
-              </select>
-              <input type="text" placeholder="Registro Único de Información Fiscal  (RIF)" name="doc-identidad" id="doc-identidad" maxlength="30" style="display: none"  class="form-control">
-            </div>
-            <div class="input-group mb-2 col-12">
-              <input type="text" placeholder="Direccion Fiscal" name="dir-fiscal" id="dir-fiscal" style="display: none" class="form-control">
-            </div>
-          </div>
-          <hr>
-          <div class="row justify-content-center mb-2">
-            <div class="col-auto text-center mb-3">
-              <button class="btn btn-outline-success px-5" type="submit">Confirmar</button>
-            </div>
-            <div class="col-auto text-center mb-3">
-              <a class="btn btn-outline-danger" href="../index.php">Cancelar</a>
-            </div>
+          <div class="col-auto text-center mb-3">
+            <a class="btn btn-outline-danger" href="../index.php">Cancelar</a>
           </div>
         </div>
-        <div id="auxiliares"></div>
+        <input type="hidden" name="monto" value="<?php echo $monto;?>">
       </form>
     <?php }else{ ?>
       <div class="container">

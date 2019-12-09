@@ -112,8 +112,6 @@ include '../common/datosGenerales.php';
             <label  class="input-group-text"  for="fecha">Fecha de transacción</label>
             <input type="date" class="form-control" tooltip="Fecha de la transacción" aria-label="Inserte la Referencia de la Transacción" aria-describedby="basic-addon2"  id="fechapago"/>
           </div>
-          <!--  <div class="g-recaptcha col" data-sitekey="6LezMGIUAAAAAK7US9I7C9wD2OV9Hufqb8V5whVY"></div>
-        -->
         <input type="hidden" id="g-recaptcha-response">
         <div class="input-group-append mt-3 col-12 justify-content-center">
           <button  id="reporte" type="submit" class="btn btn-outline-secondary">Reportar pago</button>

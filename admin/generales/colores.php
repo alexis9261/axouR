@@ -3,6 +3,23 @@ include '../common/sesion.php';
 if($_SESSION['nivel']==6 || $_SESSION['nivel']==1){}else{header('Location: ../principal.php');}
 require '../../common/conexion.php';
 include '../../common/datosGenerales.php';
+if(isset($_GET['estatus']) && !empty($_GET['estatus'])){$estatus=$_GET['estatus'];}else{$estatus=0;}
+//pausar o activar marca
+$activar=3;
+$pausar=3;
+if(isset($_GET['id']) && !empty($_GET['id'])){
+  $Id_color=$_GET['id'];
+  if(isset($_GET['band'])){
+    $band=$_GET['band'];
+    if($band==0){
+      $sql="UPDATE `color` SET `ESTATUS`=1 WHERE IDCOLOR=$Id_color";
+      if($conn->query($sql)===TRUE){$pausar=1;}else{$pausar=2;}
+    }elseif($band==1){
+      $sql="UPDATE `color` SET `ESTATUS`=0 WHERE IDCOLOR=$Id_color";
+      if($conn->query($sql)===TRUE){$activar=1;}else{$activar=2;}
+    }
+  }
+}
 #paginacion
 $perpage=25;
 if(isset($_GET['page']) & !empty($_GET['page'])){$curpage=$_GET['page'];}else{$curpage=1;}
@@ -51,21 +68,25 @@ $previouspage=$curpage - 1;
           <div class="col-5 align-self-center">
             <h4 class="page-title">Colores</h4>
           </div>
+          <div class="col-auto ml-auto">
+            <?php if (isset($_GET['estatus']) && $_GET['estatus']==1){ ?>
+                <a href="?estatus=0">Ver activos</a>
+            <?php }else{ ?>
+              <a href="?estatus=1">Ver pausados</a>
+            <?php } ?>
+          </div>
         </div>
       </div>
       <div class="container-fluid">
         <div class="row">
           <div class="col-12">
             <div class="card">
-              <div class="card-body">
-                <h6>Los colores acá registradas serviran de filtro en la vitrina. Además todos tus productos se regirán por estos colores.</h6>
-              </div>
-                <div class="row justify-content-center mb-3">
+                <div class="row justify-content-center my-3">
                   <div class="input-group col-6">
                     <div class="input-group-append">
                       <span class="input-group-text" data-toggle="tooltip" title="Ej. Ford"><b>Nombre del Color</b></span>
                     </div>
-                    <input type="text" id="nombre_color" class="form-control text-secondary" placeholder="Ingrese el nombre del color" required>
+                    <input type="text" id="nombre_color" class="form-control text-secondary" placeholder="Ingrese el nombre del color" maxlength="15" required>
                   </div>
                   <div class="col-1 py-1">
                     <input class="py-1" type="color" id="color_hex" style="background:#fff; border:#ddd solid 1px;" required>
@@ -93,22 +114,26 @@ $previouspage=$curpage - 1;
           }
           });
         </script>
-        <?php
-        $sql="SELECT * FROM COLOR LIMIT $start,$perpage";
-        $result=$conn->query($sql);
-        if($result->num_rows>0){
-          ?>
           <div class="row justify-content-center">
             <div class="col-12">
               <div class="card">
                 <div class="card-body p-0 p-2">
-                  <h4 class="card-title">Colores registrados</h4>
-                  <h6 class="card-subtitle"></h6>
+                  <?php if (isset($_GET['estatus']) && $_GET['estatus']==1){ ?>
+                    <h4 class="card-title">Colores Pausados</h4>
+                  <?php }else{ ?>
+                    <h4 class="card-title">Colores Activos</h4>
+                  <?php } ?>
                 </div>
+                <?php
+                $sql="SELECT * FROM COLOR WHERE ESTATUS=$estatus LIMIT $start,$perpage";
+                $result=$conn->query($sql);
+                if($result->num_rows>0){
+                  ?>
                 <div class="table-responsive">
                   <table class="table table-hover">
                     <thead class="thead-light">
                       <tr class="text-center">
+                        <th class="text-center">#</th>
                         <th scope="col">ID</th>
                         <th>Nombre del Color</th>
                         <th></th>
@@ -116,99 +141,92 @@ $previouspage=$curpage - 1;
                     </thead>
                     <tbody>
                       <?php
+                      $cont=0;
                       while($row=$result->fetch_assoc()){
+                        ++$cont;
                         $idcolor=$row['IDCOLOR'];
                         $nombreColor=$row['COLOR'];
                         $hex=$row['HEX'];
                         ?>
                         <tr class="text-center">
+                          <td class="p-0 p-2 font-weight-bold"><?=$cont?></td>
                           <td><span class="dot3" style="background-color:<?=$row['HEX']?>"></span></td>
                           <td class="p-0 p-2"><?php echo $nombreColor;?></td>
-                          <td class="p-0 p-2"><a href="javascript:void(0)" class="btn btn-outline-danger btn-sm" data-toggle="modal" data-target="#eli<?php echo $idcolor;?>">Eliminar</a></td>
+                          <td class="p-0 p-2">
+                            <?php if (isset($_GET['estatus']) && $_GET['estatus']==1){ ?>
+                              <a class="btn btn-link" href="?id=<?php echo $idcolor;?>&band=1">
+                                <svg title="Activar" data-toggle="tooltip" xmlns="http://www.w3.org/2000/svg" width='14px' viewBox="0 0 448 512"><path fill="#4aff36" d="M424.4 214.7L72.4 6.6C43.8-10.3 0 6.1 0 47.9V464c0 37.5 40.7 60.1 72.4 41.3l352-208c31.4-18.5 31.5-64.1 0-82.6z"/></svg>
+                            <?php }else{ ?>
+                              <a class="btn btn-link" href="?id=<?php echo $idcolor;?>&band=0">
+                                <svg title="Pausar" data-toggle="tooltip" xmlns="http://www.w3.org/2000/svg" width='14px' viewBox="0 0 448 512"><path fill="#ff5922" d="M144 479H48c-26.5 0-48-21.5-48-48V79c0-26.5 21.5-48 48-48h96c26.5 0 48 21.5 48 48v352c0 26.5-21.5 48-48 48zm304-48V79c0-26.5-21.5-48-48-48h-96c-26.5 0-48 21.5-48 48v352c0 26.5 21.5 48 48 48h96c26.5 0 48-21.5 48-48z"/></svg>
+                            <?php } ?>
+                            </a>
+                          </td>
                         </tr>
-                        <div class="modal fade" id="eli<?php echo $idcolor;?>" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                          <div class="modal-dialog" role="document">
-                            <div class="modal-content">
-                              <div class="modal-header">
-                                <h5 class="modal-title">¿Desea eliminar el producto?</h5>
-                                <button type="button" class="close" data-dismiss="modal" aria-label="Close" id="close<?php echo $idcolor;?>">
-                                  <span aria-hidden="true">&times;</span>
-                                </button>
-                              </div>
-                              <div class="modal-body">
-                                <div class="container">
-                                  <div class="row justify-content-around">
-                                    <div class="col-auto">
-                                      <?php echo $nombreColor;?>
-                                    </div>
-                                  </div>
-                                </div>
-                              </br>
-                              Tenga en cuenta no se podrá filtrar en la pagina por esta marca.</br>
-                              Consulte con su supervisor antes de realizar esta acción.
-                            </div>
-                            <div class="modal-footer">
-                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-                              <a href="#" class="btn btn-primary" id="eliminar<?php echo $idcolor;?>">Eliminar</a>
-                            </div>
-                          </div>
-                        </div>
-                      </div>
-                      <script>
-                        $("#eliminar<?php echo $idcolor;?>").click(function(){
-                          var id_color=<?php echo $idcolor;?>;
-                          $.get('ajax_colores.php',{delete:id_color,band:0},verificar,'text');
-                          function verificar(respuesta){
-                          if(respuesta==1){
-                          const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
-                          toast({type:'success',title:'¡El color fue eliminado Exitosamente!'})
-                          }else{
-                          const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
-                          toast({type:'error',title:'¡Hubo un pequeño problema! \n Inténtalo de nuevo'})
-                          }
-                          $("#close<?php echo $idcolor;?>").click();
-                        }
-                        });
-                      </script>
-                    </tr>
-                    <?php
-                  }
-                  ?>
-                </tbody>
-              </table>
-              <center>
-                <nav aria-label="Page navigation example">
-                  <ul class="pagination justify-content-center">
-                    <?php if($curpage != $startpage){ ?>
-                      <li class="page-item">
-                        <a class="page-link" href="?page=<?php echo $startpage ?>" tabindex="-1" aria-label="Previous">
-                          <span aria-hidden="true">&laquo;</span>
-                          <span class="sr-only">firts</span>
-                        </a>
-                      </li>
-                    <?php }
-                    if($curpage >=2){ ?>
-                      <li class="page-item"><a class="page-link" href="?page=<?php echo $previouspage ?>"><?php echo $previouspage ?></a></li>
-                    <?php }  ?>
-                    <li class="page-item active"><a class="page-link" href="?page=<?php echo $curpage ?>"><?php echo $curpage ?></a></li>
-                    <?php if($curpage != $endpage){ ?>
-                      <li class="page-item"><a class="page-link" href="?page=<?php echo $nextpage ?>"><?php echo $nextpage ?></a></li>
-                    <?php }
-                    if($curpage != $endpage){ ?>
-                      <li class="page-item">
-                        <a class="page-link" href="?page=<?php echo $endpage ?>" aria-label="Next">
-                          <span aria-hidden="true">&raquo;</span>
-                          <span class="sr-only">Last</span>
-                        </a>
-                      </li>
-                    <?php } ?>
-                  </ul>
-                </nav>
-              </center>
+                        <!-- alert Activar -->
+                        <script>
+                          $(document).ready(function(){
+                            var activar=<?php echo $activar;?>;
+                            if(activar==1){
+                              const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+                              toast({type:'success',title:'¡El color fue activado exitosamente!'})
+                            }else if(activar==2){
+                              const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+                              toast({type:'error',title:'¡Hubo un pequeño problema! \n Inténtalo de nuevo'})
+                            }
+                          });
+                        </script>
+                        <!-- alert Pausar -->
+                        <script>
+                          $(document).ready(function(){
+                            var pausar=<?php echo $pausar;?>;
+                            if(pausar==1){
+                              const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+                              toast({type:'success',title:'¡El color fue pausado exitosamente!'})
+                            }else if(pausar==2){
+                              const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+                              toast({type:'error',title:'¡Hubo un pequeño problema! \n Inténtalo de nuevo'})
+                            }
+                          });
+                        </script>
+                        <?php
+                      }
+                      ?>
+                    </tbody>
+                  </table>
+                  <center>
+                    <nav aria-label="Page navigation example">
+                      <ul class="pagination justify-content-center">
+                        <?php if($curpage != $startpage){ ?>
+                          <li class="page-item">
+                            <a class="page-link" href="?page=<?php echo $startpage ?>" tabindex="-1" aria-label="Previous">
+                              <span aria-hidden="true">&laquo;</span>
+                              <span class="sr-only">firts</span>
+                            </a>
+                          </li>
+                        <?php }
+                        if($curpage >=2){ ?>
+                          <li class="page-item"><a class="page-link" href="?page=<?php echo $previouspage ?>"><?php echo $previouspage ?></a></li>
+                        <?php }  ?>
+                        <li class="page-item active"><a class="page-link" href="?page=<?php echo $curpage ?>"><?php echo $curpage ?></a></li>
+                        <?php if($curpage != $endpage){ ?>
+                          <li class="page-item"><a class="page-link" href="?page=<?php echo $nextpage ?>"><?php echo $nextpage ?></a></li>
+                        <?php }
+                        if($curpage != $endpage){ ?>
+                          <li class="page-item">
+                            <a class="page-link" href="?page=<?php echo $endpage ?>" aria-label="Next">
+                              <span aria-hidden="true">&raquo;</span>
+                              <span class="sr-only">Last</span>
+                            </a>
+                          </li>
+                        <?php } ?>
+                      </ul>
+                    </nav>
+                  </center>
+                </div>
+              </div>
             </div>
           </div>
-        </div>
-      </div>
     <?php }else{ ?>
       <h4 class="card-title text-center">No hay colores registrados</h4>
     <?php } ?>
