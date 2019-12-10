@@ -16,6 +16,36 @@ if($result->num_rows>0){
     $stingDate=substr($fechaPedido,8,2)." de ".$array_meses[intval(substr($fechaPedido,5,2))]." del ".substr($fechaPedido,0,4);
   }
 }
+/*switch($estatusPedido){
+    case '0': $aux= 'Aún no has pagado este pedido.'; $id_s=0;
+        break;
+    case '1': $aux='El pago que realizaste fue fallido'; $id_s=1;
+        break;
+    case '2': $aux='El pago que realizaste esta en proceso de revisión'; $id_s=2;
+        break;
+    case '3': $aux='En las próximas horas estaremos enviando tu pedido'; $id_s=3;
+        break;
+    case '4': $aux='Estamos preparando tu paquete para enviarlo'; $id_s=4;
+        break;
+    case '5': $aux='Tu paquete esta pronto a ser enviado'; $id_s=5;
+        break;
+    case '6': $aux='¡Tu pedido ya fue Enviado! Consulta con la oficina de encominedas'; $id_s=6;
+        break;
+    case '7': $aux='Completado'; $id_s=7;
+        break;
+    case '8': $aux='Pago por cupon, Estamos validando.'; $id_s=8;// en este caso, ahora sera compra cancelada por el cliente
+        break;
+    case '9': $aux='Compra Finalizada con exito, Te esperamos nuevamente.'; $id_s=9;
+            break;
+    case '10': $aux='Tu pedido se encuentra bajo revisión. Nos estaremos comunicando contigo para solventar el inconveniente.'; $id_s=10;
+    break;
+    case '11': $aux='La compra con esta LLave digital ha sido cancelada'; $id_s=10;
+    break;
+    case '12': $aux='Tu pago ha sido insuficiente, esperamos un nuevo pago con el resto del dinero.'; $id_s=10;
+    break;
+    default:
+    $status='Error';
+}*/
 //Monto Total
 $sql="SELECT * FROM `compras` WHERE PEDIDOID='$idPedido' LIMIT 1";
 $result=$conn->query($sql);
@@ -158,9 +188,9 @@ if($result->num_rows>0){
             </h2>
             <div class="row justify-content-end mt-2">
               <?php if ($estatusPedido==8){ ?>
-                <button class="btn btn-primary btn-sm px-5" type="button" id="pagar" disabled>Registrar pago</button>
+                <button class="btn btn-primary btn-sm px-5" type="button" data-toggle='modal' data-target='.modal_pago' id="pagar" disabled>Registrar pago</button>
               <?php }else{ ?>
-                <button class="btn btn-primary btn-sm px-5" type="button" id="pagar">Registrar pago</button>
+                <button class="btn btn-primary btn-sm px-5" type="button" data-toggle='modal' data-target='.modal_pago' id="pagar">Registrar pago</button>
               <?php } ?>
             </div>
             <div class="row justify-content-end mt-2">
@@ -169,6 +199,27 @@ if($result->num_rows>0){
               <?php }else{ ?>
                 <button class="btn btn-danger btn-sm px-5" type="button" data-toggle='modal' data-target='.modal_cancelar' id="cancelar_compra">Cancelar compra</button>
               <?php } ?>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Modal Registrar Pago -->
+      <div class='modal fade modal_pago' tabindex='-1' role='dialog' aria-hidden='true'>
+        <div class='modal-dialog' role='document'>
+          <div class='modal-content'>
+            <div class='modal-header'>
+              <h5 class='modal-title'>Registrar Pago</h5>
+              <button class='close' type='button' data-dismiss='modal' aria-label='Close' id="close_modal_pago"><span aria-hidden='true'>×</span></button>
+            </div>
+            <div class='modal-body '>
+              <div class="row px-2">
+                <span>Comentanos porque cancelas la compra. <small class="text-muted"> Queremos Mejorar!! ;)</small> </span>
+                <textarea class="form-control textarea_cancelar" rows="3" id="text_cancelar" maxlength="150" required></textarea>
+              </div>
+            </div>
+            <div class='modal-footer'>
+              <button class="btn btn-secondary btn-sm px-5" type="button" data-dismiss='modal'>Volver</button>
+              <button class="btn btn-danger btn-sm px-4" type="button" id="pago">Regsistrar Pago</button>
             </div>
           </div>
         </div>
