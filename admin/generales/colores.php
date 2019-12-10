@@ -134,7 +134,7 @@ $previouspage=$curpage - 1;
                     <thead class="thead-light">
                       <tr class="text-center">
                         <th class="text-center">#</th>
-                        <th scope="col">ID</th>
+                        <th scope="col">Color</th>
                         <th>Nombre del Color</th>
                         <th></th>
                       </tr>

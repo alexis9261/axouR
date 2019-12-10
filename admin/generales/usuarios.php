@@ -5,23 +5,22 @@ if($_SESSION['nivel']==6 || $_SESSION['nivel']==1){
 require '../../common/conexion.php';
 include '../../common/datosGenerales.php';
 if(isset($_GET['nombre'],$_GET['apellido'],$_GET['email'], $_GET['clave'], $_GET['nivel'] )){
-    $nombre= $_GET['nombre'].' '.  $_GET['apellido'];
-    $correo= $_GET['email'];
-    $clave= md5($_GET['clave']);
-    $nivel= $_GET['nivel'];
-   $sql = "INSERT INTO `USUARIOS`(`NOMBRE`, `CORREO`, `CLAVE`, `NIVEL`) VALUES ('$nombre','$correo','$clave', '$nivel')";
-if($conn->query($sql) === TRUE){
-    echo "<center>Nuevo USUARIO registrado</center>";
-    header('Location: ./usuarios.php');
-   }else{ echo "Error: " . $sql . "<br>" . $conn->error;}
+    $nombre=$_GET['nombre'].' '.  $_GET['apellido'];
+    $correo=$_GET['email'];
+    $clave=md5($_GET['clave']);
+    $nivel=$_GET['nivel'];
+   $sql="INSERT INTO `admin_usuarios`(`NOMBRE`,`CORREO`,`CLAVE`,`NIVEL`) VALUES ('$nombre','$correo','$clave','$nivel')";
+if($conn->query($sql)===TRUE){
+  echo "<center>Nuevo USUARIO registrado</center>";
+  header('Location: ./usuarios.php');
+}
 }
 #paginacion y eliinacion de productos
 if(isset($_GET['delete']) & !empty($_GET['delete'])){
-    $idusuario=$_GET['delete'];
-    #eliminar USURIO
-    $sql ="DELETE FROM USUARIOS WHERE IDUSUARIO='$idusuario'";
-       if($conn->query($sql) === TRUE){
-           }else{ echo '<script> alert("Error:'. $sql . '<br>'. $conn->error.'"); </script>'; }
+  $idusuario=$_GET['delete'];
+  #eliminar USURIO
+  $sql ="DELETE FROM admin_usuarios WHERE IDUSUARIO='$idusuario'";
+  if($conn->query($sql) === TRUE){}
 }
 $perpage  = 10;
 if(isset($_GET['page']) & !empty($_GET['page'])){
@@ -29,7 +28,7 @@ if(isset($_GET['page']) & !empty($_GET['page'])){
 }else{ $curpage = 1;}
 $start = ($curpage * $perpage) - $perpage;
 #necesito el total de elementos
-$PageSql = "SELECT * FROM USUARIOS";
+$PageSql = "SELECT * FROM admin_usuarios";
 $pageres = mysqli_query($conn, $PageSql);
 $totalres = mysqli_num_rows($pageres);
 $endpage = ceil($totalres/$perpage);
@@ -64,28 +63,13 @@ $previouspage = $curpage - 1;
     <div id="main-wrapper" data-navbarbg="skin6" data-theme="light" data-layout="vertical" data-sidebartype="full" data-boxed-layout="full">
         <?php include('../common/navbar.php'); ?>
         <div class="page-wrapper">
-            <div class="page-breadcrumb">
-                <div class="row">
-                    <div class="col-5 align-self-center">
-                        <h4 class="page-title">Usuarios</h4>
-                    </div>
-                    <!--div class="col-7 align-self-center">
-                        <div class="d-flex align-items-center justify-content-end">
-                            <nav aria-label="breadcrumb">
-                                <ol class="breadcrumb">
-                                    <li class="breadcrumb-item">
-                                        <a href="../principal.php">Inicio</a>
-                                    </li>
-                                    <li class="breadcrumb-item">
-                                        <a href="index.php">Desarrollo</a>
-                                    </li>
-                                    <li class="breadcrumb-item active" aria-current="page">Agregar/Eliminar Usuarios</li>
-                                </ol>
-                            </nav>
-                        </div>
-                    </div-->
-                </div>
+          <div class="page-breadcrumb">
+            <div class="row">
+              <div class="col-5 align-self-center">
+                <h4 class="page-title">Usuarios</h4>
+              </div>
             </div>
+          </div>
             <div class="container-fluid">
               <div class="row">
                 <div class="col-12">
@@ -143,7 +127,7 @@ $previouspage = $curpage - 1;
                 </div>
               </div>
               <?php
-                  $sql = "SELECT * FROM USUARIOS LIMIT $start, $perpage";
+                  $sql = "SELECT * FROM admin_usuarios LIMIT $start, $perpage";
                   $result = $conn->query($sql);
                   if ($result->num_rows > 0) {
               ?>

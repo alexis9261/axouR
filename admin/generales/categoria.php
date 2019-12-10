@@ -98,7 +98,7 @@ $previouspage=$curpage - 1;
                     <select class="form-control text-secondary" id="padre_categoria" required>
                       <option value="0">Principal</option>
                       <?php
-                      $sql="SELECT IDCATEGORIA, NOMBRE FROM CATEGORIAS ORDER BY IDCATEGORIA";
+                      $sql="SELECT IDCATEGORIA, NOMBRE FROM CATEGORIAS WHERE ESTATUS=1 ORDER BY IDCATEGORIA";
                       $result = $conn->query($sql);
                       if ($result->num_rows > 0) {
                         while($row = $result->fetch_assoc()){
@@ -147,7 +147,7 @@ $previouspage=$curpage - 1;
               <?php
               $sql="SELECT * FROM categorias WHERE ESTATUS=$estatus ORDER BY IDCATEGORIA LIMIT $start, $perpage";
               $result=$conn->query($sql);
-              if($result->num_rows>0){?>
+              if($result->num_rows>0){ ?>
                 <div class="table-responsive">
                   <table class="table table-hover">
                     <thead class="thead-light">

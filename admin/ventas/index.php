@@ -8,13 +8,13 @@ if(isset($_GET['orden'],$_GET['id'])){
   $newid=$_GET['id'];
   if($_GET['orden']=='completed'){
     //validar que esta en su etapa finalizada
-    $sql="SELECT * FROM PEDIDOS WHERE IDPEDIDO='$newid' and ESTATUS=6 LIMIT 1";
+    $sql="SELECT * FROM pedidos WHERE IDPEDIDO='$newid' AND ESTATUS=6 LIMIT 1";
     $result=$conn->query($sql);
     if($result->num_rows>0){while($row=$result->fetch_assoc()){$band=true;}}
     if($band){
       //actualizar estatus a completado.
-      $sql3="UPDATE `PEDIDOS` SET `ESTATUS`='9' WHERE `IDPEDIDO`='$newid'";
-      if($conn->query($sql3)===TRUE){}else{}
+      $sql3="UPDATE `pedidos` SET `ESTATUS`='9' WHERE `IDPEDIDO`='$newid'";
+      if($conn->query($sql3)===TRUE){}
       }
     }
     header('location: ../ventas/');
@@ -72,24 +72,24 @@ if(isset($_GET['orden'],$_GET['id'])){
               <?php
               if (isset($search)){
                 if ($search=='ccc'){
-                  $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE ESTATUS='9' ORDER BY FECHAPEDIDO DESC";
+                  $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE ESTATUS='9' ORDER BY FECHAPEDIDO DESC";
                 }else if($search=='fii'){
-                  $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE ESTATUS='12' ORDER BY FECHAPEDIDO DESC";
+                  $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE ESTATUS='12' ORDER BY FECHAPEDIDO DESC";
                 }else if($search=='rrr'){
-                  $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE ESTATUS='10' ORDER BY FECHAPEDIDO DESC";
+                  $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE ESTATUS='10' ORDER BY FECHAPEDIDO DESC";
                 }else if($search=='eee'){
-                  $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE ESTATUS='6' ORDER BY FECHAPEDIDO DESC";
+                  $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE ESTATUS='6' ORDER BY FECHAPEDIDO DESC";
                 }else if($search=='bbb'){
-                  $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE ESTATUS='3' ORDER BY FECHAPEDIDO DESC";
+                  $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE ESTATUS='3' ORDER BY FECHAPEDIDO DESC";
                 }else if($search=='ppp'){
-                  $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE ESTATUS='2' ORDER BY FECHAPEDIDO DESC";
+                  $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE ESTATUS='2' ORDER BY FECHAPEDIDO DESC";
                 }else if($search=='ppee'){
-                  $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE ESTATUS='5' ORDER BY FECHAPEDIDO DESC";
+                  $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE ESTATUS='5' ORDER BY FECHAPEDIDO DESC";
                 }else{
-                  $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE DOCID LIKE '%$search%' ORDER BY FECHAPEDIDO DESC";
+                  $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE DOCID LIKE '%$search%' ORDER BY FECHAPEDIDO DESC";
                 }
               }else{
-                $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` ORDER BY FECHAPEDIDO DESC";
+                $sql="SELECT `IDPEDIDO` FROM `pedidos` ORDER BY FECHAPEDIDO DESC";
               }
                   $result=$conn->query($sql);
                   if($result->num_rows>0){
@@ -109,43 +109,34 @@ if(isset($_GET['orden'],$_GET['id'])){
                               <th></th>
                             </tr>
                           </thead>
-                                    <tbody>
-                                        <?php
-                                        while($row = $result->fetch_assoc()) {
-                                          $id=$row['IDPEDIDO'];
-                                          $sql2="SELECT * FROM PEDIDOS p
-                                          INNER JOIN ENVIOS e ON e.IDPEDIDO=p.IDPEDIDO
-                                          INNER JOIN COMPRAS c ON c.IDPEDIDO=p.IDPEDIDO
-                                          WHERE p.IDPEDIDO='$id' "; //encuentro los articulos del pedido
-                                          $result2 = $conn->query($sql2);
-                                          if($result2->num_rows>0){
-                                            while($row2=$result2->fetch_assoc()){
-                                              #GET VALUES
-                                              $estatus=$row2['ESTATUS'];
-                                              $fecha=$row2['FECHAPEDIDO'];
-                                              #cliente
-                                              $cliente=$row2['CLIENTE'];
-                                              $ci_cliente=$row2['DOCID'];
-                                              $telf_cliente=$row2['TELEFONO'];
-                                              $correo_cliente=$row2['EMAIL'];
-                                              $monto=$row2['MONTO'];
-                                              //$peso=$row2['PESOT'];
-                                               #Direccion
-                                               $pais=$row2['PAIS'];
-                                               $estado=$row2['ESTADO'];
-                                               $ciudad=$row2['CIUDAD'];
-                                               $municipio=$row2['MUNICIPIO'];
-                                               $parroquia=$row2['PARROQUIA'];
-                                               $direccion=$row2['DIRECCION'];
-                                               $codigopostal=$row2['CODIGOPOSTAL'];
-                                               $encomienda=$row2['ENCOMIENDA'];
-                                               $observaciones=$row2['OBSERVACIONES'];
-                                               #refencia de ENVIOS
-                                               if($row2['GUIA']!=NULL){
-                                                 $guia= $row2['GUIA'];
-                                               }else{
-                                                 $guia='Sin Enviar';
-                                               }
+                          <tbody>
+                          <?php
+                          while($row=$result->fetch_assoc()){
+                            $id=$row['IDPEDIDO'];
+                            $sql2="SELECT * FROM pedidos p
+                            INNER JOIN envios e ON e.PEDIDOID=p.IDPEDIDO
+                            INNER JOIN compras c ON c.PEDIDOID=p.IDPEDIDO
+                            WHERE p.IDPEDIDO='$id' "; //encuentro los articulos del pedido
+                            $result2=$conn->query($sql2);
+                            if($result2->num_rows>0){
+                              while($row2=$result2->fetch_assoc()){
+                                #GET VALUES
+                                $estatus=$row2['ESTATUS'];
+                                $fecha=$row2['FECHAPEDIDO'];
+                                #cliente
+                                //$peso=$row2['PESOT'];
+                                #Direccion
+                                $estado=$row2['ESTADO'];
+                                $municipio=$row2['MUNICIPIO'];
+                                $direccion=$row2['DIRECCION'];
+                                $codigopostal=$row2['CODIGOPOSTAL'];
+                                $encomienda=$row2['ENCOMIENDA'];
+                                #refencia de ENVIOS
+                                if($row2['GUIA']!=NULL){
+                                  $guia= $row2['GUIA'];
+                                }else{
+                                  $guia='Sin Enviar';
+                                }
                                                #receptor
                                                $receptor=$row2['RECEPTOR'];
                                                $ci_receptor=$row2['CIRECEPTOR'];
