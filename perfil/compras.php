@@ -188,7 +188,7 @@ if($res->num_rows>0){
   </div>
   <?php include '../common/footer.php';?>
   <script src="../admin/assets/libs/jquery/dist/jquery.min.js"></script>
-  <script src="../admin/assets/libs/popper.js/dist/umd/popper.min.js"></script>
   <script src="../admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../admin/assets/libs/popper.js/dist/popper.min.js"></script>
 </body>
 </html>
