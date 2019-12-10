@@ -6,7 +6,6 @@ include '../cambioDolar/index.php';
 include '../common/datosGenerales.php';
 //mensaje de $msn_cuentas
 $msn_cuentas="";
-//if(isset($_SESSION['monto'])){$monto=$_SESSION['monto'];}
 //require ('../common/mercadopago.php');
 //$mp=new MP('1153047962046613', 'i3RGdgCvJXrKT1ceMNOHs4YLNHdgZ9Mj');
 if(isset($_POST['direccion'])){
@@ -130,71 +129,73 @@ mail($destino, $titulo, $contenido, $headers);
         <h3 class="lead"><strong>Registrar pago - </strong> <small class="text-muted">Luego de <strong> venticuatro (24) Horas </strong> se cancela tu pedido en caso de no recibir un <i>Reporte de pago</i>.</small></h3>
       </div>
     </div>
-    <div class="row my-3">
-      <div class="input-group mb-2 col-sm-4">
-        <div class="input-group-prepend">
-          <span class="input-group-text" data-toggle="tooltip" title="Desde donde realizaste la trasnferencia">Banco emisor</span>
+    <form action="procesar_pago.php" method="post">
+      <div class="row my-3">
+        <div class="input-group mb-2 col-sm-4">
+          <div class="input-group-prepend">
+            <span class="input-group-text" data-toggle="tooltip" title="Desde donde realizaste la trasnferencia">Banco emisor</span>
+          </div>
+          <select class="custom-select input_datos" name="banco_e">
+            <option value="Banesco">Banesco</option>
+            <option value="Mercantil">Mercantil</option>
+            <option value="Venezuela">Venezuela</option>
+            <option value="Tesoro">Del Tesoro</option>
+            <option value="Provincial">Provincial</option>
+            <option value="100% Banco">100% Banco</option>
+            <option value="Bancaribe">Bancaribe</option>
+            <option value="Banco Activo">Banco Activo</option>
+            <option value="Bicentenario">Bicentenario</option>
+            <option value="BNC">Banco Nacional de Credito</option>
+            <option value="Venezolano de Crédito">Venezolano de Crédito</option>
+            <option value="BOD">BOD</option>
+            <option value="Fondo Común">Fondo Común</option>
+            <option value="Banplus">Banplus</option>
+            <option value="Exterior">Banco Exterior</option>
+            <option value="Caroní">Caroní</option>
+            <option value="Banco Plaza">Banco Plaza</option>
+            <option value="Del Sur">Del Sur</option>
+            <option value="Bancrecer">Bancrecer</option>
+          </select>
         </div>
-        <select class="custom-select input_datos" name="banco_e" id="banco-e">
-          <option value="Banesco">Banesco</option>
-          <option value="Mercantil">Mercantil</option>
-          <option value="Venezuela">Venezuela</option>
-          <option value="Tesoro">Del Tesoro</option>
-          <option value="Provincial">Provincial</option>
-          <option value="100% Banco">100% Banco</option>
-          <option value="Bancaribe">Bancaribe</option>
-          <option value="Banco Activo">Banco Activo</option>
-          <option value="Bicentenario">Bicentenario</option>
-          <option value="BNC">Banco Nacional de Credito</option>
-          <option value="Venezolano de Crédito">Venezolano de Crédito</option>
-          <option value="BOD">BOD</option>
-          <option value="Fondo Común">Fondo Común</option>
-          <option value="Banplus">Banplus</option>
-          <option value="Exterior">Banco Exterior</option>
-          <option value="Caroní">Caroní</option>
-          <option value="Banco Plaza">Banco Plaza</option>
-          <option value="Del Sur">Del Sur</option>
-          <option value="Bancrecer">Bancrecer</option>
-        </select>
-      </div>
-      <div class="input-group mb-2 col-sm-4">
-        <div class="input-group-prepend">
-          <span class="input-group-text" data-toggle="tooltip" title="Hacia donde realizaste la trasnferencia">Banco receptor</span>
+        <div class="input-group mb-2 col-sm-4">
+          <div class="input-group-prepend">
+            <span class="input-group-text" data-toggle="tooltip" title="Hacia donde realizaste la trasnferencia">Banco receptor</span>
+          </div>
+          <select class="custom-select input_datos" name="banco_r">
+            <option value="Banesco">Banesco</option>
+            <option value="Mercantil">Mercantil</option>
+            <option value="Venezuela">Venezuela</option>
+            <option value="Tesoro">Del Tesoro</option>
+          </select>
         </div>
-        <select class="custom-select input_datos" name="municipio" id="banco-r">
-          <option value="Banesco">Banesco</option>
-          <option value="Mercantil">Mercantil</option>
-          <option value="Venezuela">Venezuela</option>
-          <option value="Tesoro">Del Tesoro</option>
-        </select>
-      </div>
-      <div class="input-group flex-nowrap mb-2 col-sm-4">
-        <div class="input-group-prepend">
-          <span class="input-group-text" data-toggle="tooltip" title="Lo que transferite">Monto</span>
+        <div class="input-group flex-nowrap mb-2 col-sm-4">
+          <div class="input-group-prepend">
+            <span class="input-group-text" data-toggle="tooltip" title="Lo que transferite">Monto</span>
+          </div>
+          <input class="form-control input_datos" type="number" step="1" name="monto" placeholder="Inserte el Monto Transferido" maxlength="255"/>
         </div>
-        <input class="form-control input_datos" type="number" step="1" name="banco_e" id="monto" placeholder="Inserte el Monto Transferido" maxlength="255"/>
       </div>
-    </div>
-    <div class="row">
-      <div class="input-group col-sm-6 mb-2">
-        <div class="input-group-prepend">
-          <span class="input-group-text">Fecha de transacción</span>
+      <div class="row">
+        <div class="input-group col-sm-6 mb-2">
+          <div class="input-group-prepend">
+            <span class="input-group-text">Fecha de transacción</span>
+          </div>
+          <input class="form-control" type="date" name="fechapago"/>
         </div>
-        <input class="form-control" type="date" id="fechapago"/>
-      </div>
-      <div class="input-group mb-2 col-sm-6">
-        <div class="input-group-prepend">
-          <span class="input-group-text" data-toggle="tooltip" title="Referencia de la trasnferencia">Referencia</span>
+        <div class="input-group mb-2 col-sm-6">
+          <div class="input-group-prepend">
+            <span class="input-group-text" data-toggle="tooltip" title="Referencia de la trasnferencia">Referencia</span>
+          </div>
+          <input class="form-control input_datos" type="text" name="referencia" placeholder="Inserte la Referencia de la Transacción" maxlength="255"/>
         </div>
-        <input class="form-control input_datos" type="text" name="banco_e" id="referencia" placeholder="Inserte la Referencia de la Transacción" maxlength="255"/>
       </div>
-    </div>
-    <div class="row">
-      <input type="hidden" id="g-recaptcha-response">
+      <div class="row">
+      <input type="hidden" name="id_pedido" value="<?php echo $id_pedido;?>">
       <div class="input-group-append mt-3 col-12 justify-content-center">
-        <button class="btn btn-outline-secondary" type="submit" id="reporte">Registrar pago</button>
+        <button class="btn btn-outline-secondary" type="submit">Registrar pago</button>
       </div>
     </div>
+    </form>
   </div>
     <?php
     /**

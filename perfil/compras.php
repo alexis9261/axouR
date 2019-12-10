@@ -42,7 +42,7 @@ if($res->num_rows>0){
     </div>
     <div class="container mt-4 mb-2">
       <?php
-      $sql="SELECT * FROM `pedidos` WHERE EMAILUSER='$correo'";
+      $sql="SELECT * FROM `pedidos` WHERE EMAILUSER='$correo' ORDER BY FECHAPEDIDO DESC";
       $result=$conn->query($sql);
       if($result->num_rows>0){
         while($row=$result->fetch_assoc()){
@@ -54,7 +54,11 @@ if($res->num_rows>0){
           ?>
           <div class="row mt-4">
             <div class="col-9">
-              <h3 class="lead"><strong>Compra realizada el <?php echo $stingDate;?></strong></h3>
+              <h3 class="lead"><strong>Compra realizada el <?php echo $stingDate;?>
+                <?php if ($estatusPedido==8){ ?>
+                  - <span class="text-danger"> Compra Cancelada</span>
+                <?php } ?>
+              </strong></h3>
             </div>
             <div class="col-3 ml-auto text-right">
               <a href="detalles.php?id=<?php echo $idPedido;?>">Ver Detalles de la compra</a>

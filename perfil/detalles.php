@@ -5,6 +5,7 @@ include '../cambioDolar/index.php';
 include '../common/datosGenerales.php';
 $array_meses=array('','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
 if(isset($_GET['id'])){$idPedido=$_GET['id'];}
+if(isset($_GET['resp'])){$respuesta=$_GET['resp'];}
 $sql="SELECT * FROM `pedidos` WHERE IDPEDIDO='$idPedido'";
 $result=$conn->query($sql);
 if($result->num_rows>0){
@@ -67,12 +68,17 @@ if($result->num_rows>0){
   <link rel="stylesheet" href="../css/new.css">
   <link href="../admin/assets/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
   <title><?php echo $nombrePagina;?></title>
+  <script src="../admin/assets/libs/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
   <?php include '../common/menu.php';include '../common/2domenu.php'; ?>
   <div class="container mb-5">
     <div class="row bg-light py-3 px-3" style="border-radius:5px;">
-      <h3 class="lead"><strong>Detalles de la compra realizada el <?php echo $stingDate;?></strong></h3>
+      <h3 class="lead"><strong>Detalles de la compra realizada el <?php echo $stingDate;?>
+        <?php if ($estatusPedido==8){ ?>
+          - <span class="text-danger"> Compra Cancelada</span>
+        <?php } ?>
+      </strong></h3>
       <span class="col-auto ml-auto"><a href="compras.php">Compras</a> - Detalles</span>
     </div>
     <div class="container mt-4 mb-2">
@@ -151,21 +157,104 @@ if($result->num_rows>0){
               <?php echo number_format($montoPedido,2,',','.');?> Bs
             </h2>
             <div class="row justify-content-end mt-2">
-              <button class="btn btn-primary btn-sm px-5" type="button">Registrar pago</button>
+              <?php if ($estatusPedido==8){ ?>
+                <button class="btn btn-primary btn-sm px-5" type="button" id="pagar" disabled>Registrar pago</button>
+              <?php }else{ ?>
+                <button class="btn btn-primary btn-sm px-5" type="button" id="pagar">Registrar pago</button>
+              <?php } ?>
             </div>
             <div class="row justify-content-end mt-2">
-              <button class="btn btn-danger btn-sm px-5" type="button" name="button">Cancelar compra</button>
+              <?php if ($estatusPedido==8){ ?>
+                <button class="btn btn-danger btn-sm px-5" type="button" data-toggle='modal' data-target='.modal_cancelar' id="cancelar_compra" disabled>Compra Cancelada</button>
+              <?php }else{ ?>
+                <button class="btn btn-danger btn-sm px-5" type="button" data-toggle='modal' data-target='.modal_cancelar' id="cancelar_compra">Cancelar compra</button>
+              <?php } ?>
             </div>
           </div>
         </div>
       </div>
-        <!--div class="breadcrumb mb-5">
-          Mira tus compras  &nbsp; <a href="compras.php"> aqui</a>.
-        </div-->
+      <!-- Modal Cancelar Pedido -->
+      <div class='modal fade modal_cancelar' tabindex='-1' role='dialog' aria-hidden='true'>
+        <div class='modal-dialog' role='document'>
+          <div class='modal-content'>
+            <div class='modal-header'>
+              <h5 class='modal-title'>Cancelar Compra</h5>
+              <button class='close' type='button' data-dismiss='modal' aria-label='Close' id="close_modal_cancelar"><span aria-hidden='true'>×</span></button>
+            </div>
+            <div class='modal-body '>
+              <div class="row px-2">
+                <span>Comentanos porque cancelas la compra. <small class="text-muted"> Queremos Mejorar!! ;)</small> </span>
+                <textarea class="form-control textarea_cancelar" rows="3" id="text_cancelar" maxlength="150" required></textarea>
+                <small class="text-muted">Quedan <span id="numero">150</span> caracteres.</small>
+              </div>
+            </div>
+            <div class='modal-footer'>
+              <button class="btn btn-secondary btn-sm px-5" type="button" data-dismiss='modal'>Volver</button>
+              <button class="btn btn-danger btn-sm px-4" type="button" id="cancelar">Cancelar Compra</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- Caracteres faltanes -->
+      <script>
+        $(document).ready(function(){
+          var total_letras=150;
+          $('#text_cancelar').keyup(function(){
+            var longitud=$(this).val().length;
+            var resto=total_letras - longitud;
+            $('#numero').html(resto);
+          });
+        });
+      </script>
+      <!-- Cancelar compra -->
+      <script>
+        $(document).on('click',"#cancelar",function(){
+          var text=$("#text_cancelar").val();
+          if(text==""){
+            const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+            toast({type:'info',title:'¡Debes colocar un motivo!'})
+          }else {
+            var id_pedido=<?php echo $idPedido;?>;
+            $.get('ajax_cancelar_compra.php',{id_pedido:id_pedido,text:text},v,'text');
+            function v(r){
+              $("#close_modal_cancelar").click();
+              if(r==1){
+                const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+                toast({type:'success',title:'¡La compra fue cancelada!'})
+                $("#text_cancelar").prop('disabled', true);
+                $("#pagar").prop('disabled', true);
+                $("#cancelar_compra").prop('disabled', true);
+              }else{
+                const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+                toast({type:'error',title:'¡Hubo un pequeño problema! \n Inténtalo de nuevo'})
+              }
+            }
+          }
+        });
+      </script>
     </div>
+    <!-- Pago registrado -->
+    <script>
+      $(document).ready(function(){
+        <?php
+          if(isset($_GET['resp'])){
+            $respuesta=$_GET['resp'];
+            if($respuesta==0){
+              ?>
+              const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+              toast({type:'success',title:'¡Su pago fu registrado exitosamente!'})
+              <?php
+            }else if($respuesta==2){
+              ?>
+              const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+              toast({type:'error',title:'El pago no se registro \n Inténtalo de nuevo'})
+            <?php } ?>
+          <?php } ?>
+      });
+    </script>
   <?php include '../common/footer.php';?>
-  <script src="../admin/assets/libs/jquery/dist/jquery.min.js"></script>
   <script src="../admin/assets/libs/popper.js/dist/umd/popper.min.js"></script>
   <script src="../admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src='https://cdn.jsdelivr.net/npm/sweetalert2@7.29.0/dist/sweetalert2.all.min.js'></script>
 </body>
 </html>

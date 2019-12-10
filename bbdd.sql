@@ -161,10 +161,11 @@ ESTATUS
 1-'Pago Fallido';
 2-'Pago pendiente';
 3-'Por Buscar';
-4-'Por empaquetar' ;
+4-'Por empaquetar';
 5-'Por enviar';
 6-'Enviado';
 7-'Completado';
+8-'Cancelado';
 10-'Bajo Revisión';
 */
 CREATE TABLE PEDIDOS (

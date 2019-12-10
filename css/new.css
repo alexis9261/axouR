@@ -532,3 +532,8 @@ cursor: pointer;
   font-size: 25px !important;
   font-weight: 300;
 }
+/*Detalles compra*/
+.textarea_cancelar{
+  border-radius: 5px;
+  max-width: 100%;
+}
