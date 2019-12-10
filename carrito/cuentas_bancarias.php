@@ -180,13 +180,13 @@ mail($destino, $titulo, $contenido, $headers);
           <div class="input-group-prepend">
             <span class="input-group-text">Fecha de transacción</span>
           </div>
-          <input class="form-control" type="date" name="fechapago"/>
+          <input class="form-control" type="date" name="fechapago" required/>
         </div>
         <div class="input-group mb-2 col-sm-6">
           <div class="input-group-prepend">
             <span class="input-group-text" data-toggle="tooltip" title="Referencia de la trasnferencia">Referencia</span>
           </div>
-          <input class="form-control input_datos" type="text" name="referencia" placeholder="Inserte la Referencia de la Transacción" maxlength="255"/>
+          <input class="form-control input_datos" type="text" name="referencia" placeholder="Inserte la Referencia de la Transacción" maxlength="255" required/>
         </div>
       </div>
       <div class="row">

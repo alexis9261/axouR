@@ -96,7 +96,7 @@ if($result->num_rows>0){
   <link rel="icon" type="image/jpg" sizes="16x16" href="<?php echo $root_folder;?>/admin/img/<?php echo $imageLogo;?>">
   <link rel="stylesheet" href="../css/style-main.css">
   <link rel="stylesheet" href="../css/new.css">
-  <link href="../admin/assets/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="../admin/assets/libs/bootstrap/dist/css/bootstrap.min.css">
   <title><?php echo $nombrePagina;?></title>
   <script src="../admin/assets/libs/jquery/dist/jquery.min.js"></script>
 </head>
@@ -123,7 +123,6 @@ if($result->num_rows>0){
               $cantidad=$row['CANTIDAD'];
               $precioProducto=$row['PRECIO'];
               $sql2="SELECT i.IDMODELO,i.TALLAID,i.PESO,m.IDPRODUCTO,m.COLOR1,m.COLOR2,m.IMAGEN,p.NOMBRE_P,p.GENERO,p.CATEGORIAID,p.MARCAID,p.ESTATUS FROM `inventario` i INNER JOIN `modelos` m ON i.IDMODELO=m.IDMODELO INNER JOIN `productos` p ON m.IDPRODUCTO=p.IDPRODUCTO WHERE i.IDINVENTARIO='$inventarioId'";
-              //$sql3="SELECT p.NOMBRE_P,p.GENERO,p.CATEGORIAID,p.PRECIO,m.IMAGEN FROM `productos` p INNER JOIN `modelos` m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE m.IDMODELO='$idModelo' LIMIT 1";
               $result2=$conn->query($sql2);
               if($result2->num_rows>0){
                 while($row2=$result2->fetch_assoc()){
@@ -186,6 +185,22 @@ if($result->num_rows>0){
             <h2 class="row justify-content-end text_monto_details text-muted">
               <?php echo number_format($montoPedido,2,',','.');?> Bs
             </h2>
+            <?php
+            $sql="SELECT * FROM pagos WHERE IDPEDIDO='$idPedido';";
+            $result=$conn->query($sql);
+            if($result->num_rows>0){
+              while($row=$result->fetch_assoc()){
+                $pago=$row['MONTO'];
+                $moneda=$row['MONEDA'];
+                $fechaPago=$row['FECHAPAGO'];
+                ?>
+                <h5 class="row justify-content-end lead text-primary" title="Pago realizado el <?php echo $fechaPago;?>" data-toggle="tooltip">
+                  <?php echo number_format($pago,2,',','.')." $moneda";?>
+                </h5>
+                <?php
+              }
+            }
+             ?>
             <div class="row justify-content-end mt-2">
               <?php if ($estatusPedido==8){ ?>
                 <button class="btn btn-primary btn-sm px-5" type="button" data-toggle='modal' data-target='.modal_pago' id="pagar" disabled>Registrar pago</button>
@@ -205,22 +220,99 @@ if($result->num_rows>0){
       </div>
       <!-- Modal Registrar Pago -->
       <div class='modal fade modal_pago' tabindex='-1' role='dialog' aria-hidden='true'>
-        <div class='modal-dialog' role='document'>
-          <div class='modal-content'>
+        <div class='modal-dialog modal-lg'>
+          <div class='modal-content container'>
             <div class='modal-header'>
-              <h5 class='modal-title'>Registrar Pago</h5>
+              <h5 class='modal-title'>Puedes realizar una transferencia nuestras cuentas bancarias</h5>
               <button class='close' type='button' data-dismiss='modal' aria-label='Close' id="close_modal_pago"><span aria-hidden='true'>×</span></button>
             </div>
-            <div class='modal-body '>
-              <div class="row px-2">
-                <span>Comentanos porque cancelas la compra. <small class="text-muted"> Queremos Mejorar!! ;)</small> </span>
-                <textarea class="form-control textarea_cancelar" rows="3" id="text_cancelar" maxlength="150" required></textarea>
+            <form action="../carrito/procesar_pago.php" method="post">
+              <div class='modal-body'>
+                <div class="container mb-0">
+                  <div class="row">
+                    <h6 class="col-sm-6"><b>Banesco</b></h6>
+                    <h6 class="col-sm-6"><b>N°</b> 0134 0464 03 4641026277</h6>
+                    <h6 class="col-sm-6"><b>Mercantil</b></h6>
+                    <h6 class="col-sm-6"><b>N°</b>0105 0283 7512 83148412</h6>
+                    <h6 class="col-sm-6"><b>Provincial</b></h6>
+                    <h6 class="col-sm-6"><b>N°</b> 0108 0558 9901 00043593</h6>
+                    <h6 class="col-sm-6"><b>Del Tesoro</b></h6>
+                    <h6 class="col-sm-6"><b>N°</b> 0163 0217 1121 73013146</h6>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <h6 class="col-sm-4 text-center"><b>Titular: </b>Alpargata Skate, C.A.</h6>
+                    <h6 class="col-sm-4 text-center"><b>Tipo: </b>Corriente</h6>
+                    <h6 class="col-sm-4 text-center"><b>RIF: </b>J-XXXXXXX</h6>
+                  </div>
+                  <hr>
+                  <div class="row">
+                    <div class="input-group mb-2 col-sm-6">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" data-toggle="tooltip" title="Desde donde realizaste la trasnferencia">Banco emisor</span>
+                      </div>
+                      <select class="custom-select input_datos" name="banco_e">
+                        <option value="Banesco">Banesco</option>
+                        <option value="Mercantil">Mercantil</option>
+                        <option value="Venezuela">Venezuela</option>
+                        <option value="Tesoro">Del Tesoro</option>
+                        <option value="Provincial">Provincial</option>
+                        <option value="100% Banco">100% Banco</option>
+                        <option value="Bancaribe">Bancaribe</option>
+                        <option value="Banco Activo">Banco Activo</option>
+                        <option value="Bicentenario">Bicentenario</option>
+                        <option value="BNC">Banco Nacional de Credito</option>
+                        <option value="Venezolano de Crédito">Venezolano de Crédito</option>
+                        <option value="BOD">BOD</option>
+                        <option value="Fondo Común">Fondo Común</option>
+                        <option value="Banplus">Banplus</option>
+                        <option value="Exterior">Banco Exterior</option>
+                        <option value="Caroní">Caroní</option>
+                        <option value="Banco Plaza">Banco Plaza</option>
+                        <option value="Del Sur">Del Sur</option>
+                        <option value="Bancrecer">Bancrecer</option>
+                      </select>
+                    </div>
+                    <div class="input-group mb-2 col-sm-6">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" data-toggle="tooltip" title="Hacia donde realizaste la trasnferencia">Banco receptor</span>
+                      </div>
+                      <select class="custom-select input_datos" name="banco_r">
+                        <option value="Banesco">Banesco</option>
+                        <option value="Mercantil">Mercantil</option>
+                        <option value="Venezuela">Venezuela</option>
+                        <option value="Tesoro">Del Tesoro</option>
+                      </select>
+                    </div>
+                  </div>
+                  <div class="row">
+                    <div class="input-group flex-nowrap mb-2 col-sm-6">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" data-toggle="tooltip" title="Lo que transferite">Monto</span>
+                      </div>
+                      <input class="form-control input_datos" type="number" step="1" name="monto" placeholder="Inserte el Monto Transferido" maxlength="255" required/>
+                    </div>
+                    <div class="input-group col-sm-6 mb-2">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text">Fecha de transacción</span>
+                      </div>
+                      <input class="form-control" type="date" name="fechapago" required/>
+                    </div>
+                    <div class="input-group mb-2 col-12">
+                      <div class="input-group-prepend">
+                        <span class="input-group-text" data-toggle="tooltip" title="Referencia de la trasnferencia">Referencia</span>
+                      </div>
+                      <input class="form-control input_datos" type="text" name="referencia" placeholder="Inserte la Referencia de la Transacción" maxlength="255" required/>
+                    </div>
+                  </div>
+                  <input type="hidden" name="id_pedido" value="<?php echo $idPedido;?>">
+                </div>
               </div>
-            </div>
-            <div class='modal-footer'>
-              <button class="btn btn-secondary btn-sm px-5" type="button" data-dismiss='modal'>Volver</button>
-              <button class="btn btn-danger btn-sm px-4" type="button" id="pago">Regsistrar Pago</button>
-            </div>
+              <div class='modal-footer'>
+                <button class="btn btn-secondary btn-sm px-5" type="button" data-dismiss='modal'>Volver</button>
+                <button class="btn btn-primary btn-sm px-5" type="submit" id="pago">Registrar Pago</button>
+              </div>
+            </form>
           </div>
         </div>
       </div>
@@ -304,8 +396,8 @@ if($result->num_rows>0){
       });
     </script>
   <?php include '../common/footer.php';?>
-  <script src="../admin/assets/libs/popper.js/dist/umd/popper.min.js"></script>
   <script src="../admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="../admin/assets/libs/popper.js/dist/popper.min.js"></script>
   <script src='https://cdn.jsdelivr.net/npm/sweetalert2@7.29.0/dist/sweetalert2.all.min.js'></script>
 </body>
 </html>
