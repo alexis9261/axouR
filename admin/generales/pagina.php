@@ -180,7 +180,6 @@ include '../../common/datosGenerales.php';
           </div>
         </div>
   </div>
-  <?php include '../common/footer.php';?>
   <!-- Redes Sociales -->
   <script>
     $(document).on('click',"#submit_redes",function(){

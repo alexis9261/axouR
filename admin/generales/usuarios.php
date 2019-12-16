@@ -215,7 +215,6 @@ $previouspage = $curpage - 1;
                 </div>
               <?php } ?>
             </div>
-            <?php include('../common/footer.php'); ?>
         </div>
     </div>
     <script src="../assets/libs/jquery/dist/jquery.min.js"></script>

@@ -231,7 +231,6 @@ $previouspage=$curpage - 1;
       <h4 class="card-title text-center">No hay colores registrados</h4>
     <?php } ?>
   </div>
-  <?php include '../common/footer.php';?>
 </div>
 </div>
 <script src="../assets/libs/popper.js/dist/umd/popper.min.js"></script>

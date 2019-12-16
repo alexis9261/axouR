@@ -20,7 +20,7 @@ if(isset($_POST['direccion'])){
     $municipio=$_POST['municipio'];
     $encomienda=$_POST['encomienda'];
   }
-  $monto=$estado=$_POST['monto'];
+  $monto=$_POST['monto'];
   if(isset($_POST['isfacture'])){
     $razon=$_POST['razon-social'];
     $identidad=$_POST['type-identidad'].'-'.$_POST['doc-identidad'];
@@ -32,7 +32,7 @@ if(isset($_POST['direccion'])){
       while($row=$result->fetch_assoc()){
         $rif=$row['RIFCI'];
       }
-    }
+    } 
     if(empty($rif)){
       //Se agregan estos datos a los datos del usuario
       $sql="UPDATE usuarios SET RAZONSOCIAL='$razon',RIFCI='$identidad',DIRFISCAL='$dir_fiscal' WHERE CORREO='$email_user';";

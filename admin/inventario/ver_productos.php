@@ -90,10 +90,19 @@ if($result->num_rows>0){while($row=$result->fetch_assoc()){array_push($array_col
               <h4 class="page-title">Inventario</h4>
             </div>
             <div class="col-auto ml-auto">
-              <?php if (isset($_GET['estatus']) && $_GET['estatus']==1){ ?>
-                  <a href="?estatus=0">Ver activas</a>
+              <?php
+              $sql="SELECT COUNT(*) AS TOTAL FROM productos WHERE ESTATUS<>'$estatus'";
+              $result=$conn->query($sql);
+              if($result->num_rows>0){
+                while($row=$result->fetch_assoc()){
+                  $total=$row['TOTAL'];
+                }
+              }
+               ?>
+              <?php if(isset($_GET['estatus']) && $_GET['estatus']==1){ ?>
+                  <a href="?estatus=0">Ver activas (<b><?php echo $total;?></b>)</a>
               <?php }else{ ?>
-                <a href="?estatus=1">Ver pausados</a>
+                <a href="?estatus=1">Ver pausados (<b><?php echo $total;?></b>)</a>
               <?php } ?>
             </div>
           </div>
@@ -206,7 +215,6 @@ if($result->num_rows>0){while($row=$result->fetch_assoc()){array_push($array_col
                      ?>
                 </tbody>
               </table>
-            <?php include '../common/footer.php';?>
         </div>
     </div>
     <!-- alert Activar -->

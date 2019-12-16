@@ -4,7 +4,7 @@ include '../common/conexion.php';
 include '../cambioDolar/index.php';
 include '../common/datosGenerales.php';
 $array_meses=array('','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
-if(isset($_GET['id'])){$idPedido=$_GET['id'];}
+if(isset($_GET['id'])){$idPedido=$_GET['id'];}else {header('location: compras.php');}
 if(isset($_GET['resp'])){$respuesta=$_GET['resp'];}
 $sql="SELECT * FROM `pedidos` WHERE IDPEDIDO='$idPedido'";
 $result=$conn->query($sql);
@@ -53,7 +53,7 @@ if($result->num_rows>0){while($row=$result->fetch_assoc()){$montoPedido=$row['MO
 //buscar los nombres de las tallas
 $nombre_tallas=array();
 $id_tallas_bd=array();
-$sql="SELECT * FROM TALLAS";
+$sql="SELECT * FROM `tallas`;";
 $res=$conn->query($sql);
 if($res->num_rows>0){
   while($row=$res->fetch_assoc()){
@@ -62,7 +62,7 @@ if($res->num_rows>0){
   }
 }
 //categorias
-$sql="SELECT * FROM CATEGORIAS WHERE PADRE=0";
+$sql="SELECT * FROM `categorias` WHERE PADRE=0;";
 $id_categorias=array();
 $categorias_padre=array();
 $result=$conn->query($sql);
@@ -73,7 +73,7 @@ if($result->num_rows>0){
   }
 }
 //marcas
-$sql="SELECT * FROM MARCAS LIMIT 8";
+$sql="SELECT * FROM `marcas` LIMIT 8;";
 $id_marcas=array();
 $nombres_marcas=array();
 $result=$conn->query($sql);
@@ -177,7 +177,7 @@ if($result->num_rows>0){
             }
           }
           ?>
-          </div>
+        </div>
           <div class="col-2 ml-auto">
             <div class="row justify-content-end">
               <span>Monto total de la compra</span>
@@ -193,8 +193,15 @@ if($result->num_rows>0){
                 $pago=$row['MONTO'];
                 $moneda=$row['MONEDA'];
                 $fechaPago=$row['FECHAPAGO'];
-                ?>
-                <h5 class="row justify-content-end lead text-primary" title="Pago realizado el <?php echo $fechaPago;?>" data-toggle="tooltip">
+                $estatus_pago=$row['ESTATUS'];
+                if($estatus_pago==0){
+                  ?>
+                  <h5 class="row justify-content-end lead text-primary" title="Pago realizado el <?php echo $fechaPago;?>" data-toggle="tooltip">
+                  <?php }elseif($estatus_pago==1){ ?>
+                  <h5 class="row justify-content-end lead text-success" title="Pago realizado el <?php echo $fechaPago;?>" data-toggle="tooltip">
+                  <?php }elseif($estatus_pago==2){ ?>
+                  <h5 class="row justify-content-end lead text-danger" title="Pago en revisión, se pondrán en contacto pronto contigo." data-toggle="tooltip">
+                  <?php } ?>
                   <?php echo number_format($pago,2,',','.')." $moneda";?>
                 </h5>
                 <?php
@@ -251,7 +258,7 @@ if($result->num_rows>0){
                       <div class="input-group-prepend">
                         <span class="input-group-text" data-toggle="tooltip" title="Desde donde realizaste la trasnferencia">Banco emisor</span>
                       </div>
-                      <select class="custom-select input_datos" name="banco_e">
+                      <select class="custom-select input_datos text-dark" name="banco_e">
                         <option value="Banesco">Banesco</option>
                         <option value="Mercantil">Mercantil</option>
                         <option value="Venezuela">Venezuela</option>
@@ -277,7 +284,7 @@ if($result->num_rows>0){
                       <div class="input-group-prepend">
                         <span class="input-group-text" data-toggle="tooltip" title="Hacia donde realizaste la trasnferencia">Banco receptor</span>
                       </div>
-                      <select class="custom-select input_datos" name="banco_r">
+                      <select class="custom-select input_datos text-dark" name="banco_r">
                         <option value="Banesco">Banesco</option>
                         <option value="Mercantil">Mercantil</option>
                         <option value="Venezuela">Venezuela</option>
@@ -290,19 +297,19 @@ if($result->num_rows>0){
                       <div class="input-group-prepend">
                         <span class="input-group-text" data-toggle="tooltip" title="Lo que transferite">Monto</span>
                       </div>
-                      <input class="form-control input_datos" type="number" step="1" name="monto" placeholder="Inserte el Monto Transferido" maxlength="255" required/>
+                      <input class="form-control input_datos text-dark" type="number" step="1" name="monto" placeholder="Inserte el Monto Transferido" maxlength="255" required/>
                     </div>
                     <div class="input-group col-sm-6 mb-2">
                       <div class="input-group-prepend">
                         <span class="input-group-text">Fecha de transacción</span>
                       </div>
-                      <input class="form-control" type="date" name="fechapago" required/>
+                      <input class="form-control text-dark" type="date" name="fechapago" required/>
                     </div>
                     <div class="input-group mb-2 col-12">
                       <div class="input-group-prepend">
                         <span class="input-group-text" data-toggle="tooltip" title="Referencia de la trasnferencia">Referencia</span>
                       </div>
-                      <input class="form-control input_datos" type="text" name="referencia" placeholder="Inserte la Referencia de la Transacción" maxlength="255" required/>
+                      <input class="form-control input_datos text-dark" type="text" name="referencia" placeholder="Inserte la Referencia de la Transacción" maxlength="255" required/>
                     </div>
                   </div>
                   <input type="hidden" name="id_pedido" value="<?php echo $idPedido;?>">
