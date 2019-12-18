@@ -328,7 +328,7 @@ if(isset($_GET['delete']) and !empty($_GET['delete'])){
                 <div class="pb-3" style="background-color:#ffffff;">
                   <a href="../vitrina/detalles.php?idmodelo=<?php echo $idmodelo_seg;?>"><div class="title-product px-2" title="<?php echo $titulo_seg;?>"><?php echo $titulo_seg;?></div></a>
                   <div class="px-2 mt-2 precio-items-secundarios"><!--$ <?php echo number_format($precio,2, ',', '.');?> <br-->
-                    Bs. <?php echo number_format($precio*$dolar,2, ',', '.');?></div>
+                    Bs. <?php echo number_format($precio*round($dolar),2,',','.');?></div>
                   </div>
                 </div>
               <?php } ?>
