@@ -115,9 +115,9 @@ $previouspage=$curpage - 1;
             <div class="card">
               <div class="card-body p-0 p-2">
                 <?php if (isset($_GET['estatus']) && $_GET['estatus']==1){ ?>
-                  <h4 class="card-title">Tallas Pausadas</h4>
+                  <h4 class="card-title">Marcas Pausadas</h4>
                 <?php }else{ ?>
-                  <h4 class="card-title">Tallas Activas</h4>
+                  <h4 class="card-title">Marcas Activas</h4>
                 <?php } ?>
               </div>
               <?php
@@ -224,7 +224,6 @@ $previouspage=$curpage - 1;
       <h4 class="card-title text-center">No hay marcas</h4>
     <?php } ?>
   </div>
-  <?php include '../common/footer.php';?>
 </div>
 </div>
 <script src="../assets/libs/popper.js/dist/umd/popper.min.js"></script>

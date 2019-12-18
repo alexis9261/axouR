@@ -140,9 +140,23 @@ if(isset($_SESSION['total_items'])){$cantidad_total=$_SESSION['total_items'];}
               <div class="row ml-3">
                 <small class="text-muted"><input id="isfacture" type="checkbox" onclick="Factura()" name="isfacture" value="true"> <label for="isfacture">Yo, deseo factura fiscal</label> </small>
               </div>
+              <?php
+              $razonSocial='';
+              $rif='';
+              $dirFiscal='';
+              $sql="SELECT RAZONSOCIAL,RIFCI,DIRFISCAL FROM `usuarios` WHERE CORREO='$email_user'";
+              $result=$conn->query($sql);
+              if($result->num_rows>0){
+                while($row=$result->fetch_assoc()){
+                  $razonSocial=$row['RAZONSOCIAL'];
+                  $rif=$row['RIFCI'];
+                  $dirFiscal=$row['DIRFISCAL'];
+                }
+              }
+               ?>
               <div class="row">
                 <div class="input-group mb-2 col-sm-6">
-                  <input type="text" placeholder="Razon Social" name="razon-social" id="razon-social" style="display: none" class="form-control" maxlength="255">
+                  <input type="text" placeholder="Razon Social" name="razon-social" id="razon-social" style="display: none" class="form-control" maxlength="255" value="<?php echo $razonSocial;?>">
                 </div>
                 <div class="input-group mb-2 col-sm-6">
                   <select class="text-center" name="type-identidad" id="type-identidad" style="display: none; border: 1px solid #ddd; width:20%; border-radius: 4px 0 0 4px;">
@@ -150,10 +164,10 @@ if(isset($_SESSION['total_items'])){$cantidad_total=$_SESSION['total_items'];}
                     <option>P</option>
                     <option>G</option>
                   </select>
-                  <input type="text" placeholder="Registro Único de Información Fiscal(RIF)" name="doc-identidad" id="doc-identidad" maxlength="22" style="display: none"  class="form-control">
+                  <input type="text" placeholder="Registro Único de Información Fiscal(RIF)" name="doc-identidad" id="doc-identidad" maxlength="22" style="display:none;" class="form-control" value="<?php echo $rif;?>">
                 </div>
                 <div class="input-group mb-2 col-12">
-                  <input type="text" placeholder="Dirección Fiscal" name="dir-fiscal" id="dir-fiscal" style="display: none" class="form-control" maxlength="255">
+                  <input type="text" placeholder="Dirección Fiscal" name="dir-fiscal" id="dir-fiscal" style="display: none" class="form-control" maxlength="255" value="<?php echo $dirFiscal;?>">
                 </div>
               </div>
               <div id="auxiliares"></div>
@@ -207,7 +221,7 @@ if(isset($_SESSION['total_items'])){$cantidad_total=$_SESSION['total_items'];}
           </div>
         </div>
         <hr class="my-0">
-        <div class="row justify-content-center mb-2 mt-4">
+        <div class="row justify-content-center pb-5 mb-5 mt-4">
           <div class="col-auto text-center mb-3">
             <button class="btn btn-outline-success px-5" type="submit">Confirmar</button>
           </div>

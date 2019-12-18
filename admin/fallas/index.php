@@ -406,7 +406,6 @@ if(isset($_GET['orden'], $_GET['id'],$_GET['comentario'],$_GET['Estatus'])){
                         </div>
                       </div>
                     </div>
-                    <?php include '../common/footer.php';?>
                   </div>
                   <?php
                 }else{
@@ -415,7 +414,6 @@ if(isset($_GET['orden'], $_GET['id'],$_GET['comentario'],$_GET['Estatus'])){
                     <h5>¡No hay fallas que revisar!</h5>
                   </div>
                 </div>
-                <?php include '../common/footer.php';?>
               </div>
               <?php
             }

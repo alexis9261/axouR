@@ -63,7 +63,11 @@ include '../common/datosGenerales.php';
           <div class="input-group-prepend">
             <span class="input-group-text bg-dark text-white">Teléfono de contacto</span>
           </div>
-          <input type="text" class="form-control" value="<?php echo $telefono;?>">
+          <?php if(isset($telefono) && !empty($telefono)){ ?>
+            <input type="text" class="form-control" value="<?php echo $telefono;?>">
+          <?php }else{ ?>
+            <input type="text" class="form-control">
+          <?php } ?>
         </div>
       </div>
     </div>

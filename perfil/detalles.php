@@ -4,7 +4,7 @@ include '../common/conexion.php';
 include '../cambioDolar/index.php';
 include '../common/datosGenerales.php';
 $array_meses=array('','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
-if(isset($_GET['id'])){$idPedido=$_GET['id'];}
+if(isset($_GET['id'])){$idPedido=$_GET['id'];}else {header('location: compras.php');}
 if(isset($_GET['resp'])){$respuesta=$_GET['resp'];}
 $sql="SELECT * FROM `pedidos` WHERE IDPEDIDO='$idPedido'";
 $result=$conn->query($sql);
@@ -53,7 +53,7 @@ if($result->num_rows>0){while($row=$result->fetch_assoc()){$montoPedido=$row['MO
 //buscar los nombres de las tallas
 $nombre_tallas=array();
 $id_tallas_bd=array();
-$sql="SELECT * FROM TALLAS";
+$sql="SELECT * FROM `tallas`;";
 $res=$conn->query($sql);
 if($res->num_rows>0){
   while($row=$res->fetch_assoc()){
@@ -62,7 +62,7 @@ if($res->num_rows>0){
   }
 }
 //categorias
-$sql="SELECT * FROM CATEGORIAS WHERE PADRE=0";
+$sql="SELECT * FROM `categorias` WHERE PADRE=0;";
 $id_categorias=array();
 $categorias_padre=array();
 $result=$conn->query($sql);
@@ -73,7 +73,7 @@ if($result->num_rows>0){
   }
 }
 //marcas
-$sql="SELECT * FROM MARCAS LIMIT 8";
+$sql="SELECT * FROM `marcas` LIMIT 8;";
 $id_marcas=array();
 $nombres_marcas=array();
 $result=$conn->query($sql);
@@ -102,7 +102,7 @@ if($result->num_rows>0){
 </head>
 <body>
   <?php include '../common/menu.php';include '../common/2domenu.php'; ?>
-  <div class="container mb-5">
+  <div class="container mb-3">
     <div class="row bg-light py-3 px-3" style="border-radius:5px;">
       <h3 class="lead"><strong>Detalles de la compra realizada el <?php echo $stingDate;?>
         <?php if ($estatusPedido==8){ ?>
@@ -111,7 +111,7 @@ if($result->num_rows>0){
       </strong></h3>
       <span class="col-auto ml-auto"><a href="compras.php">Compras</a> - Detalles</span>
     </div>
-    <div class="container mt-4 mb-2">
+    <div class="container mt-4 mb-5 pb-5">
       <div class="row">
         <div class="col-10">
           <?php
@@ -143,7 +143,7 @@ if($result->num_rows>0){
                 }
               }
                 ?>
-                <div class="row mt-4">
+                <div class="row mb-2">
                   <div class="col-2 text-center">
                     <img src="../admin/inventario/img/<?php echo $imagen;?>" alt="<?php echo $titulo;?>" width="70vw">
                   </div>
@@ -177,7 +177,7 @@ if($result->num_rows>0){
             }
           }
           ?>
-          </div>
+        </div>
           <div class="col-2 ml-auto">
             <div class="row justify-content-end">
               <span>Monto total de la compra</span>
@@ -193,8 +193,17 @@ if($result->num_rows>0){
                 $pago=$row['MONTO'];
                 $moneda=$row['MONEDA'];
                 $fechaPago=$row['FECHAPAGO'];
-                ?>
-                <h5 class="row justify-content-end lead text-primary" title="Pago realizado el <?php echo $fechaPago;?>" data-toggle="tooltip">
+                $estatus_pago=$row['ESTATUS'];
+                if($estatus_pago==0){
+                  ?>
+                  <h5 class="row justify-content-end lead text-primary" title="Pago realizado el <?php echo $fechaPago;?>" data-toggle="tooltip">
+                  <?php }elseif($estatus_pago==1){ ?>
+                    <h5 class="row justify-content-end lead text-success" title="Pago realizado el <?php echo $fechaPago;?>" data-toggle="tooltip">
+                      <span class="pr-1"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' width='15px'><path fill='#33e222' d='M504 256c0 136.967-111.033 248-248 248S8 392.967 8 256 119.033 8 256 8s248 111.033 248 248zM227.314 387.314l184-184c6.248-6.248 6.248-16.379 0-22.627l-22.627-22.627c-6.248-6.249-16.379-6.249-22.628 0L216 308.118l-70.059-70.059c-6.248-6.248-16.379-6.248-22.628 0l-22.627 22.627c-6.248 6.248-6.248 16.379 0 22.627l104 104c6.249 6.249 16.379 6.249 22.628.001z'/></svg></span>
+                  <?php }elseif($estatus_pago==2){ ?>
+                    <h5 class="row justify-content-end lead text-danger" title="Pago en revisión, se pondrán en contacto pronto contigo." data-toggle="tooltip">
+                      <span class="pr-1"><svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 512 512' width='15px'><path fill='#e2282c' d='M504 256c0 136.997-111.043 248-248 248S8 392.997 8 256C8 119.083 119.043 8 256 8s248 111.083 248 248zm-248 50c-25.405 0-46 20.595-46 46s20.595 46 46 46 46-20.595 46-46-20.595-46-46-46zm-43.673-165.346l7.418 136c.347 6.364 5.609 11.346 11.982 11.346h48.546c6.373 0 11.635-4.982 11.982-11.346l7.418-136c.375-6.874-5.098-12.654-11.982-12.654h-63.383c-6.884 0-12.356 5.78-11.981 12.654z'/></svg></span>
+                  <?php } ?>
                   <?php echo number_format($pago,2,',','.')." $moneda";?>
                 </h5>
                 <?php
@@ -216,6 +225,9 @@ if($result->num_rows>0){
               <?php } ?>
             </div>
           </div>
+        </div>
+        <div class="row my-2">
+          <button class="btn btn-link" type="button" data-toggle='modal' data-target='.modal_envios'>Ver datos de envios</button>
         </div>
       </div>
       <!-- Modal Registrar Pago -->
@@ -251,7 +263,7 @@ if($result->num_rows>0){
                       <div class="input-group-prepend">
                         <span class="input-group-text" data-toggle="tooltip" title="Desde donde realizaste la trasnferencia">Banco emisor</span>
                       </div>
-                      <select class="custom-select input_datos" name="banco_e">
+                      <select class="custom-select input_datos text-dark" name="banco_e">
                         <option value="Banesco">Banesco</option>
                         <option value="Mercantil">Mercantil</option>
                         <option value="Venezuela">Venezuela</option>
@@ -277,7 +289,7 @@ if($result->num_rows>0){
                       <div class="input-group-prepend">
                         <span class="input-group-text" data-toggle="tooltip" title="Hacia donde realizaste la trasnferencia">Banco receptor</span>
                       </div>
-                      <select class="custom-select input_datos" name="banco_r">
+                      <select class="custom-select input_datos text-dark" name="banco_r">
                         <option value="Banesco">Banesco</option>
                         <option value="Mercantil">Mercantil</option>
                         <option value="Venezuela">Venezuela</option>
@@ -290,19 +302,19 @@ if($result->num_rows>0){
                       <div class="input-group-prepend">
                         <span class="input-group-text" data-toggle="tooltip" title="Lo que transferite">Monto</span>
                       </div>
-                      <input class="form-control input_datos" type="number" step="1" name="monto" placeholder="Inserte el Monto Transferido" maxlength="255" required/>
+                      <input class="form-control input_datos text-dark" type="number" step="1" name="monto" placeholder="Inserte el Monto Transferido" maxlength="255" required/>
                     </div>
                     <div class="input-group col-sm-6 mb-2">
                       <div class="input-group-prepend">
                         <span class="input-group-text">Fecha de transacción</span>
                       </div>
-                      <input class="form-control" type="date" name="fechapago" required/>
+                      <input class="form-control text-dark" type="date" name="fechapago" required/>
                     </div>
                     <div class="input-group mb-2 col-12">
                       <div class="input-group-prepend">
                         <span class="input-group-text" data-toggle="tooltip" title="Referencia de la trasnferencia">Referencia</span>
                       </div>
-                      <input class="form-control input_datos" type="text" name="referencia" placeholder="Inserte la Referencia de la Transacción" maxlength="255" required/>
+                      <input class="form-control input_datos text-dark" type="text" name="referencia" placeholder="Inserte la Referencia de la Transacción" maxlength="255" required/>
                     </div>
                   </div>
                   <input type="hidden" name="id_pedido" value="<?php echo $idPedido;?>">
@@ -338,6 +350,147 @@ if($result->num_rows>0){
           </div>
         </div>
       </div>
+      <!-- Modal datos de envio -->
+      <?php
+      $sql="SELECT ESTADO,MUNICIPIO,DIRECCION,CODIGOPOSTAL,RECEPTOR,CIRECEPTOR,TELFRECEPTOR,ENCOMIENDA,GUIA,FACTFISCAL FROM envios WHERE PEDIDOID='$idPedido' LIMIT 1;";
+      $result=$conn->query($sql);
+      if($result->num_rows>0){
+        while($row=$result->fetch_assoc()){
+          $estado=$row['ESTADO'];
+          $municipio=$row['MUNICIPIO'];
+          $direccion=$row['DIRECCION'];
+          $codigopostal=$row['CODIGOPOSTAL'];
+          $correo_user=$row['RECEPTOR'];
+          $ci_cliente=$row['CIRECEPTOR'];
+          $telefono=$row['TELFRECEPTOR'];
+          $encomienda=$row['ENCOMIENDA'];
+          $guia=$row['GUIA'];
+          $facturaFiscal=$row['FACTFISCAL'];
+          if($facturaFiscal==1){
+            $sql="SELECT RAZONSOCIAL,RIFCI,DIRFISCAL FROM usuarios WHERE CORREO='$correo_user' LIMIT 1";
+            $result=$conn->query($sql);
+            if($result->num_rows>0){
+              while($row=$result->fetch_assoc()){
+                $razon_social=$row['RAZONSOCIAL'];
+                $rif=$row['RIFCI'];
+                $dir_fiscal=$row['DIRFISCAL'];
+              }
+            }
+          }
+        }
+      }
+      $cliente=ucwords($nombre)." ".ucwords($apellido);
+       ?>
+      <div class="modal fade modal_envios" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+          <div class="modal-dialog" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                <h5 class="modal-title text-dark">
+                  <?php if($encomienda=="Tienda"){ ?>
+                    Retirarás en la tienda
+                  <?php }else{ ?>
+                    Tu paquete será enviado por <?=$encomienda?>
+                  <?php } ?>
+                </h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                  <span aria-hidden="true">&times;</span>
+                </button>
+              </div>
+              <div class="modal-body">
+                <?php if($encomienda!="Tienda"){ ?>
+                <div class="row">
+                  <div class="col-12 text-dark">
+                    <b>Será enviado a:</b>
+                  </div>
+                  <div class="col-12">
+                    <div class="row">
+                      <div class="col-sm-6 text-muted">
+                        Nombre: <span class="text-dark"><?=$cliente?></span>
+                      </div>
+                      <div class="col-sm-6 text-muted">
+                        Cédula: <span class="text-dark"><?php echo $ci_cliente;?></span>
+                      </div>
+                      <div class="col-sm-6 text-muted">
+                        Teléfono: <span class="text-dark"><?php echo $telefono;?></span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <hr>
+                <?php } ?>
+                  <div class="row">
+                    <?php if($encomienda=="Tienda"){ ?>
+                      <b class="col-auto text-dark">Dirección de la tienda</b>
+                    <?php }else { ?>
+                      <b class="col-auto text-dark">Datos de Envío</b>
+                    <?php } ?>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6 text-muted">
+                      Estado: <span class="text-dark"><?=$estado?></span>
+                    </div>
+                    <div class="col-sm-6 text-muted">
+                      Municipio: <span class="text-dark"><?=$municipio?></span>
+                    </div>
+                    <div class="col-sm-6 text-muted">
+                      Código Postal: <span class="text-dark"><?=$codigopostal?></span>
+                    </div>
+                    <div class="col-12 text-muted">
+                      Dirección: <span class="text-dark"><?=$direccion?></span>
+                    </div>
+                  </div>
+                  <hr>
+                <?php if($facturaFiscal==1){ ?>
+                  <div class="row">
+                    <b class="col-auto text-dark">Factura Fiscal</b>
+                  </div>
+                  <div class="row">
+                    <div class="col-sm-6 text-muted">
+                      Razón Social: <span class="text-dark"><?=$razon_social?></span>
+                    </div>
+                    <div class="col-sm-6 text-muted">
+                      Rif: <span class="text-dark"><?=$rif?></span>
+                    </div>
+                    <div class="col-12 text-muted">
+                      Dirección Fiscal: <span class="text-dark"><?=$dir_fiscal?></span>
+                    </div>
+                  </div>
+                <?php } ?>
+                <?php if($guia!=""){ ?>
+                  <div class="row">
+                    <div class="col-12 text-muted">
+                      Guia: <span class="text-dark"><?=$guia?></span>
+                    </div>
+                  </div>
+                <?php } ?>
+              </div>
+            </div>
+          </div>
+        </div>
+      <!--div class='modal fade modal_envios' tabindex='-1' role='dialog' aria-hidden='true'>
+        <div class='modal-dialog modal-lg'>
+          <div class='modal-content container'>
+            <div class='modal-header'>
+              <h5 class='modal-title'>Tu paquete será enviado por </h5>
+              <button class='close' type='button' data-dismiss='modal' aria-label='Close' id="close_modal_pago"><span aria-hidden='true'>×</span></button>
+            </div>
+            <div class='modal-body'>
+              <div class="row">
+                <div class="input-group mb-2 col-sm-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" data-toggle="tooltip" title="Desde donde realizaste la trasnferencia">Banco emisor</span>
+                  </div>
+                </div>
+                <div class="input-group mb-2 col-sm-6">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text" data-toggle="tooltip" title="Hacia donde realizaste la trasnferencia">Banco receptor</span>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div-->
       <!-- Caracteres faltanes -->
       <script>
         $(document).ready(function(){

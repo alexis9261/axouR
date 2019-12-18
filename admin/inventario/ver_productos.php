@@ -90,10 +90,19 @@ if($result->num_rows>0){while($row=$result->fetch_assoc()){array_push($array_col
               <h4 class="page-title">Inventario</h4>
             </div>
             <div class="col-auto ml-auto">
-              <?php if (isset($_GET['estatus']) && $_GET['estatus']==1){ ?>
-                  <a href="?estatus=0">Ver activas</a>
+              <?php
+              $sql="SELECT COUNT(*) AS TOTAL FROM productos WHERE ESTATUS<>'$estatus'";
+              $result=$conn->query($sql);
+              if($result->num_rows>0){
+                while($row=$result->fetch_assoc()){
+                  $total=$row['TOTAL'];
+                }
+              }
+               ?>
+              <?php if(isset($_GET['estatus']) && $_GET['estatus']==1){ ?>
+                  <a href="?estatus=0">Ver activas (<b><?php echo $total;?></b>)</a>
               <?php }else{ ?>
-                <a href="?estatus=1">Ver pausados</a>
+                <a href="?estatus=1">Ver pausados (<b><?php echo $total;?></b>)</a>
               <?php } ?>
             </div>
           </div>
@@ -130,9 +139,14 @@ if($result->num_rows>0){while($row=$result->fetch_assoc()){array_push($array_col
                           $precio=$row['PRECIO'];
                           $marca=$row['MARCAID'];
                           $marca=$array_marcas_names[array_search($marca,$array_marcas_id)];
-                          $sql2="SELECT IMAGEN FROM modelos WHERE IDPRODUCTO='$idProducto' LIMIT 1";
+                          $sql2="SELECT IDMODELO,IMAGEN FROM modelos WHERE IDPRODUCTO='$idProducto' LIMIT 1";
                           $result2=$conn->query($sql2);
-                          if($result2->num_rows>0){while($row2=$result2->fetch_assoc()){$imagen=$row2['IMAGEN'];}}
+                          if($result2->num_rows>0){
+                            while($row2=$result2->fetch_assoc()){
+                              $idModelo=$row2['IDMODELO'];
+                              $imagen=$row2['IMAGEN'];
+                            }
+                          }
                           $sql3="SELECT COUNT(*) AS CUENTA FROM modelos WHERE IDPRODUCTO='$idProducto'";
                           $result3=$conn->query($sql3);
                           if($result3->num_rows>0){
@@ -144,7 +158,7 @@ if($result->num_rows>0){while($row=$result->fetch_assoc()){array_push($array_col
                           <tr>
                             <td class="text-center"><?php echo $cont;?></td>
                             <td class="text-center"><img src="img/<?php echo $imagen;?>" width="30vw"></td>
-                            <td><?php echo $titulo;?></td>
+                            <td><a href="../../vitrina/detalles.php?idmodelo=<?php echo $idModelo;?>" target="_blank"><?php echo $titulo;?></a></td>
                             <td class="text-center"><?php echo $cantidadModelos;?></td>
                             <td><?php echo $categoria;?></td>
                             <td><?php echo $genero;?></td>
@@ -206,7 +220,6 @@ if($result->num_rows>0){while($row=$result->fetch_assoc()){array_push($array_col
                      ?>
                 </tbody>
               </table>
-            <?php include '../common/footer.php';?>
         </div>
     </div>
     <!-- alert Activar -->

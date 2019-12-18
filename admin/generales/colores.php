@@ -134,7 +134,7 @@ $previouspage=$curpage - 1;
                     <thead class="thead-light">
                       <tr class="text-center">
                         <th class="text-center">#</th>
-                        <th scope="col">ID</th>
+                        <th scope="col">Color</th>
                         <th>Nombre del Color</th>
                         <th></th>
                       </tr>
@@ -231,7 +231,6 @@ $previouspage=$curpage - 1;
       <h4 class="card-title text-center">No hay colores registrados</h4>
     <?php } ?>
   </div>
-  <?php include '../common/footer.php';?>
 </div>
 </div>
 <script src="../assets/libs/popper.js/dist/umd/popper.min.js"></script>

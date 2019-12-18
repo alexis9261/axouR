@@ -98,7 +98,7 @@ $previouspage=$curpage - 1;
                     <select class="form-control text-secondary" id="padre_categoria" required>
                       <option value="0">Principal</option>
                       <?php
-                      $sql="SELECT IDCATEGORIA, NOMBRE FROM CATEGORIAS ORDER BY IDCATEGORIA";
+                      $sql="SELECT IDCATEGORIA,NOMBRE FROM CATEGORIAS WHERE ESTATUS=0 ORDER BY IDCATEGORIA";
                       $result = $conn->query($sql);
                       if($result->num_rows > 0){
                         while($row = $result->fetch_assoc()){
@@ -257,7 +257,6 @@ $previouspage=$curpage - 1;
         </div>
       </div>
     </div>
-    <?php include '../common/footer.php';?>
   </div>
 </div>
 <script src="../assets/libs/popper.js/dist/umd/popper.min.js"></script>
