@@ -228,7 +228,11 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
       $(document).ready(function(){
         $('#example').addClass('nowrap').dataTable({
           responsive:true,
-          pageLength:50
+          pageLength:50,
+          columnDefs:[{
+            "targets":[-1,-2],
+            "orderable":false
+          }]
         });
       });
     </script>

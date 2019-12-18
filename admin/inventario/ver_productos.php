@@ -139,9 +139,14 @@ if($result->num_rows>0){while($row=$result->fetch_assoc()){array_push($array_col
                           $precio=$row['PRECIO'];
                           $marca=$row['MARCAID'];
                           $marca=$array_marcas_names[array_search($marca,$array_marcas_id)];
-                          $sql2="SELECT IMAGEN FROM modelos WHERE IDPRODUCTO='$idProducto' LIMIT 1";
+                          $sql2="SELECT IDMODELO,IMAGEN FROM modelos WHERE IDPRODUCTO='$idProducto' LIMIT 1";
                           $result2=$conn->query($sql2);
-                          if($result2->num_rows>0){while($row2=$result2->fetch_assoc()){$imagen=$row2['IMAGEN'];}}
+                          if($result2->num_rows>0){
+                            while($row2=$result2->fetch_assoc()){
+                              $idModelo=$row2['IDMODELO'];
+                              $imagen=$row2['IMAGEN'];
+                            }
+                          }
                           $sql3="SELECT COUNT(*) AS CUENTA FROM modelos WHERE IDPRODUCTO='$idProducto'";
                           $result3=$conn->query($sql3);
                           if($result3->num_rows>0){
@@ -153,7 +158,7 @@ if($result->num_rows>0){while($row=$result->fetch_assoc()){array_push($array_col
                           <tr>
                             <td class="text-center"><?php echo $cont;?></td>
                             <td class="text-center"><img src="img/<?php echo $imagen;?>" width="30vw"></td>
-                            <td><?php echo $titulo;?></td>
+                            <td><a href="../../vitrina/detalles.php?idmodelo=<?php echo $idModelo;?>" target="_blank"><?php echo $titulo;?></a></td>
                             <td class="text-center"><?php echo $cantidadModelos;?></td>
                             <td><?php echo $categoria;?></td>
                             <td><?php echo $genero;?></td>

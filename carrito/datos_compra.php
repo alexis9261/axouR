@@ -221,7 +221,7 @@ if(isset($_SESSION['total_items'])){$cantidad_total=$_SESSION['total_items'];}
           </div>
         </div>
         <hr class="my-0">
-        <div class="row justify-content-center mb-2 mt-4">
+        <div class="row justify-content-center pb-5 mb-5 mt-4">
           <div class="col-auto text-center mb-3">
             <button class="btn btn-outline-success px-5" type="submit">Confirmar</button>
           </div>

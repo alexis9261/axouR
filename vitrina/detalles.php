@@ -23,8 +23,8 @@ if(isset($_GET['idmodelo'])){
     while($f=$res->fetch_assoc()){
       $id_producto=$f['IDPRODUCTO'];
       $imagen=$f['IMAGEN'];
-      $color1= $f['COLOR1'];
-      $color2= $f['COLOR2'];
+      $color1=$f['COLOR1'];
+      $color2=$f['COLOR2'];
     }
   }
   $sql="SELECT NOMBRE_P,DESCRIPCION,PRECIO,CATEGORIAID,MARCAID,ESTATUS FROM productos WHERE IDPRODUCTO='$id_producto'";
@@ -37,7 +37,7 @@ if(isset($_GET['idmodelo'])){
       $precio=$f['PRECIO'];
       $id_categ=$f['CATEGORIAID'];
       $id_marca=$f['MARCAID'];
-      $sql2="SELECT NOMBRE FROM CATEGORIAS WHERE IDCATEGORIA=$id_categ";
+      $sql2="SELECT NOMBRE FROM categorias WHERE IDCATEGORIA=$id_categ";
       $result2=$conn->query($sql2);
       if($result2->num_rows>0){
         while($row2=$result2->fetch_assoc()){$categ=$row2['NOMBRE'];}
@@ -51,6 +51,8 @@ if(isset($_GET['idmodelo'])){
   }
   //si el producto esta disponible busco todas las caracteristicas
   if($estatus==0){
+    //total de cantidades, para ver si aun hay cantidades disponibles
+    $cantidad_total_bd=0;
     //buscar las tallas del modelo
     $id_inventario=array();
     $id_tallas_stock=array();
@@ -62,6 +64,7 @@ if(isset($_GET['idmodelo'])){
         array_push($id_inventario,$row['IDINVENTARIO']);
         array_push($id_tallas_stock,$row['TALLAID']);
         array_push($cantidades_tallas,$row['CANTIDAD']);
+        $cantidad_total_bd +=$row['CANTIDAD'];
       }
     }
     //buscar los nombres de las tallas
@@ -74,6 +77,12 @@ if(isset($_GET['idmodelo'])){
         array_push($nombre_tallas,$row['TALLA']);
         array_push($id_tallas_bd,$row['IDTALLA']);
       }
+    }
+    //verifico si el modelo tiene tallas con cantidades disponibles
+    if($cantidad_total_bd==0){
+      //en caso de que si, actualizo el estatus del producto, lo pauso.
+      $sql="UPDATE `productos` SET `ESTATUS`=1 WHERE IDPRODUCTO='$id_producto';";
+      if($conn->query($sql)===TRUE){header('Location: detalles.php?idmodelo='.$idmodelo);}
     }
   }
 }else{header('Location: ../vitrina');}
@@ -100,7 +109,7 @@ if(isset($_GET['idmodelo'])){
   <?php
   include '../common/menu.php';
   include '../common/2domenu.php';
-  $sql='SELECT * FROM MODELOS WHERE IDMODELO='.$idmodelo;
+  $sql='SELECT * FROM modelos WHERE IDMODELO='.$idmodelo;
   $res=$conn->query($sql);
   while($f=$res->fetch_assoc()){
     ?>
@@ -118,15 +127,7 @@ if(isset($_GET['idmodelo'])){
             <img class="img-product-detalles" src="../admin/inventario/img/<?=$imagen?>">
           </div>
         </div>
-        <!--div class="col-sm-6 text-center">
-          <div class="row">
-            <div class="col-12 container-img-product-detalles">
-              <img class="img-product-detalles" src="../admin/inventario/img/">
-            </div>
-          </div>
-        </div-->
         <div class="col-md-4">
-          <!--div id="myresult" class="img-zoom-result"></div-->
           <div class="container-fluid">
             <?php if($estatus==1){ ?>
               <div class="row justify-content-center mb-2">
@@ -147,7 +148,7 @@ if(isset($_GET['idmodelo'])){
                   <?php } ?>
               </div>
               <div class="col-12 mb-4">
-                <h3 class="lead d-inline" style="font-size:35px;color:#3d3d3d;font-weight:500;">Bs. <?=number_format($precio*$dolar, '2', ',', '.')?></h3>
+                <h3 class="lead d-inline" style="font-size:35px;color:#3d3d3d;font-weight:500;">Bs. <?=number_format($precio*round($dolar), '2', ',', '.')?></h3>
               </div>
             </div>
             <?php if($estatus==0){ ?>
@@ -163,13 +164,19 @@ if(isset($_GET['idmodelo'])){
                 <div class="row">
                   <div class="col-5">
                     <select class="lista-talla" name="talla" id="tallas" onchange="talla_dis()" required>
-                      <?php for($i=0;$i<count($id_tallas_stock);$i++){ ?>
-                        <option value="<?php echo $id_tallas_stock[$i]."|".$id_inventario[$i];?>">
-                          <?php $key=array_search($id_tallas_stock[$i],$id_tallas_bd);
-                                echo $nombre_tallas[$key];
-                           ?>
-                        </option>
-                        <?php } ?>
+                      <?php
+                      for($i=0;$i<count($id_tallas_stock);$i++){
+                        if($cantidades_tallas[$i]!=0){
+                          ?>
+                          <option value="<?php echo $id_tallas_stock[$i]."|".$id_inventario[$i];?>">
+                            <?php
+                            $key=array_search($id_tallas_stock[$i],$id_tallas_bd);
+                            echo $nombre_tallas[$key];
+                            ?>
+                          </option>
+                          <?php
+                        }
+                      } ?>
                     </select>
                   </div>
                   <div class="col-2 offset-3" id="cantidad">
@@ -177,7 +184,13 @@ if(isset($_GET['idmodelo'])){
                       $key=array_search($id_tallas_stock[0],$id_tallas_bd);
                       if($cantidades_tallas[$key]>10){$cantidad_real=10;}else{$cantidad_real=$cantidades_tallas[$key];}
                     ?>
-                    <input type='number' max='<?php echo $cantidad_real;?>' min='1' maxlength='2' value='1' name='cantidad' id='input_cantidad' required />
+                    <select class="lista-talla" name="cantidad" id="input_cantidad" required>
+                      <?php for($i=1;$i<=$cantidad_real;$i++){ ?>
+                        <option value="<?php echo $i;?>">
+                          <?php echo $i;?>
+                        </option>
+                      <?php } ?>
+                    </select>
                   </div>
                 </div>
                 <div class="row mt-3">
@@ -261,7 +274,8 @@ if(isset($_GET['idmodelo'])){
             ?>
             <article class="container my-3">
               <div class="row">
-                <?php while($row=$result->fetch_assoc()){
+                <?php
+                while($row=$result->fetch_assoc()){
                   $idmodelo_seg=$row['IDMODELO'];
                   $titulo_seg=$row['NOMBRE_P'];
                   $imagen_seg=$row['IMAGEN'];
@@ -273,99 +287,31 @@ if(isset($_GET['idmodelo'])){
                     </div>
                     <div class="pb-3" style="background-color:#ffffff;">
                       <a href="detalles.php?idmodelo=<?php echo $idmodelo_seg;?>"><div class="title-product px-2" title="<?php echo $titulo_seg;?>"><?php echo $titulo_seg;?></div></a>
-                      <div class="px-2 mt-2 precio-items-secundarios"><!--$ <?php echo number_format($precio,2, ',', '.');?> <br-->
-                        Bs. <?php echo number_format($precio*$dolar,2, ',', '.');?></div>
+                      <div class="px-2 mt-2 precio-items-secundarios">
+                        Bs. <?php echo number_format($precio*round($dolar),2,',','.');?>
                       </div>
                     </div>
-                  <?php } ?>
-                </div>
-              </article>
-            <?php } ?>
-          </div>
+                  </div>
+                <?php } ?>
+              </div>
+            </article>
+          <?php } ?>
         </div>
-        <script>
-          $(document).on('change','#tallas',function(){
-            $("#input_cantidad").remove();
-            var id_talla=$("#tallas").val().split('|')[0];
-            var id_modelo=<?php echo $idmodelo;?>;
-            $.get('ajax_cantidad.php',{id_talla:id_talla,id_modelo:id_modelo},verificar,'text');
-            function verificar(respuesta){
-              var aux=respuesta.split("%");
-              if(aux[0]>10){var cantidad=10;}else{var cantidad=aux[0];}
-              $("#cantidad").append("<input type='number' max='"+cantidad+"' min='1' maxlength='2' value='1' name='cantidad' id='input_cantidad' required>")
-            }
-          });
-        </script>
-        <script>
-            $(".img-zoom-container").hover(function(){
-              $(".img-zoom-result").attr('visibility','visible');
-            },function(){
-            });
-        </script>
-        <script>
-          function imageZoom(imgID, resultID) {
-            var img, lens, result, cx, cy;
-            img = document.getElementById(imgID);
-            result = document.getElementById(resultID);
-            /* Create lens: */
-            lens = document.createElement("DIV");
-            lens.setAttribute("class","img-zoom-lens");
-            /* Insert lens: */
-            img.parentElement.insertBefore(lens, img);
-            /* Calculate the ratio between result DIV and lens: */
-            cx = result.offsetWidth / lens.offsetWidth;
-            cy = result.offsetHeight / lens.offsetHeight;
-            /* Set background properties for the result DIV */
-            result.style.backgroundImage = "url('" + img.src + "')";
-            //establece el tamaño de la imagen donde estara el zoom, imagen dentro del recuadro donde se muestra el zoom
-            result.style.backgroundSize = (img.width * cx) + "px " + (img.height * cy) + "px";
-            /* Execute a function when someone moves the cursor over the image, or the lens: */
-            lens.addEventListener("mousemove", moveLens);
-            img.addEventListener("mousemove", moveLens);
-            /* And also for touch screens: */
-            lens.addEventListener("touchmove", moveLens);
-            img.addEventListener("touchmove", moveLens);
-            //funcoin que devulve la posciion del recuadro
-            function moveLens(e) {
-              var pos, x, y;
-              /* Prevent any other actions that may occur when moving over the image */
-              e.preventDefault();
-              /* Get the cursor's x and y positions: */
-              pos = getCursorPos(e);
-              /* Calculate the position of the lens: */
-              x = pos.x - (lens.offsetWidth / 2);
-              y = pos.y - (lens.offsetHeight / 2);
-              //alert(x+" ; "+y);
-              /* Prevent the lens from being positioned outside the image: */
-              if (x > img.width - lens.offsetWidth) {x = img.width - lens.offsetWidth;}
-              if (x < 0) {x = 0;}
-              if (y > img.height - lens.offsetHeight) {y = img.height - lens.offsetHeight;}
-              if (y < 0) {y = 0;}
-              /* Set the position of the lens: */
-              lens.style.left = (x)+ "px";
-              lens.style.top = y + "px";
-              /* Display what the lens "sees": */
-              result.style.backgroundPosition = "-" + (x * cx) + "px -" + (y * cy) + "px";
-            }
-            //funcoin q obtiene la posicion del cursor
-            function getCursorPos(e) {
-              var a, x = 0, y = 0;
-              e = e || window.event;
-              /* Get the x and y positions of the image: */
-              a = img.getBoundingClientRect();
-              /* Calculate the cursor's x and y coordinates, relative to the image: */
-              x = e.pageX - a.left;
-              y = e.pageY - a.top;
-              /* Consider any page scrolling: */
-              x = x - window.pageXOffset;
-              //alert(window.pageXOffset);
-              y = y - window.pageYOffset;
-              return {x : x, y : y};
+      </div>
+      <script>
+        $(document).on('change','#tallas',function(){
+          $("#input_cantidad").empty();
+          var id_talla=$("#tallas").val().split('|')[0];
+          var id_modelo=<?php echo $idmodelo;?>;
+          $.get('ajax_cantidad.php',{id_talla:id_talla,id_modelo:id_modelo},verificar,'text');
+          function verificar(respuesta){
+            var aux=respuesta.split("%");
+            if(aux[0]>10){var cantidad=10;}else{var cantidad=aux[0];}
+            for(var i=1;i<=cantidad;i++){
+              $("#input_cantidad").append("<option value='"+i+"'>"+i+"</option>")
             }
           }
-        </script>
-        <script>
-          imageZoom("myimage","myresult");
+        });
         </script>
   <?php } ?>
   <?php include '../common/footer.php'; ?>

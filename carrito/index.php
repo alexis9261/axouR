@@ -139,19 +139,14 @@ if(isset($_GET['delete']) and !empty($_GET['delete'])){
   include '../common/2domenu.php';
   if(isset($_SESSION['carrito']) and count($_SESSION['carrito'])>0){ ?>
     <div class="container mt-3">
-      <div class="row">
-        <div class="col-12 breadcrumb text-muted">
-          Completa todas tus compras en nuestra plataforma y disfruta de nuestros descuentos.
-        </div>
+      <div class="row breadcrumb align-items-center">
+          <div class="col-auto"><h5 id="title"></h5></div>
+          <div class="col-auto ml-auto"><a href="../vitrina/index.php">Seguir Comprando</a></div>
       </div>
     </div>
     <div class="container">
       <div class="row justify-content-between">
         <div class="col-md-7 mt-2">
-          <div class="row justify-content-between bg-light py-2 mb-3">
-            <div class="col-auto"><h5 id="title"></h5></div>
-            <div class="col-auto"><a href="../vitrina/index.php">Seguir Comprando</a></div>
-          </div>
     <?php
     $datos=$_SESSION['carrito'];
     $monto=0;
@@ -343,9 +338,9 @@ if(isset($_GET['delete']) and !empty($_GET['delete'])){
       </div>
     </div>
   <?php include '../common/footer.php';?>
-  <script type="text/javascript">
-    var cantidad = <?php echo $cantidad_total; ?>;
-    document.getElementById("title").innerHTML = "Tu Carrito ("+cantidad+")";
+  <script>
+    var cantidad=<?php echo $cantidad_total;?>;
+    document.getElementById("title").innerHTML="Tu Carrito ("+cantidad+")";
   </script>
   <script src="../admin/assets/libs/jquery/dist/jquery.min.js"></script>
   <script src="../admin/assets/libs/popper.js/dist/umd/popper.min.js"></script>

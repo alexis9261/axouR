@@ -32,7 +32,7 @@ if(isset($_POST['direccion'])){
       while($row=$result->fetch_assoc()){
         $rif=$row['RIFCI'];
       }
-    } 
+    }
     if(empty($rif)){
       //Se agregan estos datos a los datos del usuario
       $sql="UPDATE usuarios SET RAZONSOCIAL='$razon',RIFCI='$identidad',DIRFISCAL='$dir_fiscal' WHERE CORREO='$email_user';";
@@ -102,31 +102,28 @@ mail($destino, $titulo, $contenido, $headers);
         Puedes realizar una transferencia nuestras cuentas bancarias
       </h3>
     </div>
-    <div class="row bg-light my-3 py-2">
-      <h5 class="col-sm-4 text-muted"><b>Banesco</b></h5>
-      <h6 class="col-sm-4"><b>N°</b> 0134 0464 03 4641026277</h6>
-      <h6 class="col-sm-4 text-center"><b>Tipo: </b>Corriente</h6>
-      <h5 class="col-sm-4 text-muted"><b>Banco Mercantil</b></h5>
-      <h6 class="col-sm-4"><b>N°</b>0105 0283 7512 83148412</h6>
-      <h6 class="col-sm-4 text-center"><b>Tipo: </b>Corriente</h6>
-      <h5 class="col-sm-4 text-muted"><b>Banco Provincial</b></h5>
-      <h6 class="col-sm-4"><b>N°</b> 0108 0558 9901 00043593</h6>
-      <h6 class="col-sm-4 text-center"><b>Tipo: </b>Corriente</h6>
-      <h5 class="col-sm-4 text-muted"><b>Banco del Tesoro</b></h5>
-      <h6 class="col-sm-4"><b>N°</b> 0163 0217 1121 73013146</h6>
-      <h6 class="col-sm-4 text-center"><b>Tipo: </b>Corriente</h6>
+    <div class="row my-3 py-2">
+      <h6 class="col-sm-3 text-dark"><b>Banesco</b></h5>
+      <h6 class="col-sm-3"><b>N°</b> 0134 0464 03 4641026277</h6>
+      <h6 class="col-sm-3 text-dark"><b>Banco Mercantil</b></h6>
+      <h6 class="col-sm-3"><b>N°</b>0105 0283 7512 83148412</h6>
+      <h6 class="col-sm-3 text-dark"><b>Banco Provincial</b></h6>
+      <h6 class="col-sm-3"><b>N°</b> 0108 0558 9901 00043593</h6>
+      <h6 class="col-sm-3 text-dark"><b>Banco del Tesoro</b></h6>
+      <h6 class="col-sm-3"><b>N°</b> 0163 0217 1121 73013146</h6>
       <hr class="col-sm-11">
-      <h6 class="col-sm-6 text-center"><b>Titular: </b>Alpargata Skate, C.A.</h6>
-      <h6 class="col-sm-6 text-center"><b>RIF: </b>J-XXXXXXX</h6>
+      <h6 class="col-sm-4 text-center"><b>Titular: </b>Alpargata Skate, C.A.</h6>
+      <h6 class="col-sm-4 text-center"><b>RIF: </b>J-XXXXXXX</h6>
+      <h6 class="col-sm-4 text-center"><b>Tipo: </b>Corriente</h6>
     </div>
     <div class="row bg-light my-3 py-2">
       <h5 class="col-sm-12 text-dark text-center"><b>Monto a cancelar:</b> <?php echo number_format($monto*round($dolar),2,',','.');?> Bs </h5>
     </div>
   </div>
-  <div class="container mb-4">
+  <div class="container mb-5">
     <div class="row">
       <div class="col-auto mb-2">
-        <h3 class="lead"><strong>Registrar pago - </strong> <small class="text-muted">Luego de <strong> venticuatro (24) Horas </strong> se cancela tu pedido en caso de no recibir un <i>Reporte de pago</i>.</small></h3>
+        <h3 class="lead"><strong>Reportar pago - </strong> <small class="text-muted">Luego de <strong> venticuatro (24) Horas </strong> se cancela tu pedido en caso de no recibir un <i>Reporte de pago</i>.</small></h3>
       </div>
     </div>
     <form action="procesar_pago.php" method="post">
@@ -172,7 +169,7 @@ mail($destino, $titulo, $contenido, $headers);
           <div class="input-group-prepend">
             <span class="input-group-text" data-toggle="tooltip" title="Lo que transferite">Monto</span>
           </div>
-          <input class="form-control input_datos" type="number" step="1" name="monto" placeholder="Inserte el Monto Transferido" maxlength="255"/>
+          <input class="form-control input_datos text-dark" type="number" step="1" name="monto" placeholder="Inserte el Monto Transferido" maxlength="255"/>
         </div>
       </div>
       <div class="row">
@@ -180,13 +177,13 @@ mail($destino, $titulo, $contenido, $headers);
           <div class="input-group-prepend">
             <span class="input-group-text">Fecha de transacción</span>
           </div>
-          <input class="form-control" type="date" name="fechapago" required/>
+          <input class="form-control text-dark" type="date" name="fechapago" required/>
         </div>
         <div class="input-group mb-2 col-sm-6">
           <div class="input-group-prepend">
             <span class="input-group-text" data-toggle="tooltip" title="Referencia de la trasnferencia">Referencia</span>
           </div>
-          <input class="form-control input_datos" type="text" name="referencia" placeholder="Inserte la Referencia de la Transacción" maxlength="255" required/>
+          <input class="form-control input_datos text-dark" type="text" name="referencia" placeholder="Inserte la Referencia de la Transacción" maxlength="255" required/>
         </div>
       </div>
       <div class="row">

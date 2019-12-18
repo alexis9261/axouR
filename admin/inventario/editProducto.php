@@ -420,7 +420,6 @@ if($result->num_rows>0){
             </div>
           </form>
         </div>
-        <?php include '../common/footer.php';?>
         </div>
     </div>
     <!-- Modal esperar -->
