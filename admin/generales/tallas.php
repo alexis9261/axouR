@@ -103,6 +103,7 @@ $previouspage=$curpage - 1;
             if(respuesta==1){
             const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
             toast({type:'success',title:'¡La talla fue agregada Exitosamente!'});
+             setTimeout(function(){ location.reload();},1000);
             }else{
             const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
             toast({type:'error',title:'¡Hubo un pequeño problema! \n Inténtalo de nuevo'});

@@ -126,7 +126,8 @@ $previouspage=$curpage - 1;
             function verificar(respuesta){
             if(respuesta==1){
             const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
-            toast({type:'success',title:'¡La categoria fue agregada Exitosamente!'})
+            toast({type:'success',title:'¡La categoria fue agregada Exitosamente!'});
+            setTimeout(function(){ location.reload();},1000);
             }else{
             const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
             toast({type:'error',title:'¡Hubo un pequeño problema! \n Inténtalo de nuevo'})

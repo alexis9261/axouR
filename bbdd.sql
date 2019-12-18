@@ -152,8 +152,7 @@ CREATE TABLE COLOR(
     CREADO_EN TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 
     PRIMARY KEY (IDCOLOR),
-    UNIQUE (COLOR)
-);
+  );
 /******sistema de compra y envios Rouxa******/
 /*
 ESTATUS
