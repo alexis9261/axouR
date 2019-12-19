@@ -93,7 +93,7 @@ include '../common/datosGenerales.php';
           ENVIOS FUERA DEL TERRITORIO NACIONAL
         </h1>
         <p id="res">
-          Por los momentos no ofrecemos nuestros servicios fuera de la República Bolivariana de Venezuela. Sin embargo, si desea que realizar una compra aca en Venezuela y enviar el pedido fuera de nuestras fronteras le recomendamos escribirnos a nuestro correo de atención al cliente ( suministrosmavic@gmail.com).
+          Por los momentos no ofrecemos nuestros servicios fuera de la República Bolivariana de Venezuela. Sin embargo, si desea que realizar una compra aca en Venezuela y enviar el pedido fuera de nuestras fronteras le recomendamos escribirnos a nuestro correo de atención al cliente.
         </p>
         <hr>
       </div>
@@ -111,7 +111,7 @@ include '../common/datosGenerales.php';
           INFORMACION ADICIONAL
         </h1>
         <p id="res">
-          Si tiene problemas a la hora de completar los campos solicitados de envíos, puede escribirnos a nuestro correo de atención al cliente ( suministrosmavic@gmail.com ).
+          Si tiene problemas a la hora de completar los campos solicitados de envíos, puede escribirnos a nuestro correo de atención al cliente.
           <br><br>
           <?php echo $nombrePagina;?> C.A. no se hace responsable de cualquier extravío o elemento faltante en el caso donde por error u omisión la empresa de  encomiendas y/o paquetes  realiza cambio en los datos de información  del envío, tales como dirección, cédula o nombre del receptor,  teléfono.  Adicionalmente, <?php echo $nombrePagina;?> C.A.  no se hace responsable de paquetes perdidos, dañados o retrasados en tránsito.
           <br><br>

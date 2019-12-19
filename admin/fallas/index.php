@@ -9,12 +9,10 @@ if(isset($_GET['orden'], $_GET['id'],$_GET['comentario'],$_GET['Estatus'])){
   $solucion=$_GET['comentario'];
   $estatus=$_GET['Estatus'];
   if ($_GET['orden']=='solved'){
-    $sql="UPDATE `PEDIDOS` SET `ESTATUS`='$estatus' WHERE  `IDPEDIDO`='$newid'";
-    if($conn->query($sql) === TRUE){
-    }else{ echo "Error: " . $sql. "<br>" . $conn->error; }
-    $sql="UPDATE `FALLAS` SET `ESTATUS`='1', `SOLUCION`='$solucion', `FECHASOLUCION`= NOW()   WHERE  `IDPEDIDO`='$newid'";
-    if($conn->query($sql) === TRUE){
-    }else{ echo "Error: " . $sql. "<br>" . $conn->error; }
+    $sql="UPDATE `PEDIDOS` SET `ESTATUS`='$estatus' WHERE `IDPEDIDO`='$newid'";
+    if($conn->query($sql)===TRUE){}
+    $sql="UPDATE `FALLAS` SET `ESTATUS`='1',`SOLUCION`='$solucion',`FECHASOLUCION`= NOW() WHERE `IDPEDIDO`='$newid'";
+    if($conn->query($sql)===TRUE){}
   }
   header ('location: ./');
 }
@@ -30,7 +28,7 @@ if(isset($_GET['orden'], $_GET['id'],$_GET['comentario'],$_GET['Estatus'])){
   <link rel="icon" type="image/jpg" sizes="16x16" href="<?php echo $root_folder;?>/admin/img/<?php echo $imageLogo;?>">
   <title><?php echo $nombrePagina;?> - Administración</title>
   <link href="../../css/new.css" rel="stylesheet">
-  <link href="../dist/css/style.min.css" rel="stylesheet">
+  <link href="../assets/dist/css/style.min.css" rel="stylesheet">
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -102,12 +100,12 @@ if(isset($_GET['orden'], $_GET['id'],$_GET['comentario'],$_GET['Estatus'])){
                         $fechafalla=$row['FECHAFALLA'];
                         $problema=$row['PROBLEMA'];
                         $origen=$row['ORIGEN'];
-                        $sql2="SELECT *, c.PESO as PESOT  FROM PEDIDOS p
+                        $sql2="SELECT *,c.PESO as PESOT FROM PEDIDOS p
                         INNER JOIN ENVIOS e ON e.IDPEDIDO=p.IDPEDIDO
                         INNER JOIN COMPRAS c ON c.IDPEDIDO=p.IDPEDIDO
-                        WHERE p.IDPEDIDO='$id' "; //encuentro los articulos del pedido
+                        WHERE p.IDPEDIDO='$id';"; //encuentro los articulos del pedido
                         $result2 = $conn->query($sql2);
-                        if ($result2->num_rows > 0){
+                        if($result2->num_rows>0){
                           while($row2 = $result2->fetch_assoc()){
                             #GET VALUES
                             $estatus=$row2['ESTATUS'];

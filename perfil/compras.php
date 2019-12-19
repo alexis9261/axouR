@@ -42,7 +42,7 @@ if($res->num_rows>0){
     </div>
     <div class="container mt-4 mb-2">
       <?php
-      $sql="SELECT * FROM `pedidos` WHERE EMAILUSER='$correo' ORDER BY FECHAPEDIDO DESC";
+      $sql="SELECT * FROM `PEDIDOS` WHERE EMAILUSER='$correo' ORDER BY FECHAPEDIDO DESC";
       $result=$conn->query($sql);
       if($result->num_rows>0){
         while($row=$result->fetch_assoc()){
@@ -66,7 +66,7 @@ if($res->num_rows>0){
               </div>
             </div>
           <?php
-          $sql2="SELECT i.INVENTARIOID,i.CANTIDAD,t.IDMODELO,t.TALLAID FROM `items` i INNER JOIN `inventario` t ON i.INVENTARIOID=t.IDINVENTARIO WHERE i.PEDIDOID='$idPedido'";
+          $sql2="SELECT i.INVENTARIOID,i.CANTIDAD,t.IDMODELO,t.TALLAID FROM `ITEMS` i INNER JOIN `INVENTARIO` t ON i.INVENTARIOID=t.IDINVENTARIO WHERE i.PEDIDOID='$idPedido'";
           $result2=$conn->query($sql2);
           if($result2->num_rows>0){
             while($row2=$result2->fetch_assoc()){
@@ -75,7 +75,7 @@ if($res->num_rows>0){
               $idModelo=$row2['IDMODELO'];
               $tallaId=$row2['TALLAID'];
               $talla=$nombre_tallas[array_search($tallaId,$id_tallas_bd)];
-              $sql3="SELECT p.NOMBRE_P,m.IMAGEN FROM `productos` p INNER JOIN `modelos` m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE m.IDMODELO='$idModelo' LIMIT 1";
+              $sql3="SELECT p.NOMBRE_P,m.IMAGEN FROM `PRODUCTOS` p INNER JOIN `MODELOS` m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE m.IDMODELO='$idModelo' LIMIT 1";
               $result3=$conn->query($sql3);
               if($result3->num_rows>0){
                 while($row3=$result3->fetch_assoc()){
@@ -97,7 +97,7 @@ if($res->num_rows>0){
               <?php
             }
           }
-          $sql4="SELECT * FROM `compras` WHERE PEDIDOID='$idPedido' LIMIT 1";
+          $sql4="SELECT * FROM `COMPRAS` WHERE PEDIDOID='$idPedido' LIMIT 1";
           $result4=$conn->query($sql4);
           if($result4->num_rows>0){
             while($row4=$result4->fetch_assoc()){
@@ -111,7 +111,7 @@ if($res->num_rows>0){
             <?php echo number_format($montoPedido,2,',','.');?> Bs
           </div>
           <?php
-          $sql4="SELECT MONTO,MONEDA,ESTATUS FROM `pagos` WHERE IDPEDIDO='$idPedido'";
+          $sql4="SELECT MONTO,MONEDA,ESTATUS FROM `PAGOS` WHERE IDPEDIDO='$idPedido'";
           $result4=$conn->query($sql4);
           if($result4->num_rows>0){
             while($row4=$result4->fetch_assoc()){

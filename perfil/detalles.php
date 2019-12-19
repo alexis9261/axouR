@@ -6,7 +6,7 @@ include '../common/datosGenerales.php';
 $array_meses=array('','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
 if(isset($_GET['id'])){$idPedido=$_GET['id'];}else {header('location: compras.php');}
 if(isset($_GET['resp'])){$respuesta=$_GET['resp'];}
-$sql="SELECT * FROM `pedidos` WHERE IDPEDIDO='$idPedido'";
+$sql="SELECT * FROM `PEDIDOS` WHERE IDPEDIDO='$idPedido'";
 $result=$conn->query($sql);
 if($result->num_rows>0){
   while($row=$result->fetch_assoc()){
@@ -47,13 +47,13 @@ if($result->num_rows>0){
     $status='Error';
 }*/
 //Monto Total
-$sql="SELECT * FROM `compras` WHERE PEDIDOID='$idPedido' LIMIT 1";
+$sql="SELECT * FROM `COMPRAS` WHERE PEDIDOID='$idPedido' LIMIT 1";
 $result=$conn->query($sql);
 if($result->num_rows>0){while($row=$result->fetch_assoc()){$montoPedido=$row['MONTO'];}}
 //buscar los nombres de las tallas
 $nombre_tallas=array();
 $id_tallas_bd=array();
-$sql="SELECT * FROM `tallas`;";
+$sql="SELECT * FROM `TALLAS`;";
 $res=$conn->query($sql);
 if($res->num_rows>0){
   while($row=$res->fetch_assoc()){
@@ -62,7 +62,7 @@ if($res->num_rows>0){
   }
 }
 //categorias
-$sql="SELECT * FROM `categorias` WHERE PADRE=0;";
+$sql="SELECT * FROM `CATEGORIAS` WHERE PADRE=0;";
 $id_categorias=array();
 $categorias_padre=array();
 $result=$conn->query($sql);
@@ -73,7 +73,7 @@ if($result->num_rows>0){
   }
 }
 //marcas
-$sql="SELECT * FROM `marcas` LIMIT 8;";
+$sql="SELECT * FROM `MARCAS` LIMIT 8;";
 $id_marcas=array();
 $nombres_marcas=array();
 $result=$conn->query($sql);
@@ -115,14 +115,14 @@ if($result->num_rows>0){
       <div class="row">
         <div class="col-10">
           <?php
-          $sql="SELECT INVENTARIOID,CANTIDAD,PRECIO FROM `items` WHERE PEDIDOID='$idPedido'";
+          $sql="SELECT INVENTARIOID,CANTIDAD,PRECIO FROM `ITEMS` WHERE PEDIDOID='$idPedido'";
           $result=$conn->query($sql);
           if($result->num_rows>0){
             while($row=$result->fetch_assoc()){
               $inventarioId=$row['INVENTARIOID'];
               $cantidad=$row['CANTIDAD'];
               $precioProducto=$row['PRECIO'];
-              $sql2="SELECT i.IDMODELO,i.TALLAID,i.PESO,m.IDPRODUCTO,m.COLOR1,m.COLOR2,m.IMAGEN,p.NOMBRE_P,p.GENERO,p.CATEGORIAID,p.MARCAID,p.ESTATUS FROM `inventario` i INNER JOIN `modelos` m ON i.IDMODELO=m.IDMODELO INNER JOIN `productos` p ON m.IDPRODUCTO=p.IDPRODUCTO WHERE i.IDINVENTARIO='$inventarioId'";
+              $sql2="SELECT i.IDMODELO,i.TALLAID,i.PESO,m.IDPRODUCTO,m.COLOR1,m.COLOR2,m.IMAGEN,p.NOMBRE_P,p.GENERO,p.CATEGORIAID,p.MARCAID,p.ESTATUS FROM `INVENTARIO` i INNER JOIN `modelos` m ON i.IDMODELO=m.IDMODELO INNER JOIN `PRODUCTOS` p ON m.IDPRODUCTO=p.IDPRODUCTO WHERE i.IDINVENTARIO='$inventarioId'";
               $result2=$conn->query($sql2);
               if($result2->num_rows>0){
                 while($row2=$result2->fetch_assoc()){
@@ -186,7 +186,7 @@ if($result->num_rows>0){
               <?php echo number_format($montoPedido,2,',','.');?> Bs
             </h2>
             <?php
-            $sql="SELECT * FROM pagos WHERE IDPEDIDO='$idPedido';";
+            $sql="SELECT * FROM PAGOS WHERE IDPEDIDO='$idPedido';";
             $result=$conn->query($sql);
             if($result->num_rows>0){
               while($row=$result->fetch_assoc()){
@@ -352,7 +352,7 @@ if($result->num_rows>0){
       </div>
       <!-- Modal datos de envio -->
       <?php
-      $sql="SELECT ESTADO,MUNICIPIO,DIRECCION,CODIGOPOSTAL,RECEPTOR,CIRECEPTOR,TELFRECEPTOR,ENCOMIENDA,GUIA,FACTFISCAL FROM envios WHERE PEDIDOID='$idPedido' LIMIT 1;";
+      $sql="SELECT ESTADO,MUNICIPIO,DIRECCION,CODIGOPOSTAL,RECEPTOR,CIRECEPTOR,TELFRECEPTOR,ENCOMIENDA,GUIA,FACTFISCAL FROM ENVIOS WHERE PEDIDOID='$idPedido' LIMIT 1;";
       $result=$conn->query($sql);
       if($result->num_rows>0){
         while($row=$result->fetch_assoc()){
@@ -367,7 +367,7 @@ if($result->num_rows>0){
           $guia=$row['GUIA'];
           $facturaFiscal=$row['FACTFISCAL'];
           if($facturaFiscal==1){
-            $sql="SELECT RAZONSOCIAL,RIFCI,DIRFISCAL FROM usuarios WHERE CORREO='$correo_user' LIMIT 1";
+            $sql="SELECT RAZONSOCIAL,RIFCI,DIRFISCAL FROM USUARIOS WHERE CORREO='$correo_user' LIMIT 1";
             $result=$conn->query($sql);
             if($result->num_rows>0){
               while($row=$result->fetch_assoc()){

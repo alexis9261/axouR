@@ -8,7 +8,7 @@ if($row=$result_nivel->fetch_assoc()){
   $_SESSION['nivel']=$row['NIVEL'];
 }
 //nombre nombre pagina
-$sql="SELECT * FROM `configuracion`";
+$sql="SELECT * FROM `CONFIGURACION`";
 $result=$conn->query($sql);
 if ($result->num_rows > 0) {
   while($row = $result->fetch_assoc()) {
@@ -60,7 +60,7 @@ if ($result->num_rows > 0) {
   <meta name="author" content="Eutuxia Web">
   <link rel="icon" type="image/jpg" sizes="16x16" href="<?php echo $root_folder;?>/admin/img/<?php echo $imageLogo;?>">
   <title><?php echo $nombrePagina;?> - Administración</title>
-  <link href="dist/css/style.min.css" rel="stylesheet">
+  <link href="assets/dist/css/style.min.css" rel="stylesheet">
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -176,7 +176,7 @@ if ($result->num_rows > 0) {
     <script src="assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="assets/libs/popper.js/dist/umd/popper.min.js"></script>
     <script src="assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="dist/js/custom.min.js"></script>
+    <script src="assets/dist/js/custom.min.js"></script>
 </body>
 
 </html>

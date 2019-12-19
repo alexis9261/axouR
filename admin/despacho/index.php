@@ -17,8 +17,8 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
   <meta name="author" content="Eutuxia Web, C.A.">
   <link rel="icon" type="image/jpg" sizes="16x16" href="<?php echo $root_folder;?>/admin/img/<?php echo $imageLogo;?>">
   <title><?php echo $nombrePagina;?> - Administración</title>
-  <link href="../dist/css/style.min.css" rel="stylesheet">
-  <link href="../../vendor/datatables/datatables.min.css" rel="stylesheet">
+  <link href="../assets/dist/css/style.min.css" rel="stylesheet">
+  <link href="../assets/vendor/datatables/datatables.min.css" rel="stylesheet">
   <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
 </head>
 <body>
@@ -42,7 +42,7 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
         <div class="row justify-content-around mb-3">
           <div class="col-sm-4 text-center">
             <?php
-            $sql="SELECT COUNT(*) AS TOTAL FROM pedidos WHERE ESTATUS=3";
+            $sql="SELECT COUNT(*) AS TOTAL FROM PEDIDOS WHERE ESTATUS=3";
             $result=$conn->query($sql);
             if($result->num_rows>0){while($row=$result->fetch_assoc()){$total_buscar=$row['TOTAL'];}}
              ?>
@@ -50,7 +50,7 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
           </div>
           <div class="col-sm-4 text-center">
             <?php
-            $sql="SELECT COUNT(*) AS TOTAL FROM pedidos WHERE ESTATUS=4";
+            $sql="SELECT COUNT(*) AS TOTAL FROM PEDIDOS WHERE ESTATUS=4";
             $result=$conn->query($sql);
             if($result->num_rows>0){while($row=$result->fetch_assoc()){$total_empaquetar=$row['TOTAL'];}}
              ?>
@@ -58,7 +58,7 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
           </div>
           <div class="col-sm-4 text-center">
             <?php
-            $sql="SELECT COUNT(*) AS TOTAL FROM pedidos WHERE ESTATUS=5";
+            $sql="SELECT COUNT(*) AS TOTAL FROM PEDIDOS WHERE ESTATUS=5";
             $result=$conn->query($sql);
             if($result->num_rows>0){while($row=$result->fetch_assoc()){$total_enviar=$row['TOTAL'];}}
              ?>
@@ -66,7 +66,7 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
           </div>
         </div>
         <?php
-        $sql="SELECT IDPEDIDO,ESTATUS,FECHAPEDIDO FROM `pedidos` WHERE `ESTATUS`>2 AND `ESTATUS`<6 ORDER BY FECHAPEDIDO ASC;";
+        $sql="SELECT IDPEDIDO,ESTATUS,FECHAPEDIDO FROM `PEDIDOS` WHERE `ESTATUS`>2 AND `ESTATUS`<6 ORDER BY FECHAPEDIDO ASC;";
         $result=$conn->query($sql);
         if($result->num_rows>0){
           ?>
@@ -134,7 +134,7 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
     </script>
     <script src="../assets/libs/popper.js/dist/umd/popper.min.js"></script>
     <script src="../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../dist/js/custom.min.js"></script>
-    <script src="../../vendor/datatables/datatables.min.js"></script>
+    <script src="../assets/dist/js/custom.min.js"></script>
+    <script src="../assets/vendor/datatables/datatables.min.js"></script>
 </body>
 </html>

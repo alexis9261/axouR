@@ -89,7 +89,7 @@ mail($destino, $titulo, $contenido, $headers);
         <img src="../admin/img/<?php echo $imageLogo;?>" width="40px" height="auto">
       </div>
       <div class="col-auto text-center">
-        <h2 style="font-family: 'Playfair Display', serif;">¡Felicidades por tu Compra!</h2>
+        <h2 style="font-family:'Playfair Display',serif;">¡Felicidades por tu Compra!</h2>
       </div>
       <div class="col-auto ml-auto align-self-end">
         <small class="text-muted">Puedes ver los detalles de tu compra en <a href="../perfil/compras.php">Mis compras</a> </small>
@@ -97,27 +97,9 @@ mail($destino, $titulo, $contenido, $headers);
     </div>
   </div>
   <div class="container mb-0">
-    <div class="row mt-3">
-      <h3 class="lead">
-        Puedes realizar una transferencia nuestras cuentas bancarias
-      </h3>
-    </div>
-    <div class="row my-3 py-2">
-      <h6 class="col-sm-3 text-dark"><b>Banesco</b></h5>
-      <h6 class="col-sm-3"><b>N°</b> 0134 0464 03 4641026277</h6>
-      <h6 class="col-sm-3 text-dark"><b>Banco Mercantil</b></h6>
-      <h6 class="col-sm-3"><b>N°</b>0105 0283 7512 83148412</h6>
-      <h6 class="col-sm-3 text-dark"><b>Banco Provincial</b></h6>
-      <h6 class="col-sm-3"><b>N°</b> 0108 0558 9901 00043593</h6>
-      <h6 class="col-sm-3 text-dark"><b>Banco del Tesoro</b></h6>
-      <h6 class="col-sm-3"><b>N°</b> 0163 0217 1121 73013146</h6>
-      <hr class="col-sm-11">
-      <h6 class="col-sm-4 text-center"><b>Titular: </b>Alpargata Skate, C.A.</h6>
-      <h6 class="col-sm-4 text-center"><b>RIF: </b>J-XXXXXXX</h6>
-      <h6 class="col-sm-4 text-center"><b>Tipo: </b>Corriente</h6>
-    </div>
-    <div class="row bg-light my-3 py-2">
-      <h5 class="col-sm-12 text-dark text-center"><b>Monto a cancelar:</b> <?php echo number_format($monto*round($dolar),2,',','.');?> Bs </h5>
+    <div class="row bg-light my-3 py-2 align-items-center">
+      <h5 class="col-auto text-dark text-center"><b>Monto a cancelar:</b> <?php echo number_format($monto*round($dolar),2,',','.');?> Bs </h5>
+      <button class="btn btn-link col-auto ml-auto" type="button" data-toggle="modal" data-target="#cuentas_bancarias" id="button_modal_cuentas">Ver cuentas bancarias</button>
     </div>
   </div>
   <div class="container mb-5">
@@ -186,14 +168,68 @@ mail($destino, $titulo, $contenido, $headers);
           <input class="form-control input_datos text-dark" type="text" name="referencia" placeholder="Inserte la Referencia de la Transacción" maxlength="255" required/>
         </div>
       </div>
-      <div class="row">
       <input type="hidden" name="id_pedido" value="<?php echo $id_pedido;?>">
-      <div class="input-group-append mt-3 col-12 justify-content-center">
-        <button class="btn btn-outline-secondary" type="submit">Registrar pago</button>
+      <div class="row justify-content-center mt-4">
+        <div class="col-auto">
+          <button class="btn btn-primary px-5 mr-3" type="submit">Registrar pago</button>
+        </div>
+        <div class="col-auto">
+          <button class="btn btn-danger px-5" type="button" data-toggle="modal" data-target="#pagar_luego">Pagar después</button>
+        </div>
       </div>
-    </div>
     </form>
   </div>
+  <!-- Modal pagar despues -->
+  <div class="modal" id="pagar_luego" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Recuerda que tienes <b>24 Horas </b> para registrar el pago.</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body text-center">
+          <a href="../index.php">Continuar</a>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal ver cuentas -->
+  <div class="modal" id="cuentas_bancarias" tabindex="-1" role="dialog" aria-labelledby="myLargeModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Nuestras cuentas bancarias</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <h6 class="col-sm-6 text-dark"><b>Banesco</b></h5>
+            <h6 class="col-sm-6"><b>N°</b> 0134 0464 03 4641026277</h6>
+            <h6 class="col-sm-6 text-dark"><b>Banco Mercantil</b></h6>
+            <h6 class="col-sm-6"><b>N°</b> 0105 0283 7512 83148412</h6>
+            <h6 class="col-sm-6 text-dark"><b>Banco Provincial</b></h6>
+            <h6 class="col-sm-6"><b>N°</b> 0108 0558 9901 00043593</h6>
+            <h6 class="col-sm-6 text-dark"><b>Banco del Tesoro</b></h6>
+            <h6 class="col-sm-6"><b>N°</b> 0163 0217 1121 73013146</h6>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <h6 class="col-sm-5 text-center"><b>Titular: </b>Alpargata Skate, C.A.</h6>
+          <h6 class="col-sm-3 text-center"><b>RIF: </b>J-XXXXXXX</h6>
+          <h6 class="col-sm-4 text-center"><b>Tipo: </b>Corriente</h6>
+        </div>
+      </div>
+    </div>
+  </div>
+  <script>
+    $(document).ready(function(){
+      $("#button_modal_cuentas").click();
+    });
+  </script>
     <?php
     /**
     Mercadopago

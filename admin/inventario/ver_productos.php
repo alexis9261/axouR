@@ -12,17 +12,17 @@ if(isset($_GET['idp']) && !empty($_GET['idp'])){
   if(isset($_GET['band'])){
     $band=$_GET['band'];
     if($band==0){
-      $sql="UPDATE `productos` SET `ESTATUS`=1 WHERE IDPRODUCTO=$Id_producto";
+      $sql="UPDATE `PRODUCTOS` SET `ESTATUS`=1 WHERE IDPRODUCTO=$Id_producto";
       if($conn->query($sql)===TRUE){$pausar=1;}else{$pausar=2;}
     }elseif($band==1){
-      $sql="UPDATE `productos` SET `ESTATUS`=0 WHERE IDPRODUCTO=$Id_producto";
+      $sql="UPDATE `PRODUCTOS` SET `ESTATUS`=0 WHERE IDPRODUCTO=$Id_producto";
       if($conn->query($sql)===TRUE){$activar=1;}else{$activar=2;}
     }
   }
 }
 $array_tallas=array();
 $array_colores=array();
-$sql="SELECT * FROM tallas";
+$sql="SELECT * FROM TALLAS";
 $result=$conn->query($sql);
 if($result->num_rows>0){
   while($row=$result->fetch_assoc()){
@@ -31,7 +31,7 @@ if($result->num_rows>0){
 }
 $array_categorias_id=array();
 $array_categorias_names=array();
-$sql="SELECT IDCATEGORIA, NOMBRE FROM CATEGORIAS WHERE PADRE=0";
+$sql="SELECT IDCATEGORIA,NOMBRE FROM CATEGORIAS WHERE PADRE=0";
 $result=$conn->query($sql);
 if($result->num_rows>0){
   while($row=$result->fetch_assoc()){
@@ -41,7 +41,7 @@ if($result->num_rows>0){
 }
 $array_marcas_id=array();
 $array_marcas_names=array();
-$sql="SELECT * FROM marcas";
+$sql="SELECT * FROM MARCAS";
 $result=$conn->query($sql);
 if($result->num_rows>0){
   while($row=$result->fetch_assoc()){
@@ -49,7 +49,7 @@ if($result->num_rows>0){
     array_push($array_marcas_names,$row['NOMBREMARCA']);
   }
 }
-$sql="SELECT * FROM color";
+$sql="SELECT * FROM COLOR";
 $result=$conn->query($sql);
 if($result->num_rows>0){while($row=$result->fetch_assoc()){array_push($array_colores,$row['IDCOLOR']."|".$row['COLOR']);}}
 ?>
@@ -63,8 +63,8 @@ if($result->num_rows>0){while($row=$result->fetch_assoc()){array_push($array_col
   <meta name="author" content="Eutuxia Web, C.A.">
   <link rel="icon" type="image/jpg" sizes="16x16" href="../img/<?php echo $imageLogo;?>">
   <title><?php echo $nombrePagina;?> - Administración</title>
-  <link href="../dist/css/style.min.css" rel="stylesheet">
-  <link href="../../vendor/datatables/datatables.min.css" rel="stylesheet">
+  <link href="../assets/dist/css/style.min.css" rel="stylesheet">
+  <link href="../assets/vendor/datatables/datatables.min.css" rel="stylesheet">
   <link href="../../css/new.css" rel="stylesheet">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -91,7 +91,7 @@ if($result->num_rows>0){while($row=$result->fetch_assoc()){array_push($array_col
             </div>
             <div class="col-auto ml-auto">
               <?php
-              $sql="SELECT COUNT(*) AS TOTAL FROM productos WHERE ESTATUS<>'$estatus'";
+              $sql="SELECT COUNT(*) AS TOTAL FROM PRODUCTOS WHERE ESTATUS<>'$estatus'";
               $result=$conn->query($sql);
               if($result->num_rows>0){
                 while($row=$result->fetch_assoc()){
@@ -124,7 +124,7 @@ if($result->num_rows>0){while($row=$result->fetch_assoc()){array_push($array_col
                 </thead>
                 <tbody>
                     <?php
-                      $sql="SELECT * FROM productos WHERE ESTATUS=$estatus;";
+                      $sql="SELECT * FROM PRODUCTOS WHERE ESTATUS=$estatus;";
                       $result=$conn->query($sql);
                       if($result->num_rows>0){
                         $cont=0;
@@ -139,7 +139,7 @@ if($result->num_rows>0){while($row=$result->fetch_assoc()){array_push($array_col
                           $precio=$row['PRECIO'];
                           $marca=$row['MARCAID'];
                           $marca=$array_marcas_names[array_search($marca,$array_marcas_id)];
-                          $sql2="SELECT IDMODELO,IMAGEN FROM modelos WHERE IDPRODUCTO='$idProducto' LIMIT 1";
+                          $sql2="SELECT IDMODELO,IMAGEN FROM MODELOS WHERE IDPRODUCTO='$idProducto' LIMIT 1";
                           $result2=$conn->query($sql2);
                           if($result2->num_rows>0){
                             while($row2=$result2->fetch_assoc()){
@@ -147,7 +147,7 @@ if($result->num_rows>0){while($row=$result->fetch_assoc()){array_push($array_col
                               $imagen=$row2['IMAGEN'];
                             }
                           }
-                          $sql3="SELECT COUNT(*) AS CUENTA FROM modelos WHERE IDPRODUCTO='$idProducto'";
+                          $sql3="SELECT COUNT(*) AS CUENTA FROM MODELOS WHERE IDPRODUCTO='$idProducto'";
                           $result3=$conn->query($sql3);
                           if($result3->num_rows>0){
                             while($row3=$result3->fetch_assoc()){
@@ -274,8 +274,8 @@ if($result->num_rows>0){while($row=$result->fetch_assoc()){array_push($array_col
     </script>
     <script src="../assets/libs/popper.js/dist/umd/popper.min.js"></script>
     <script src="../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../dist/js/custom.min.js"></script>
-    <script src="../../vendor/datatables/datatables.min.js"></script>
+    <script src="../assets/dist/js/custom.min.js"></script>
+    <script src="../assets/vendor/datatables/datatables.min.js"></script>
     <script src='https://cdn.jsdelivr.net/npm/sweetalert2@7.29.0/dist/sweetalert2.all.min.js'></script>
 </body>
 </html>

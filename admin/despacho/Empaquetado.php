@@ -7,7 +7,7 @@
   if(isset($_GET['orden']) and isset($_GET['id']) ){
     $newid=$_GET['id'];
     if($_GET['orden']=='good'){
-      $sql="UPDATE `pedidos` SET `ESTATUS`='5' WHERE `IDPEDIDO`='$newid'";
+      $sql="UPDATE `PEDIDOS` SET `ESTATUS`='5' WHERE `IDPEDIDO`='$newid'";
       if($conn->query($sql)===TRUE){}
     }elseif($_GET['orden']=='bad'){
       if(isset($_GET['comentario'])){
@@ -19,9 +19,9 @@
       $estatus=0;
       #ORIGEN
       $origen='Empaquetado';
-      $sql="UPDATE `pedidos` SET `ESTATUS`='10' WHERE `IDPEDIDO`='$newid'";
+      $sql="UPDATE `PEDIDOS` SET `ESTATUS`='10' WHERE `IDPEDIDO`='$newid'";
       if($conn->query($sql)===TRUE){}
-      $sql="INSERT INTO `fallas`(`IDPEDIDO`,`REPORTERO`,`ESTATUS`,`PROBLEMA`,`FECHAFALLA`,`ORIGEN` ) VALUES ('$newid','$reportero','$estatus','$comentario', NOW(),'$origen' )";
+      $sql="INSERT INTO `FALLAS`(`IDPEDIDO`,`REPORTERO`,`ESTATUS`,`PROBLEMA`,`FECHAFALLA`,`ORIGEN` ) VALUES ('$newid','$reportero','$estatus','$comentario', NOW(),'$origen' )";
       if($conn->query($sql)===TRUE){}
       $conn->close();
     }
@@ -32,7 +32,7 @@
   //buscar los nombres de las tallas
   $nombre_tallas=array();
   $id_tallas_bd=array();
-  $sql="SELECT * FROM tallas";
+  $sql="SELECT * FROM TALLAS";
   $res=$conn->query($sql);
   if($res->num_rows>0){
     while($row=$res->fetch_assoc()){
@@ -41,7 +41,7 @@
     }
   }
   //categorias
-  $sql="SELECT * FROM categorias WHERE PADRE=0";
+  $sql="SELECT * FROM CATEGORIAS WHERE PADRE=0";
   $id_categorias=array();
   $categorias_padre=array();
   $result=$conn->query($sql);
@@ -52,7 +52,7 @@
     }
   }
   //marcas
-  $sql="SELECT * FROM marcas LIMIT 8";
+  $sql="SELECT * FROM MARCAS LIMIT 8";
   $id_marcas=array();
   $nombres_marcas=array();
   $result=$conn->query($sql);
@@ -73,7 +73,7 @@
   <meta name="author" content="Eutuxia Web, C.A.">
   <link rel="icon" type="image/jpg" sizes="16x16" href="<?php echo $root_folder;?>/admin/img/<?php echo $imageLogo;?>">
   <title><?php echo $nombrePagina;?> - Administración</title>
-  <link href="../dist/css/style.min.css" rel="stylesheet">
+  <link href="../assets/dist/css/style.min.css" rel="stylesheet">
   <link href="../../css/new.css" rel="stylesheet">
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
@@ -104,7 +104,7 @@
         <div class="row justify-content-around mb-3">
           <div class="col-sm-4 text-center">
             <?php
-            $sql="SELECT COUNT(*) AS TOTAL FROM pedidos WHERE ESTATUS=3";
+            $sql="SELECT COUNT(*) AS TOTAL FROM PEDIDOS WHERE ESTATUS=3";
             $result=$conn->query($sql);
             if($result->num_rows>0){while($row=$result->fetch_assoc()){$total_buscar=$row['TOTAL'];}}
              ?>
@@ -112,7 +112,7 @@
           </div>
           <div class="col-sm-4 text-center">
             <?php
-            $sql="SELECT COUNT(*) AS TOTAL FROM pedidos WHERE ESTATUS=4";
+            $sql="SELECT COUNT(*) AS TOTAL FROM PEDIDOS WHERE ESTATUS=4";
             $result=$conn->query($sql);
             if($result->num_rows>0){while($row=$result->fetch_assoc()){$total_empaquetar=$row['TOTAL'];}}
              ?>
@@ -120,7 +120,7 @@
           </div>
           <div class="col-sm-4 text-center">
             <?php
-            $sql="SELECT COUNT(*) AS TOTAL FROM pedidos WHERE ESTATUS=5";
+            $sql="SELECT COUNT(*) AS TOTAL FROM PEDIDOS WHERE ESTATUS=5";
             $result=$conn->query($sql);
             if($result->num_rows>0){while($row=$result->fetch_assoc()){$total_enviar=$row['TOTAL'];}}
              ?>
@@ -128,7 +128,7 @@
           </div>
         </div>
         <?php
-        $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE `ESTATUS`=4 ORDER BY FECHAPEDIDO ASC ";
+        $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE `ESTATUS`=4 ORDER BY FECHAPEDIDO ASC ";
         $result=$conn->query($sql);
         if($result->num_rows>0){
           ?>
@@ -146,7 +146,7 @@
               <?php
               while($row=$result->fetch_assoc()){
                 $id=$row['IDPEDIDO'];
-                $sql2="SELECT `IDPEDIDO`,`ESTATUS`,`FECHAPEDIDO` FROM `pedidos` WHERE `IDPEDIDO`='$id' AND ESTATUS=4";
+                $sql2="SELECT `IDPEDIDO`,`ESTATUS`,`FECHAPEDIDO` FROM `PEDIDOS` WHERE `IDPEDIDO`='$id' AND ESTATUS=4";
                 $result2=$conn->query($sql2);
                 if($result2->num_rows>0){
                   while($row2=$result2->fetch_assoc()){
@@ -178,14 +178,14 @@
                           </div>
                           <div class="modal-body">
                             <?php
-                            $sqla="SELECT INVENTARIOID,CANTIDAD,PRECIO FROM `items` WHERE PEDIDOID='$id'";
+                            $sqla="SELECT INVENTARIOID,CANTIDAD,PRECIO FROM `ITEMS` WHERE PEDIDOID='$id'";
                             $resultado=$conn->query($sqla);
                             if($resultado->num_rows>0){
                               while($rowa=$resultado->fetch_assoc()){
                                 $inventarioId=$rowa['INVENTARIOID'];
                                 $cantidad=$rowa['CANTIDAD'];
                                 $precioProducto=$rowa['PRECIO'];
-                                $sqla2="SELECT i.IDMODELO,i.TALLAID,i.PESO,m.IDPRODUCTO,m.COLOR1,m.COLOR2,m.IMAGEN,p.NOMBRE_P,p.GENERO,p.CATEGORIAID,p.MARCAID,p.ESTATUS FROM `inventario` i INNER JOIN `modelos` m ON i.IDMODELO=m.IDMODELO INNER JOIN `productos` p ON m.IDPRODUCTO=p.IDPRODUCTO WHERE i.IDINVENTARIO='$inventarioId'";
+                                $sqla2="SELECT i.IDMODELO,i.TALLAID,i.PESO,m.IDPRODUCTO,m.COLOR1,m.COLOR2,m.IMAGEN,p.NOMBRE_P,p.GENERO,p.CATEGORIAID,p.MARCAID,p.ESTATUS FROM `inventario` i INNER JOIN `MODELOS` m ON i.IDMODELO=m.IDMODELO INNER JOIN `PRODUCTOS` p ON m.IDPRODUCTO=p.IDPRODUCTO WHERE i.IDINVENTARIO='$inventarioId'";
                                 $resultado2=$conn->query($sqla2);
                                 if($resultado2->num_rows>0){
                                   while($rowa2=$resultado2->fetch_assoc()){
@@ -293,7 +293,7 @@
   </script>
   <script src="../assets/libs/popper.js/dist/umd/popper.min.js"></script>
   <script src="../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-  <script src="../dist/js/custom.min.js"></script>
-  <script src="../../vendor/datatables/datatables.min.js"></script>
+  <script src="../assets/dist/js/custom.min.js"></script>
+  <script src="../assets/vendor/datatables/datatables.min.js"></script>
 </body>
 </html>

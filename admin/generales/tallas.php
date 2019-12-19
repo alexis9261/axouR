@@ -12,10 +12,10 @@ if(isset($_GET['id']) && !empty($_GET['id'])){
   if(isset($_GET['band'])){
     $band=$_GET['band'];
     if($band==0){
-      $sql="UPDATE `tallas` SET `ESTATUS`=1 WHERE IDTALLA=$Id_talla";
+      $sql="UPDATE `TALLAS` SET `ESTATUS`=1 WHERE IDTALLA=$Id_talla";
       if($conn->query($sql)===TRUE){$pausar=1;}else{$pausar=2;}
     }elseif($band==1){
-      $sql="UPDATE `tallas` SET `ESTATUS`=0 WHERE IDTALLA=$Id_talla";
+      $sql="UPDATE `TALLAS` SET `ESTATUS`=0 WHERE IDTALLA=$Id_talla";
       if($conn->query($sql)===TRUE){$activar=1;}else{$activar=2;}
     }
   }
@@ -43,7 +43,7 @@ $previouspage=$curpage - 1;
   <meta name="author" content="Eutuxia Web, C.A.">
   <link rel="icon" type="image/jpg" sizes="16x16" href="<?php echo $root_folder;?>/admin/img/<?php echo $imageLogo;?>">
   <title><?php echo $nombrePagina;?> - Administración</title>
-  <link href="../dist/css/style.min.css" rel="stylesheet">
+  <link href="../assets/dist/css/style.min.css" rel="stylesheet">
   <link href="../../css/new.css" rel="stylesheet">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -228,7 +228,7 @@ $previouspage=$curpage - 1;
 </div>
 <script src="../assets/libs/popper.js/dist/umd/popper.min.js"></script>
 <script src="../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="../dist/js/custom.min.js"></script>
+<script src="../assets/dist/js/custom.min.js"></script>
 <script src='https://cdn.jsdelivr.net/npm/sweetalert2@7.29.0/dist/sweetalert2.all.min.js'></script>
 </body>
 </html>

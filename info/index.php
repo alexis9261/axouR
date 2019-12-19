@@ -211,7 +211,7 @@ include '../common/datosGenerales.php';
               </div>
               <div id="eight" class="collapse" aria-labelledby="height" data-parent="#accordionExample">
                 <div>
-                  El estado de tu pedido lo puedes conocer con tu código de seguimiento (Llave digital), colocándolo en la opción de "Rastreo" de la empresa de encomiendas.
+                  El estado de tu pedido lo puedes conocer entrando a tu perfil, en la sección "Mis compras".
                 </div>
               </div>
             </div>
@@ -390,7 +390,7 @@ include '../common/datosGenerales.php';
                   </div>
                   <div id="ctwo" class="collapse" aria-labelledby="twoi" data-parent="#ac1">
                     <div>
-                      La plataforma <?php echo $nombrePagina;?> ofrece la opción <a href="../compras" target="_blank">> compras</a> en el menu principal para hacer el reporte de los pagos asociados a una compra, solo necesitas tu cedula, la llave digital de la compra y los datos de la transacción.
+                      Para registrar una transacción bancaria, debes dirigirte a tu perfil, a la sección "Mis compras", alli debes ir a la compra correspondiente y registrar el pago en el boton azul "Registrar un pago".
                     </div>
                   </div>
                 </div>
@@ -442,36 +442,6 @@ include '../common/datosGenerales.php';
        <div class="container">
          <div class="row justify-content-center">
            <div class="col-sm-8 text-center">
-              <div class="container" id="ac1">
-                <div class="row justify-content-center">
-                    <div id="twoi">
-                        <a href="javascript:void(0)" class="btn btn-link collapsed" data-toggle="collapse" data-target="#ctwo" aria-expanded="false" aria-controls="collapseTwo">
-                          ¿Que es una Llave digital?
-                        </a>
-                    </div>
-                    <div id="ctwo" class="collapse" aria-labelledby="twoi" data-parent="#ac1">
-                      <div>
-                        La <b>Llave digital</b> es un codigo generado por nuestro sistema, con el cual podrás obtener toda la información
-                        referente a tu pedido. Ademas, Es un requisito necesario para reportar los pago por transaferencia bancaria.
-                      </div>
-                    </div>
-                  </div>
-                  <hr class="hr">
-                  <div class="row justify-content-center">
-                  <div id="onei">
-                      <a href="javascript:void(0)" class="btn btn-link" data-toggle="collapse" data-target="#cone" aria-expanded="true" aria-controls="collapseOne">
-                        ¿Como se en donde se encuentra mi pedido?
-                      </a>
-                  </div>
-                  <div id="cone" class="collapse" aria-labelledby="onei" data-parent="#ac1">
-                    <div>
-                      La ubicación de tu pedido la podrás observar en <a href="../compras/" target="_blank"> > Compras</a> > ¡Has le seguimiento a tu compra!, colocando tu cedula y la llave digital de tu compra.
-                    </div>
-                  </div>
-                </div>
-                <hr class="hr">
-
-              </div>
             </div>
           </div>
         </div>

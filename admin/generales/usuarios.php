@@ -4,12 +4,12 @@ if($_SESSION['nivel']==6 || $_SESSION['nivel']==1){
 }else{ header('Location: ../principal.php'); }
 require '../../common/conexion.php';
 include '../../common/datosGenerales.php';
-if(isset($_GET['nombre'],$_GET['apellido'],$_GET['email'], $_GET['clave'], $_GET['nivel'] )){
-    $nombre=$_GET['nombre'].' '.  $_GET['apellido'];
+if(isset($_GET['nombre'],$_GET['apellido'],$_GET['email'],$_GET['clave'],$_GET['nivel'])){
+    $nombre=$_GET['nombre'].' '.$_GET['apellido'];
     $correo=$_GET['email'];
     $clave=md5($_GET['clave']);
     $nivel=$_GET['nivel'];
-   $sql="INSERT INTO `admin_usuarios`(`NOMBRE`,`CORREO`,`CLAVE`,`NIVEL`) VALUES ('$nombre','$correo','$clave','$nivel')";
+   $sql="INSERT INTO `ADMIN_USUARIOS`(`NOMBRE`,`CORREO`,`CLAVE`,`NIVEL`) VALUES ('$nombre','$correo','$clave','$nivel')";
 if($conn->query($sql)===TRUE){
   echo "<center>Nuevo USUARIO registrado</center>";
   header('Location: ./usuarios.php');
@@ -19,8 +19,8 @@ if($conn->query($sql)===TRUE){
 if(isset($_GET['delete']) & !empty($_GET['delete'])){
   $idusuario=$_GET['delete'];
   #eliminar USURIO
-  $sql ="DELETE FROM admin_usuarios WHERE IDUSUARIO='$idusuario'";
-  if($conn->query($sql) === TRUE){}
+  $sql="DELETE FROM ADMIN_USUARIOS WHERE IDUSUARIO='$idusuario'";
+  if($conn->query($sql)===TRUE){}
 }
 $perpage  = 10;
 if(isset($_GET['page']) & !empty($_GET['page'])){
@@ -28,7 +28,7 @@ if(isset($_GET['page']) & !empty($_GET['page'])){
 }else{ $curpage = 1;}
 $start = ($curpage * $perpage) - $perpage;
 #necesito el total de elementos
-$PageSql = "SELECT * FROM admin_usuarios";
+$PageSql = "SELECT * FROM ADMIN_USUARIOS";
 $pageres = mysqli_query($conn, $PageSql);
 $totalres = mysqli_num_rows($pageres);
 $endpage = ceil($totalres/$perpage);
@@ -46,7 +46,7 @@ $previouspage = $curpage - 1;
   <meta name="author" content="Eutuxia Web, C.A.">
   <link rel="icon" type="image/jpg" sizes="16x16" href="../img/<?php echo $imageLogo;?>">
   <title><?php echo $nombrePagina;?> - Administración</title>
-  <link href="../dist/css/style.min.css" rel="stylesheet">
+  <link href="../assets/dist/css/style.min.css" rel="stylesheet">
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -127,7 +127,7 @@ $previouspage = $curpage - 1;
                 </div>
               </div>
               <?php
-                  $sql = "SELECT * FROM admin_usuarios LIMIT $start, $perpage";
+                  $sql = "SELECT * FROM ADMIN_USUARIOS LIMIT $start, $perpage";
                   $result = $conn->query($sql);
                   if ($result->num_rows > 0) {
               ?>
@@ -220,7 +220,7 @@ $previouspage = $curpage - 1;
     <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
     <script src="../assets/libs/popper.js/dist/umd/popper.min.js"></script>
     <script src="../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../dist/js/custom.min.js"></script>
+    <script src="../assets/dist/js/custom.min.js"></script>
 </body>
 </html>
 <?php $conn->close(); ?>

@@ -15,7 +15,7 @@ if(isset($_POST['nombre_p'],$_POST['genero'],$_POST['categoria'],$_POST['marca']
   $cuello=$_POST['cuello']; //entero
   $manga=$_POST['manga']; //Entero
   $descripcion=$_POST['descripcion'];
-  $sql="UPDATE `productos` SET `NOMBRE_P`='$nombre_p',`DESCRIPCION`='$descripcion',`GENERO`='$genero',`CATEGORIAID`='$categoria',`PRECIO`='$precio',`CUELLO`='$cuello',`MANGA`='$manga',`MATERIAL`='$material',`MARCAID`='$marca' WHERE `IDPRODUCTO`='$idproducto';";
+  $sql="UPDATE `PRODUCTOS` SET `NOMBRE_P`='$nombre_p',`DESCRIPCION`='$descripcion',`GENERO`='$genero',`CATEGORIAID`='$categoria',`PRECIO`='$precio',`CUELLO`='$cuello',`MANGA`='$manga',`MATERIAL`='$material',`MARCAID`='$marca' WHERE `IDPRODUCTO`='$idproducto';";
   if($conn->query($sql)===TRUE){$iscreated=true;}
 }
 //actualizar y/o insertar modelo
@@ -41,8 +41,8 @@ if(isset($_POST['color_primary'],$_POST['color_secondary'],$iscreated)){
       }
     }*/
     if($idmodelo=="not"){
-      $sql="INSERT INTO `modelos` (`IDPRODUCTO`,`COLOR1`,`COLOR2`,`IMAGEN`) VALUES ('$idproducto','$color1','$color2','$name_archivo')";
-    }else{$sql="UPDATE `modelos` SET `COLOR1`='$color1',`COLOR2`='$color2' WHERE `IDMODELO`='$idmodelo';";}
+      $sql="INSERT INTO `MODELOS` (`IDPRODUCTO`,`COLOR1`,`COLOR2`,`IMAGEN`) VALUES ('$idproducto','$color1','$color2','$name_archivo')";
+    }else{$sql="UPDATE `MODELOS` SET `COLOR1`='$color1',`COLOR2`='$color2' WHERE `IDMODELO`='$idmodelo';";}
     if($conn->query($sql)===TRUE){$iscreated=true;}
     //Editar y/o insertar Tallas
     if(isset($_POST['talla'],$_POST['cantidad'],$_POST['peso'])){
@@ -56,9 +56,9 @@ if(isset($_POST['color_primary'],$_POST['color_secondary'],$iscreated)){
           $cantidad_sql=$cantidad[$x];
           $peso_sql=$peso[$x];
           if($idmodelo=="not"){
-            $sql="INSERT INTO `inventario` (IDMODELO,TALLAID,CANTIDAD,PESO) VALUES ('$idmodelo','$talla_sql','$cantidad_sql','$peso_sql')";
+            $sql="INSERT INTO `INVENTARIO` (IDMODELO,TALLAID,CANTIDAD,PESO) VALUES ('$idmodelo','$talla_sql','$cantidad_sql','$peso_sql')";
           }else{
-            $sql="UPDATE `inventario` SET `TALLAID`='$talla_sql',`CANTIDAD`='$cantidad_sql',`PESO`='$peso_sql' WHERE `IDMODELO`='$idmodelo';";
+            $sql="UPDATE `INVENTARIO` SET `TALLAID`='$talla_sql',`CANTIDAD`='$cantidad_sql',`PESO`='$peso_sql' WHERE `IDMODELO`='$idmodelo';";
           }
           if($conn->query($sql)===TRUE){$iscreated=true;}else{$iscreated=false;}
         }

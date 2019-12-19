@@ -8,12 +8,12 @@ if(isset($_GET['orden'],$_GET['id'])){
   $newid=$_GET['id'];
   if($_GET['orden']=='completed'){
     //validar que esta en su etapa finalizada
-    $sql="SELECT * FROM pedidos WHERE IDPEDIDO='$newid' AND ESTATUS=6 LIMIT 1";
+    $sql="SELECT * FROM PEDIDOS WHERE IDPEDIDO='$newid' AND ESTATUS=6 LIMIT 1";
     $result=$conn->query($sql);
     if($result->num_rows>0){while($row=$result->fetch_assoc()){$band=true;}}
     if($band){
       //actualizar estatus a completado.
-      $sql3="UPDATE `pedidos` SET `ESTATUS`='9' WHERE `IDPEDIDO`='$newid'";
+      $sql3="UPDATE `PEDIDOS` SET `ESTATUS`='9' WHERE `IDPEDIDO`='$newid'";
       if($conn->query($sql3)===TRUE){}
     }
   }
@@ -24,7 +24,7 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
 //buscar los nombres de las tallas
 $nombre_tallas=array();
 $id_tallas_bd=array();
-$sql="SELECT * FROM tallas";
+$sql="SELECT * FROM TALLAS";
 $res=$conn->query($sql);
 if($res->num_rows>0){
   while($row=$res->fetch_assoc()){
@@ -33,7 +33,7 @@ if($res->num_rows>0){
   }
 }
 //categorias
-$sql="SELECT * FROM categorias WHERE PADRE=0";
+$sql="SELECT * FROM CATEGORIAS WHERE PADRE=0";
 $id_categorias=array();
 $categorias_padre=array();
 $result=$conn->query($sql);
@@ -44,7 +44,7 @@ if($result->num_rows>0){
   }
 }
 //marcas
-$sql="SELECT * FROM marcas LIMIT 8";
+$sql="SELECT * FROM MARCAS LIMIT 8";
 $id_marcas=array();
 $nombres_marcas=array();
 $result=$conn->query($sql);
@@ -65,8 +65,8 @@ if($result->num_rows>0){
   <meta name="author" content="Eutuxia Web, C.A.">
   <link rel="icon" type="image/jpg" sizes="16x16" href="<?php echo $root_folder;?>/admin/img/<?php echo $imageLogo;?>">
   <title><?php echo $nombrePagina;?> - Administración</title>
-  <link href="../dist/css/style.min.css" rel="stylesheet">
-  <link href="../../vendor/datatables/datatables.min.css" rel="stylesheet">
+  <link href="../assets/dist/css/style.min.css" rel="stylesheet">
+  <link href="../assets/vendor/datatables/datatables.min.css" rel="stylesheet">
   <link href="../../css/new.css" rel="stylesheet">
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
@@ -97,24 +97,24 @@ if($result->num_rows>0){
               <?php
               if (isset($search)){
                 if($search=='ccc'){
-                  $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE ESTATUS='9' ORDER BY FECHAPEDIDO DESC";
+                  $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE ESTATUS='9' ORDER BY FECHAPEDIDO DESC";
                 }else if($search=='fii'){
-                  $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE ESTATUS='12' ORDER BY FECHAPEDIDO DESC";
+                  $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE ESTATUS='12' ORDER BY FECHAPEDIDO DESC";
                 }else if($search=='rrr'){
-                  $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE ESTATUS='10' ORDER BY FECHAPEDIDO DESC";
+                  $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE ESTATUS='10' ORDER BY FECHAPEDIDO DESC";
                 }else if($search=='eee'){
-                  $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE ESTATUS='6' ORDER BY FECHAPEDIDO DESC";
+                  $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE ESTATUS='6' ORDER BY FECHAPEDIDO DESC";
                 }else if($search=='bbb'){
-                  $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE ESTATUS='3' ORDER BY FECHAPEDIDO DESC";
+                  $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE ESTATUS='3' ORDER BY FECHAPEDIDO DESC";
                 }else if($search=='ppp'){
-                  $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE ESTATUS='2' ORDER BY FECHAPEDIDO DESC";
+                  $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE ESTATUS='2' ORDER BY FECHAPEDIDO DESC";
                 }else if($search=='ppee'){
-                  $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE ESTATUS='5' ORDER BY FECHAPEDIDO DESC";
+                  $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE ESTATUS='5' ORDER BY FECHAPEDIDO DESC";
                 }else{
-                  $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE DOCID LIKE '%$search%' ORDER BY FECHAPEDIDO DESC";
+                  $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE DOCID LIKE '%$search%' ORDER BY FECHAPEDIDO DESC";
                 }
               }else{
-                $sql="SELECT `IDPEDIDO` FROM `pedidos` ORDER BY FECHAPEDIDO DESC";
+                $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` ORDER BY FECHAPEDIDO DESC";
               }
               $result=$conn->query($sql);
               if($result->num_rows>0){
@@ -141,10 +141,10 @@ if($result->num_rows>0){
                       while($row=$result->fetch_assoc()){
                         ++$cont;
                         $id=$row['IDPEDIDO'];
-                        $sql2="SELECT * FROM usuarios u
-                        INNER JOIN pedidos p ON u.CORREO=p.EMAILUSER
-                        INNER JOIN envios e ON e.PEDIDOID=p.IDPEDIDO
-                        INNER JOIN compras c ON c.PEDIDOID=p.IDPEDIDO
+                        $sql2="SELECT * FROM USUARIOS u
+                        INNER JOIN PEDIDOS p ON u.CORREO=p.EMAILUSER
+                        INNER JOIN ENVIOS e ON e.PEDIDOID=p.IDPEDIDO
+                        INNER JOIN COMPRAS c ON c.PEDIDOID=p.IDPEDIDO
                         WHERE p.IDPEDIDO='$id';"; //encuentro los articulos del pedido
                         $result2=$conn->query($sql2);
                         if($result2->num_rows>0){
@@ -264,14 +264,14 @@ if($result->num_rows>0){
                                     </div>
                                     <div class="modal-body">
                                         <?php
-                                        $sqla="SELECT INVENTARIOID,CANTIDAD,PRECIO FROM `items` WHERE PEDIDOID='$id'";
+                                        $sqla="SELECT INVENTARIOID,CANTIDAD,PRECIO FROM `ITEMS` WHERE PEDIDOID='$id'";
                                         $resultado=$conn->query($sqla);
                                         if($resultado->num_rows>0){
                                           while($rowa=$resultado->fetch_assoc()){
                                             $inventarioId=$rowa['INVENTARIOID'];
                                             $cantidad=$rowa['CANTIDAD'];
                                             $precioProducto=$rowa['PRECIO'];
-                                            $sqla2="SELECT i.IDMODELO,i.TALLAID,i.PESO,m.IDPRODUCTO,m.COLOR1,m.COLOR2,m.IMAGEN,p.NOMBRE_P,p.GENERO,p.CATEGORIAID,p.MARCAID,p.ESTATUS FROM `inventario` i INNER JOIN `modelos` m ON i.IDMODELO=m.IDMODELO INNER JOIN `productos` p ON m.IDPRODUCTO=p.IDPRODUCTO WHERE i.IDINVENTARIO='$inventarioId'";
+                                            $sqla2="SELECT i.IDMODELO,i.TALLAID,i.PESO,m.IDPRODUCTO,m.COLOR1,m.COLOR2,m.IMAGEN,p.NOMBRE_P,p.GENERO,p.CATEGORIAID,p.MARCAID,p.ESTATUS FROM `inventario` i INNER JOIN `MODELOS` m ON i.IDMODELO=m.IDMODELO INNER JOIN `PRODUCTOS` p ON m.IDPRODUCTO=p.IDPRODUCTO WHERE i.IDINVENTARIO='$inventarioId'";
                                             $resultado2=$conn->query($sqla2);
                                             if($resultado2->num_rows>0){
                                               while($rowa2=$resultado2->fetch_assoc()){
@@ -435,7 +435,7 @@ if($result->num_rows>0){
     </script>
     <script src="../assets/libs/popper.js/dist/umd/popper.min.js"></script>
     <script src="../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../dist/js/custom.min.js"></script>
-    <script src="../../vendor/datatables/datatables.min.js"></script>
+    <script src="../assets/dist/js/custom.min.js"></script>
+    <script src="../assets/vendor/datatables/datatables.min.js"></script>
 </body>
 </html>

@@ -6,7 +6,7 @@ include '../common/datosGenerales.php';
 $array_favoritos=array();
 if(isset($_SESSION['USER'])){
   $user=$_SESSION['USER'];
-  $sql="SELECT * FROM favoritos WHERE USERID='$user'";
+  $sql="SELECT * FROM FAVORITOS WHERE USERID='$user'";
   $result=$conn->query($sql);
   if($result->num_rows>0){
     while($row=$result->fetch_assoc()){
@@ -17,7 +17,7 @@ if(isset($_SESSION['USER'])){
 $lista_tallas='';
 if(isset($_GET['idmodelo'])){
   $idmodelo=$_GET['idmodelo'];
-  $sql="SELECT IDPRODUCTO,IMAGEN,COLOR1,COLOR2 FROM modelos WHERE IDMODELO='$idmodelo'";
+  $sql="SELECT IDPRODUCTO,IMAGEN,COLOR1,COLOR2 FROM MODELOS WHERE IDMODELO='$idmodelo'";
   $res=$conn->query($sql);
   if($res->num_rows>0){
     while($f=$res->fetch_assoc()){
@@ -27,7 +27,7 @@ if(isset($_GET['idmodelo'])){
       $color2=$f['COLOR2'];
     }
   }
-  $sql="SELECT NOMBRE_P,DESCRIPCION,PRECIO,CATEGORIAID,MARCAID,ESTATUS FROM productos WHERE IDPRODUCTO='$id_producto'";
+  $sql="SELECT NOMBRE_P,DESCRIPCION,PRECIO,CATEGORIAID,MARCAID,ESTATUS FROM PRODUCTOS WHERE IDPRODUCTO='$id_producto'";
   $res=$conn->query($sql);
   if($res->num_rows>0){
     while($f=$res->fetch_assoc()){
@@ -37,7 +37,7 @@ if(isset($_GET['idmodelo'])){
       $precio=$f['PRECIO'];
       $id_categ=$f['CATEGORIAID'];
       $id_marca=$f['MARCAID'];
-      $sql2="SELECT NOMBRE FROM categorias WHERE IDCATEGORIA=$id_categ";
+      $sql2="SELECT NOMBRE FROM CATEGORIAS WHERE IDCATEGORIA=$id_categ";
       $result2=$conn->query($sql2);
       if($result2->num_rows>0){
         while($row2=$result2->fetch_assoc()){$categ=$row2['NOMBRE'];}
@@ -57,7 +57,7 @@ if(isset($_GET['idmodelo'])){
     $id_inventario=array();
     $id_tallas_stock=array();
     $cantidades_tallas=array();
-    $sql="SELECT * FROM inventario WHERE IDMODELO=$idmodelo";
+    $sql="SELECT * FROM INVENTARIO WHERE IDMODELO=$idmodelo";
     $res=$conn->query($sql);
     if($res->num_rows>0){
       while($row=$res->fetch_assoc()){
@@ -70,7 +70,7 @@ if(isset($_GET['idmodelo'])){
     //buscar los nombres de las tallas
     $nombre_tallas=array();
     $id_tallas_bd=array();
-    $sql="SELECT * FROM tallas";
+    $sql="SELECT * FROM TALLAS";
     $res=$conn->query($sql);
     if($res->num_rows>0){
       while($row=$res->fetch_assoc()){
@@ -81,7 +81,7 @@ if(isset($_GET['idmodelo'])){
     //verifico si el modelo tiene tallas con cantidades disponibles
     if($cantidad_total_bd==0){
       //en caso de que si, actualizo el estatus del producto, lo pauso.
-      $sql="UPDATE `productos` SET `ESTATUS`=1 WHERE IDPRODUCTO='$id_producto';";
+      $sql="UPDATE `PRODUCTOS` SET `ESTATUS`=1 WHERE IDPRODUCTO='$id_producto';";
       if($conn->query($sql)===TRUE){header('Location: detalles.php?idmodelo='.$idmodelo);}
     }
   }
@@ -98,18 +98,18 @@ if(isset($_GET['idmodelo'])){
   <meta name="application-name" content="Tienda Virtual de Ropa, Rouxa."/>
   <link rel="icon" type="image/jpg" sizes="16x16" href="../admin/img/<?php echo $imageLogo;?>">
   <link rel="stylesheet" href="../css/new.css">
-  <link rel="stylesheet" href="../vendor/owlcarousel/assets/owl.carousel.min.css">
-  <link rel="stylesheet" href="../vendor/owlcarousel/assets/owl.theme.default.min.css">
+  <link rel="stylesheet" href="../admin/assets/vendor/owlcarousel/assets/owl.carousel.min.css">
+  <link rel="stylesheet" href="../admin/assets/vendor/owlcarousel/assets/owl.theme.default.min.css">
   <link href="../admin/assets/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
   <script src="../admin/assets/libs/jquery/dist/jquery.min.js"></script>
-  <script src="../vendor/owlcarousel/owl.carousel.min.js"></script>
+  <script src="../admin/assets/vendor/owlcarousel/owl.carousel.min.js"></script>
   <title><?php echo $nombrePagina;?></title>
 </head>
 <body>
   <?php
   include '../common/menu.php';
   include '../common/2domenu.php';
-  $sql='SELECT * FROM modelos WHERE IDMODELO='.$idmodelo;
+  $sql='SELECT * FROM MODELOS WHERE IDMODELO='.$idmodelo;
   $res=$conn->query($sql);
   while($f=$res->fetch_assoc()){
     ?>

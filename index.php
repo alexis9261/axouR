@@ -39,14 +39,14 @@ if($result->num_rows>0){
   <meta name="author" content="Eutuxia, C.A.">
   <meta name="application-name" content="Suministros Mavic."/>
   <link rel="icon" type="image/jpg" sizes="16x16" href="admin/img/<?php echo $imageLogo;?>">
-  <link rel="stylesheet" href="vendor/owlcarousel/assets/owl.carousel.min.css">
-  <link rel="stylesheet" href="vendor/owlcarousel/assets/owl.theme.default.min.css">
+  <link rel="stylesheet" href="admin/assets/vendor/owlcarousel/assets/owl.carousel.min.css">
+  <link rel="stylesheet" href="admin/assets/vendor/owlcarousel/assets/owl.theme.default.min.css">
   <link rel="stylesheet" href="css/new.css">
   <link href="admin/assets/libs/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Playfair+Display" rel="stylesheet">
   <script src="admin/assets/libs/jquery/dist/jquery.min.js"></script>
   <!--script async src="//pagead2.googlesyndication.com/pagead/js/adsbygoogle.js"></script-->
-  <script src="vendor/owlcarousel/owl.carousel.min.js"></script>
+  <script src="admin/assets/vendor/owlcarousel/owl.carousel.min.js"></script>
   <!--script>(adsbygoogle = window.adsbygoogle || []).push({google_ad_client: "ca-pub-8952175764108741",enable_page_level_ads: true});</script-->
   <title><?php echo $nombrePagina;?></title>
 </head>
@@ -91,13 +91,15 @@ if($result->num_rows>0){
   <!-- Otros Productos 1-->
   <?php if(isset($categorias_padres[0])){ ?>
   <div class="container mt-5">
-    <h4 class="text-muted mb-2 lead">Todo los relacionado con <strong><?php echo $categorias_padres[0];?></strong>.</h4>
-    <div class="owl-carousel owl-theme py-1 my-2" id="productoCarousel">
       <?php
       $id_categoria=$id_categorias_padres[0];
       $sql="SELECT p.NOMBRE_P,p.CATEGORIAID,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.CATEGORIAID='$id_categoria' AND p.ESTATUS=0 ORDER BY Rand() LIMIT 5";
       $result=$conn->query($sql);
       if($result->num_rows>0){
+        ?>
+        <h4 class="text-muted mb-2 lead">Todo lo relacionado con <strong><?php echo $categorias_padres[0];?></strong>.</h4>
+        <div class="owl-carousel owl-theme py-1 my-2" id="productoCarousel">
+        <?php
         while($row=$result->fetch_assoc()){
           $idmodelo=$row['IDMODELO'];
           $titulo=$row['NOMBRE_P'];
@@ -135,13 +137,15 @@ if($result->num_rows>0){
   <!-- Otros Productos 2 -->
   <?php if(isset($categorias_padres[1])){ ?>
           <div class="container">
-            <h4 class="text-muted mb-2 lead">Todo los relacionado con <strong><?php echo $categorias_padres[1];?></strong>.</h4>
-            <div class="owl-carousel owl-theme px-2 py-1 my-2" id="productoCarousel2">
           <?php
           $id_categoria=$id_categorias_padres[1];
           $sql="SELECT p.NOMBRE_P,p.CATEGORIAID,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.CATEGORIAID='$id_categoria' AND p.ESTATUS=0 ORDER BY Rand() LIMIT 5";
           $result=$conn->query($sql);
           if($result->num_rows>0){
+            ?>
+            <h4 class="text-muted mb-2 lead">Todo lo relacionado con <strong><?php echo $categorias_padres[1];?></strong>.</h4>
+            <div class="owl-carousel owl-theme px-2 py-1 my-2" id="productoCarousel2">
+            <?php
             while($row=$result->fetch_assoc()){
               $idmodelo=$row['IDMODELO'];
               $titulo=$row['NOMBRE_P'];
@@ -184,13 +188,15 @@ if($result->num_rows>0){
   <!-- Otros Productos 3 -->
   <?php if(isset($categorias_padres[2])){ ?>
           <div class="container mt-5">
-            <h4 class="text-muted mb-2 lead">Todo los relacionado con <strong><?php echo $categorias_padres[2];?></strong>.</h4>
-            <div class="owl-carousel owl-theme px-2 py-1 my-2" id="productoCarousel3">
           <?php
           $id_categoria=$id_categorias_padres[2];
           $sql="SELECT p.NOMBRE_P,p.CATEGORIAID,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.CATEGORIAID='$id_categoria' AND p.ESTATUS=0 ORDER BY Rand() LIMIT 5";
           $result=$conn->query($sql);
           if($result->num_rows>0){
+            ?>
+            <h4 class="text-muted mb-2 lead">Todo lo relacionado con <strong><?php echo $categorias_padres[2];?></strong>.</h4>
+            <div class="owl-carousel owl-theme px-2 py-1 my-2" id="productoCarousel3">
+            <?php
             while($row=$result->fetch_assoc()){
               $idmodelo=$row['IDMODELO'];
               $titulo=$row['NOMBRE_P'];
@@ -236,13 +242,15 @@ if($result->num_rows>0){
   <!-- Otros Productos 4 -->
   <?php if(isset($categorias_padres[3])){ ?>
           <div class="container">
-            <h4 class="text-muted mb-2 lead">Todo los relacionado con <strong><?php echo $categorias_padres[3];?></strong>.</h4>
-            <div class="owl-carousel owl-theme px-2 py-1 my-2" id="productoCarousel4">
           <?php
           $id_categoria=$id_categorias_padres[3];
           $sql="SELECT p.NOMBRE_P,p.CATEGORIAID,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.CATEGORIAID='$id_categoria' AND p.ESTATUS=0 ORDER BY Rand() LIMIT 5";
           $result=$conn->query($sql);
           if($result->num_rows>0){
+            ?>
+            <h4 class="text-muted mb-2 lead">Todo lo relacionado con <strong><?php echo $categorias_padres[3];?></strong>.</h4>
+            <div class="owl-carousel owl-theme px-2 py-1 my-2" id="productoCarousel4">
+            <?php
             while($row=$result->fetch_assoc()){
               $idmodelo=$row['IDMODELO'];
               $titulo=$row['NOMBRE_P'];
@@ -280,13 +288,15 @@ if($result->num_rows>0){
   <!-- Otros Productos 5 -->
   <?php if(isset($categorias_padres[4])){ ?>
           <div class="container">
-            <h4 class="text-muted mb-2 lead">Todo los relacionado con <strong><?php echo $categorias_padres[4];?></strong>.</h4>
-            <div class="owl-carousel owl-theme px-2 py-1 my-2" id="productoCarousel6">
           <?php
           $id_categoria=$id_categorias_padres[4];
           $sql="SELECT p.NOMBRE_P,p.CATEGORIAID,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.CATEGORIAID='$id_categoria' AND p.ESTATUS=0 ORDER BY Rand() LIMIT 5";
           $result=$conn->query($sql);
           if($result->num_rows>0){
+            ?>
+            <h4 class="text-muted mb-2 lead">Todo lo relacionado con <strong><?php echo $categorias_padres[4];?></strong>.</h4>
+            <div class="owl-carousel owl-theme px-2 py-1 my-2" id="productoCarousel6">
+            <?php
             while($row=$result->fetch_assoc()){
               $idmodelo=$row['IDMODELO'];
               $titulo=$row['NOMBRE_P'];
@@ -357,9 +367,9 @@ if($result->num_rows>0){
   </script>
   <?php } ?>
   <!-- Maps -->
-  <div id="mapa_tienda">
+  <!--div id="mapa_tienda">
     <iframe src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d15708.03522624633!2d-68.005718!3d10.179939!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x1d47af71967d9a49!2sSuministros+Mavic%2C+C.A!5e0!3m2!1ses!2sve!4v1562178603833!5m2!1ses!2sve" width="100%" height="400px" frameborder="0" style="border:0" allowfullscreen></iframe>
-  </div>
+  </div-->
   <script>
     $(document).on('click',"span.favorito-productos-imagen",function(){
       var aux=$(this);

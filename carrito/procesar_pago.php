@@ -5,7 +5,7 @@
  if(isset($_POST['id_pedido'],$_POST['banco_e'],$_POST['banco_r'],$_POST['monto'],$_POST['referencia'],$_POST['fechapago'])){
    $idPedido=$_POST['id_pedido'];
    //Validar que existe el PEDIDO
-   $sql="SELECT * FROM pedidos WHERE IDPEDIDO='$idPedido' LIMIT 1";
+   $sql="SELECT * FROM PEDIDOS WHERE IDPEDIDO='$idPedido' LIMIT 1";
    $result=$conn->query($sql);
    if($result->num_rows>0){
      $bancoe=$_POST['banco_e'];
@@ -17,9 +17,9 @@
      $fecha=$_POST['fechapago'];
      if($bancoe!=NULL && $bancor!=NULL && $monto!=NULL && $ref!=NULL && $fecha!=NULL){
        $ref=str_replace("'","",$ref);
-       $sql="INSERT INTO `pagos` (`IDPEDIDO`,`BANCOEMISOR`,`BANCORECEPTOR`,`MONTO`,`MONEDA`,`REFERENCIA`,`FECHAPAGO`,`ESTATUS`) VALUES ('$idPedido','$bancoe','$bancor',$monto,'$moneda','$ref','$fecha',0);";
+       $sql="INSERT INTO `PAGOS` (`IDPEDIDO`,`BANCOEMISOR`,`BANCORECEPTOR`,`MONTO`,`MONEDA`,`REFERENCIA`,`FECHAPAGO`,`ESTATUS`) VALUES ('$idPedido','$bancoe','$bancor',$monto,'$moneda','$ref','$fecha',0);";
        if($conn->query($sql)===TRUE){
-         $sql2="UPDATE `pedidos` SET `ESTATUS`='2' WHERE `IDPEDIDO`='$idPedido';";
+         $sql2="UPDATE `PEDIDOS` SET `ESTATUS`='2' WHERE `IDPEDIDO`='$idPedido';";
          if($conn->query($sql2)===TRUE){$respuesta=0;}
        }
      }

@@ -66,7 +66,7 @@ include '../common/datosGenerales.php';
         <p id="res">
           <?php echo $nombrePagina;?> C.A. No Acepta devoluciones por parte de los usuarios a menos que haya recibido un artículo con defectos de fabrica o que el producto recibido no sea el correcto.
           <br><br>
-          De igual manera, <?php echo $nombrePagina;?> C. A. Hará todo el esfuerzo por brindar información precisa, exacta y detallada de todos los artículos y/o servicios  que se muestran en www.suministrosmavic.com . Es su deber revisar detalladamente cada imagen e información suministrada en nuestro sitio web, para evitar así posibles confusiones.
+          De igual manera, <?php echo $nombrePagina;?> C. A. Hará todo el esfuerzo por brindar información precisa, exacta y detallada de todos los artículos y/o servicios  que se muestran en www.rouxa.com.ve . Es su deber revisar detalladamente cada imagen e información suministrada en nuestro sitio web, para evitar así posibles confusiones.
         </p>
         <hr>
       </div>
@@ -76,7 +76,7 @@ include '../common/datosGenerales.php';
         </h1>
         <p id="res">
 
-          En el caso de que a usted, se le haya enviado un pedido incorrecto o un producto defectuoso, por favor notificarlo inmediatamente vía e-mail a nuestro equipo de atención al cliente suministrosmavic@gmail.com  con la llave digital de la compra y nombre del artículo incorrecto o defectuoso.
+          En el caso de que a usted, se le haya enviado un pedido incorrecto o un producto defectuoso, por favor notificarlo inmediatamente a nuestro equipo de atención al cliente.
           <br><br>
           Los productos defectuoso o incorrectos deberán ser devueltos a nuestras oficinas, para corroborar el defecto de fábrica o el error al enviar el artículo.   una vez recibamos la prueba y corroboramos que se te fue enviado un artículo defectuoso o incorrecto,  Nosotros enviaremos el producto correcto.
           <br><br>

@@ -55,12 +55,12 @@ include '../common/datosGenerales.php';
           INFORMACIÓN GENERAL
         </h1>
         <p id="res">
-          Se expone que: <b><?php echo $nombrePagina;?> C.A.</b>, Rif J-411161314  es el Titular del sitio web <i>www.sumnistrosmavic.com.</i> <br>
-          <i>www.suministrosmavic.com</i> es operado por <b><?php echo $nombrePagina;?> C.A.</b>, Rif J-XXXXXXXXXX. En todo el sitio, los términos “nosotros”, “nos” y “nuestro” se refieren a <b><?php echo $nombrePagina;?> C.A.</b>
+          Se expone que: <b><?php echo $nombrePagina;?> C.A.</b>, Rif J-411161314  es el Titular del sitio web <i>www.rouxa.com.ve</i> <br>
+          <i>www.rouxa.com.ve</i> es operado por <b><?php echo $nombrePagina;?> C.A.</b>, Rif J-XXXXXXXXXX. En todo el sitio, los términos “nosotros”, “nos” y “nuestro” se refieren a <b><?php echo $nombrePagina;?> C.A.</b>
           <br><br>
-          <b><?php echo $nombrePagina;?> C.A.</b> ofrece el sitio web <i>www.sumnistrosmavic.com</i> , incluyendo toda la información, herramientas y servicios disponibles en este sitio, el usuario, está condicionado a la aceptación de todos los términos, condiciones, políticas y notificaciones aquí establecidos.
+          <b><?php echo $nombrePagina;?> C.A.</b> ofrece el sitio web <i>www.rouxa.com.ve</i> , incluyendo toda la información, herramientas y servicios disponibles en este sitio, el usuario, está condicionado a la aceptación de todos los términos, condiciones, políticas y notificaciones aquí establecidos.
           <br><br>
-          <i>www.sumnistrosmavic.com</i> ha sido construida para dar a conocer los productos y/o servicios ofrecidos por <b><?php echo $nombrePagina;?> C.A.</b>, consistentes en la puesta a disposición de un servicio de compra online de productos de oficina, impresoras, toners y demas articulos.
+          <i>www.rouxa.com.ve</i> ha sido construida para dar a conocer los productos y/o servicios ofrecidos por <b><?php echo $nombrePagina;?> C.A.</b>, consistentes en la puesta a disposición de un servicio de compra online de productos de oficina, impresoras, toners y demas articulos.
           <br><br>
           Al visitar nuestro sitio y/o comprar algo de nosotros, participas en nuestro “Servicio” y aceptas los siguientes términos y condiciones (“Términos de Servicio”, “Términos”), incluídos todos los términos y condiciones adicionales y las políticas a las que se hace referencia en el presente documento y/o disponible a través de hipervínculos. Estas Condiciones de Servicio se aplican a todos los usuarios  del sitio, incluyendo sin limitación a usuarios que sean navegadores, proveedores, clientes, comerciantes, y/o colaboradores de contenido.
           <br><br>
@@ -105,7 +105,7 @@ include '../common/datosGenerales.php';
           SECCIÓN 3 - PROPIEDAD INTELECTUAL E INDUSTRIAL
         </h1>
         <p id="res">
-          <?php echo $nombrePagina;?> CA es la titular de todos los derechos de propiedad intelectual de la página www.suministrosmavic.com así como de su código fuente, diseño, estructuras de navegación y los distintos elementos en ellas contenidos en la misma. Corresponden también a <?php echo $nombrePagina;?> CA el ejercicio exclusivo de los derechos de explotación de los mismos en cualquier forma y, en especial, los derechos de reproducción, distribución, comunicación pública y transformación.
+          <?php echo $nombrePagina;?> CA es la titular de todos los derechos de propiedad intelectual de la página www.rouxa.com.ve así como de su código fuente, diseño, estructuras de navegación y los distintos elementos en ellas contenidos en la misma. Corresponden también a <?php echo $nombrePagina;?> CA el ejercicio exclusivo de los derechos de explotación de los mismos en cualquier forma y, en especial, los derechos de reproducción, distribución, comunicación pública y transformación.
           <br><br>
           El presente sitio web,  las páginas que comprende y la información o elementos contenidos en las mismas, incluyen textos, documentos, fotografías, dibujos, representaciones gráficas, programas informáticos, así como logotipos, marcas, nombres comerciales, u otros signos distintivos, protegidos por derechos de propiedad intelectual.
           <br><br>
@@ -157,11 +157,11 @@ include '../common/datosGenerales.php';
         <p id="res">
           <?php echo $nombrePagina;?> C.A. ofrece como metodos de pago las transferencias bancarias.
           <br><br>
-          Si usted presenta dificultades al realizar proceso de pago, por favor proceda a comunicarse con nuestro equipo de atención al cliente suministrosmavic@gmail.com
+          Si usted presenta dificultades al realizar proceso de pago, por favor proceda a comunicarse con nuestro equipo de atención al cliente.
           <br><br>
-          En el caso de que usted sospeche que su orden ha sido duplicada, por favor contacte inmediatamente a nuestro equipo de atención al cliente a través del correo electrónico suministrosmavic@gmail.com , para proceder a investigar el problema y proceder a reversar el pago antes que el pedido sea procesado. Cualquier orden duplicada que haya sido enviada antes de que <?php echo $nombrePagina;?> C.A  haya sido notificada, será reversada una vez que los productos hayan sido devueltos a nuestra dirección, y posteriormente verificados.
+          En el caso de que usted sospeche que su orden ha sido duplicada, por favor contacte inmediatamente a nuestro equipo de atención al cliente a través de Whatsapp +58 412 743 78 60 ,para proceder a investigar el problema y proceder a reversar el pago antes que el pedido sea procesado. Cualquier orden duplicada que haya sido enviada antes de que <?php echo $nombrePagina;?> C.A  haya sido notificada, será reversada una vez que los productos hayan sido devueltos a nuestra dirección, y posteriormente verificados.
           <br><br>
-          La moneda disponible para realizar pagos en www.suministrosmavic.com es el Bolívar (Bs), Moneda oficial de Venezuela.
+          La moneda disponible para realizar pagos en www.rouxa.com.ve es el Bolívar (Bs), Moneda oficial de Venezuela.
         </p>
         <hr>
       </div>
@@ -174,7 +174,7 @@ include '../common/datosGenerales.php';
           <br><br>
           El cliente deberá suministrar sus datos personales y dirección de residencia con la finalidad de emitir una factura fiscal por la compra efectuada, cumpliendo así con los requisitos exigidos por el SENIAT.
           <br><br>
-          En caso de haberse facturado cargos que no hubiesen correspondido, deberá comunicarse con nuestro equipo de Atención al Cliente para resolver dicha cuestión (suministrosmavic@gmail.com)
+          En caso de haberse facturado cargos que no hubiesen correspondido, deberá comunicarse con nuestro equipo de Atención al Cliente para resolver dicha cuestión.
         </p>
         <hr>
       </div>
@@ -350,7 +350,7 @@ include '../common/datosGenerales.php';
             SECCIÓN 23 - INFORMACIÓN DE CONTACTO
           </h1>
           <p id="res">
-            Preguntas acerca de los Términos de Servicio deben ser enviadas a suministrosmavic@gmail.com
+            Preguntas acerca de los Términos de Servicio deben ser enviadas al Whatsapp +58 412 743 78 60
           </p>
         </div>
       </div>

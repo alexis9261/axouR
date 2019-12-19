@@ -5,7 +5,7 @@ include '../cambioDolar/index.php';
 include '../common/datosGenerales.php';
 if(isset($_SESSION['USER'])){
   $user=$_SESSION['USER'];
-  $sql="SELECT * FROM favoritos WHERE USERID='$user'";
+  $sql="SELECT * FROM FAVORITOS WHERE USERID='$user'";
   $result=$conn->query($sql);
   $array_favoritos=array();
   if($result->num_rows>0){
@@ -15,7 +15,7 @@ if(isset($_SESSION['USER'])){
   }
 }
 //categorias
-$sql="SELECT * FROM categorias WHERE PADRE=0 AND ESTATUS=0;";
+$sql="SELECT * FROM CATEGORIAS WHERE PADRE=0 AND ESTATUS=0;";
 $id_categorias=array();
 $categorias_padre=array();
 $result=$conn->query($sql);
@@ -26,7 +26,7 @@ if($result->num_rows>0){
   }
 }
 //marcas
-$sql="SELECT * FROM marcas WHERE ESTATUS=0 LIMIT 8 ";
+$sql="SELECT * FROM MARCAS WHERE ESTATUS=0 LIMIT 8 ";
 $id_marcas=array();
 $nombres_marcas=array();
 $result=$conn->query($sql);
@@ -37,7 +37,7 @@ if($result->num_rows>0){
   }
 }
 //Colores
-$sql="SELECT * FROM color LIMIT 16";
+$sql="SELECT * FROM COLOR LIMIT 16";
 $id_colores=array();
 $nombres_colores=array();
 $hex_colores=array();
@@ -171,7 +171,7 @@ $url=$_SERVER["REQUEST_URI"];
                 $rand=rand();
                 $total=0;
                 while(!$void){
-                  $sql="SELECT p.NOMBRE_P,p.PRECIO,m.IDMODELO,m.IMAGEN FROM productos p INNER JOIN modelos m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.ESTATUS=0 ORDER BY Rand($rand) LIMIT $numProd OFFSET $offset";
+                  $sql="SELECT p.NOMBRE_P,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.ESTATUS=0 ORDER BY Rand($rand) LIMIT $numProd OFFSET $offset";
                   $filtro="WHERE p.ESTATUS=0 ";
                   #busqueda por genero
                   if(isset($_GET['genero']) && !empty($_GET['genero'])){
@@ -189,11 +189,11 @@ $url=$_SERVER["REQUEST_URI"];
                   if(isset($_GET['color'])){
                     $filtro.=" AND m.COLOR1=".$_GET['color']." OR m.COLOR2=".$_GET['color'];
                   }
-                  $sql="SELECT p.NOMBRE_P,p.PRECIO,m.IDMODELO,m.IMAGEN FROM productos p INNER JOIN modelos m ON p.IDPRODUCTO=m.IDPRODUCTO ".$filtro." ORDER BY Rand($rand) LIMIT $numProd OFFSET $offset";
+                  $sql="SELECT p.NOMBRE_P,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO ".$filtro." ORDER BY Rand($rand) LIMIT $numProd OFFSET $offset";
                   #busqueda por el buscador
                   if(isset($_GET['busqueda']) && !empty($_GET['busqueda'])){
                     $busqueda=$_GET['busqueda'];
-                    $sql="SELECT p.NOMBRE_P,p.PRECIO,m.IDMODELO,m.IMAGEN FROM productos p INNER JOIN modelos m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.NOMBRE_P LIKE '%$busqueda%' AND p.ESTATUS=0 ORDER BY Rand($rand) LIMIT $numProd OFFSET $offset";
+                    $sql="SELECT p.NOMBRE_P,p.PRECIO,m.IDMODELO,m.IMAGEN FROM PRODUCTOS p INNER JOIN MODELOS m ON p.IDPRODUCTO=m.IDPRODUCTO WHERE p.NOMBRE_P LIKE '%$busqueda%' AND p.ESTATUS=0 ORDER BY Rand($rand) LIMIT $numProd OFFSET $offset";
                   }
                   $result=$conn->query($sql);
                   $cant_products=$result->num_rows;

@@ -66,7 +66,7 @@ include '../common/datosGenerales.php';
           <br><br>
           <?php echo $nombrePagina;?> C.A. asegura que cualquier información personal que usted provea durante los procesos de registro y compra, mantendrá un carácter confidencial y sólo será utilizada con el propósito de procesar su orden y brindarle el mejor servicio. <?php echo $nombrePagina;?> C.A. garantiza que su información personal cargada en nuestro portal no será facilitada a cualquier organización externa o terceras partes.
           <br><br>
-          Tenga en cuenta que datos bancarios, información de tarjetas de crédito / débito, o cualquier información personal referida a sus pagos, jamás serán solicitadas por nuestra plataforma www.suministrosmavic.com. Esta tarea de cobranza del pago de sus pedidos será procesada mediante un tercero “Mercadopago”, se recomienda leer términos y condiciones de dicha plataforma para concretar los pagos de forma correcta.
+          Tenga en cuenta que datos bancarios, información de tarjetas de crédito / débito, o cualquier información personal referida a sus pagos, jamás serán solicitadas por nuestra plataforma www.rouxa.com.ve. Esta tarea de cobranza del pago de sus pedidos será procesada mediante un tercero “Mercadopago”, se recomienda leer términos y condiciones de dicha plataforma para concretar los pagos de forma correcta.
         </p>
         <hr>
       </div>
@@ -86,7 +86,7 @@ include '../common/datosGenerales.php';
         <p id="res">
           Una cookie se refiere a un fichero que es enviado con la finalidad de solicitar permiso para almacenarse en su ordenador, al aceptar dicho fichero se crea y la cookie sirve entonces para tener información respecto al tráfico web, y también facilita las futuras visitas a una web recurrente. Otra función que tienen las cookies es que con ellas las web pueden reconocerte individualmente y por tanto brindarte el mejor servicio personalizado de su web.
           <br><br>
-          www.suministrosmavic.com, emplea las cookies para poder identificar las páginas que son visitadas y su frecuencia. Esta información es empleada únicamente para análisis estadístico y después la información se elimina de forma permanente. Usted puede eliminar las cookies en cualquier momento desde su ordenador. Sin embargo las cookies ayudan a proporcionar un mejor servicio de los sitios web, estás no dan acceso a información de su ordenador ni de usted, a menos de que usted así lo quiera y la proporcione directamente, visitas a una web .
+          www.rouxa.com.ve, emplea las cookies para poder identificar las páginas que son visitadas y su frecuencia. Esta información es empleada únicamente para análisis estadístico y después la información se elimina de forma permanente. Usted puede eliminar las cookies en cualquier momento desde su ordenador. Sin embargo las cookies ayudan a proporcionar un mejor servicio de los sitios web, estás no dan acceso a información de su ordenador ni de usted, a menos de que usted así lo quiera y la proporcione directamente, visitas a una web .
           <br><br>
           Usted puede aceptar o negar el uso de cookies, sin embargo la mayoría de navegadores aceptan cookies automáticamente pues sirve para tener un mejor servicio web. También usted puede cambiar la configuración de su ordenador para declinar las cookies. Si se declinan es posible que no pueda utilizar algunos de nuestros servicios.
         </p>

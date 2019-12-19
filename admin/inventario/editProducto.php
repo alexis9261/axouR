@@ -4,7 +4,7 @@ require '../../common/conexion.php';
 if(isset($_GET['idproducto']) and !empty($_GET['idproducto'])){
   $idproducto=$_GET['idproducto'];
   #lectura de producto
-  $sql="SELECT * FROM productos WHERE IDPRODUCTO='$idproducto';";
+  $sql="SELECT * FROM PRODUCTOS WHERE IDPRODUCTO='$idproducto';";
   $result=$conn->query($sql);
   if($result->num_rows>0){
      while($row=$result->fetch_assoc()){
@@ -285,7 +285,7 @@ if($result->num_rows>0){
             </div>
             <div class="container-fluid" id="container_modelos">
             <?php
-            $sql="SELECT * FROM modelos WHERE IDPRODUCTO='$idproducto'";
+            $sql="SELECT * FROM MODELOS WHERE IDPRODUCTO='$idproducto'";
             $result=$conn->query($sql);
             $array_id_modelos=array();
             $cont=0;
@@ -355,7 +355,7 @@ if($result->num_rows>0){
                   </div>
                 </div>
                 <?php
-                $sqla="SELECT * FROM inventario WHERE IDMODELO='$IdModelo'";
+                $sqla="SELECT * FROM INVENTARIO WHERE IDMODELO='$IdModelo'";
                 $resulta=$conn->query($sqla);
                 if($resulta->num_rows>0){
                   while($rowa=$resulta->fetch_assoc()){

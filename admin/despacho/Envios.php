@@ -9,9 +9,9 @@ if(isset($_GET['orden'],$_GET['id_pedido'])){
   if($_GET['orden']=='good'){
     if(isset($_GET['guia']) && $_GET['guia']!=NULL){
       $guia=$_GET['guia'];
-      $sql="UPDATE `envios` SET `GUIA`='$guia' WHERE `PEDIDOID`='$id_pedido'";
+      $sql="UPDATE `ENVIOS` SET `GUIA`='$guia' WHERE `PEDIDOID`='$id_pedido'";
       if($conn->query($sql)===TRUE){
-        $sql2="UPDATE `pedidos` SET `ESTATUS`='6' WHERE `IDPEDIDO`='$id_pedido'";
+        $sql2="UPDATE `PEDIDOS` SET `ESTATUS`='6' WHERE `IDPEDIDO`='$id_pedido'";
         if($conn->query($sql2)===TRUE){}
       }
     }
@@ -25,9 +25,9 @@ if(isset($_GET['orden'],$_GET['id_pedido'])){
     $estatus=0;
     #ORIGEN
     $origen='Envios';
-    $sql="UPDATE `pedidos` SET `ESTATUS`='10' WHERE `PEDIDOID`='$id_pedido'";
+    $sql="UPDATE `PEDIDOS` SET `ESTATUS`='10' WHERE `PEDIDOID`='$id_pedido'";
     if($conn->query($sql)===TRUE){}
-    $sql="INSERT INTO `fallas`(`IDPEDIDO`,`REPORTERO`,`ESTATUS`,`PROBLEMA`,`FECHAFALLA`,`ORIGEN`) VALUES ('$id_pedido','$reportero','$estatus','$comentario',NOW(),'$origen')";
+    $sql="INSERT INTO `FALLAS`(`IDPEDIDO`,`REPORTERO`,`ESTATUS`,`PROBLEMA`,`FECHAFALLA`,`ORIGEN`) VALUES ('$id_pedido','$reportero','$estatus','$comentario',NOW(),'$origen')";
     if($conn->query($sql)===TRUE){}
     $conn->close();
   }
@@ -46,7 +46,7 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
    <meta name="author" content="Eutuxia Web, C.A.">
    <link rel="icon" type="image/jpg" sizes="16x16" href="<?php echo $root_folder;?>/admin/img/<?php echo $imageLogo;?>">
    <title><?php echo $nombrePagina;?> - Administración</title>
-   <link href="../dist/css/style.min.css" rel="stylesheet">
+   <link href="../assets/dist/css/style.min.css" rel="stylesheet">
    <link href="../../css/new.css" rel="stylesheet">
    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
    <!--[if lt IE 9]>
@@ -77,7 +77,7 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
           <div class="row justify-content-around mb-3">
             <div class="col-sm-4 text-center">
               <?php
-              $sql="SELECT COUNT(*) AS TOTAL FROM pedidos WHERE ESTATUS=3";
+              $sql="SELECT COUNT(*) AS TOTAL FROM PEDIDOS WHERE ESTATUS=3";
               $result=$conn->query($sql);
               if($result->num_rows>0){while($row=$result->fetch_assoc()){$total_buscar=$row['TOTAL'];}}
                ?>
@@ -85,7 +85,7 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
             </div>
             <div class="col-sm-4 text-center">
               <?php
-              $sql="SELECT COUNT(*) AS TOTAL FROM pedidos WHERE ESTATUS=4";
+              $sql="SELECT COUNT(*) AS TOTAL FROM PEDIDOS WHERE ESTATUS=4";
               $result=$conn->query($sql);
               if($result->num_rows>0){while($row=$result->fetch_assoc()){$total_empaquetar=$row['TOTAL'];}}
                ?>
@@ -93,7 +93,7 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
             </div>
             <div class="col-sm-4 text-center">
               <?php
-              $sql="SELECT COUNT(*) AS TOTAL FROM pedidos WHERE ESTATUS=5";
+              $sql="SELECT COUNT(*) AS TOTAL FROM PEDIDOS WHERE ESTATUS=5";
               $result=$conn->query($sql);
               if($result->num_rows>0){while($row=$result->fetch_assoc()){$total_enviar=$row['TOTAL'];}}
                ?>
@@ -101,7 +101,7 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
             </div>
           </div>
             <?php
-            $sql="SELECT `IDPEDIDO` FROM `pedidos` WHERE `ESTATUS`=5 ORDER BY FECHAPEDIDO ASC";
+            $sql="SELECT `IDPEDIDO` FROM `PEDIDOS` WHERE `ESTATUS`=5 ORDER BY FECHAPEDIDO ASC";
             $result=$conn->query($sql);
             if($result->num_rows>0){
               ?>
@@ -122,9 +122,9 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
                 <?php
                 while($row=$result->fetch_assoc()){
                   $id=$row['IDPEDIDO'];
-                  $sql2="SELECT * FROM pedidos p
-                  INNER JOIN envios e ON e.PEDIDOID=p.IDPEDIDO
-                  INNER JOIN compras c ON c.PEDIDOID=p.IDPEDIDO
+                  $sql2="SELECT * FROM PEDIDOS p
+                  INNER JOIN ENVIOS e ON e.PEDIDOID=p.IDPEDIDO
+                  INNER JOIN COMPRAS c ON c.PEDIDOID=p.IDPEDIDO
                   WHERE p.IDPEDIDO='$id' and ESTATUS=5"; //encuentro los articulos del pedido
                   $result2=$conn->query($sql2);
                   if($result2->num_rows>0){
@@ -238,7 +238,7 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
     </script>
     <script src="../assets/libs/popper.js/dist/umd/popper.min.js"></script>
     <script src="../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-    <script src="../dist/js/custom.min.js"></script>
-    <script src="../../vendor/datatables/datatables.min.js"></script>
+    <script src="../assets/dist/js/custom.min.js"></script>
+    <script src="../assets/vendor/datatables/datatables.min.js"></script>
   </body>
   </html>

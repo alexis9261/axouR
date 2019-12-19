@@ -144,7 +144,7 @@ if(isset($_SESSION['total_items'])){$cantidad_total=$_SESSION['total_items'];}
               $razonSocial='';
               $rif='';
               $dirFiscal='';
-              $sql="SELECT RAZONSOCIAL,RIFCI,DIRFISCAL FROM `usuarios` WHERE CORREO='$email_user'";
+              $sql="SELECT RAZONSOCIAL,RIFCI,DIRFISCAL FROM `USUARIOS` WHERE CORREO='$email_user'";
               $result=$conn->query($sql);
               if($result->num_rows>0){
                 while($row=$result->fetch_assoc()){

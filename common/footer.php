@@ -4,7 +4,6 @@
       <div class="col-sm-6 col-md-2 d-none d-sm-block">
         <ul class="lista">
           <li><h4 class="text-white">General</h4></li>
-          <li><a class="enlace" href="<?php echo $root_folder;?>/compras/index.php">Compras</a></li>
           <li><a class="enlace" href="<?php echo $root_folder;?>/info/index.php?id=9">Nosotros</a></li>
           <li><a class="enlace" href="<?php echo $root_folder;?>/info/terminos.php">Términos y condiciones</a></li>
           <li><a class="enlace" href="<?php echo $root_folder;?>/info/index.php">Preguntas Frecuentes</a></li>

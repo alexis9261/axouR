@@ -8,7 +8,7 @@ include '../common/datosGenerales.php';
   <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta name="desciption" content="Tienda virtual de Suministros Mavic C.A. empresa de ventas de equipos de oficina. Impresoras.">
+    <meta name="desciption" content="Tienda virtual de Ropa, rouxa.">
     <meta name="keywords" content="<?php echo $nombrePagina;?>">
     <meta name="author" content="Eutuxia, C.A.">
     <meta name="application-name" content="<?php echo $nombrePagina;?>."/>

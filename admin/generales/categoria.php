@@ -12,10 +12,10 @@ if(isset($_GET['id']) && !empty($_GET['id'])){
   if(isset($_GET['band'])){
     $band=$_GET['band'];
     if($band==0){
-      $sql="UPDATE `categorias` SET `ESTATUS`=1 WHERE IDCATEGORIA=$Id_categoria";
+      $sql="UPDATE `CATEGORIAS` SET `ESTATUS`=1 WHERE IDCATEGORIA=$Id_categoria";
       if($conn->query($sql)===TRUE){$pausar=1;}else{$pausar=2;}
     }elseif($band==1){
-      $sql="UPDATE `categorias` SET `ESTATUS`=0 WHERE IDCATEGORIA=$Id_categoria";
+      $sql="UPDATE `CATEGORIAS` SET `ESTATUS`=0 WHERE IDCATEGORIA=$Id_categoria";
       if($conn->query($sql)===TRUE){$activar=1;}else{$activar=2;}
     }
   }
@@ -25,7 +25,7 @@ $perpage=25;
 if(isset($_GET['page']) & !empty($_GET['page'])){$curpage=$_GET['page'];}else{$curpage=1;}
 $start=($curpage*$perpage)-$perpage;
 #necesito el total de elementos
-$PageSql="SELECT * FROM CATEGORIAS";
+$PageSql="SELECT * FROM categorias";
 $pageres=mysqli_query($conn, $PageSql);
 $totalres=mysqli_num_rows($pageres);
 $endpage=ceil($totalres/$perpage);
@@ -43,7 +43,7 @@ $previouspage=$curpage - 1;
   <meta name="author" content="Eutuxia Web, C.A.">
   <link rel="icon" type="image/jpg" sizes="16x16" href="../img/<?php echo $imageLogo;?>">
   <title><?php echo $nombrePagina;?> - Administración</title>
-  <link href="../dist/css/style.min.css" rel="stylesheet">
+  <link href="../assets/dist/css/style.min.css" rel="stylesheet">
   <link href="../../css/new.css" rel="stylesheet">
   <script src="../assets/libs/jquery/dist/jquery.min.js"></script>
   <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
@@ -89,7 +89,7 @@ $previouspage=$curpage - 1;
                     <div class="input-group-append">
                       <span class="input-group-text" title="Estas categorias serán visibles en el segundo (2do) menu de la pagina principal." data-toggle="tooltip"><b>Nombre de categoria</b></span>
                     </div>
-                    <input type="text" id="nombre_categoria" class="form-control text-secondary" placeholder="Ej: Impresoras" required maxlength="30">
+                    <input type="text" id="nombre_categoria" class="form-control text-secondary" placeholder="Ej: Franelas" required maxlength="30">
                   </div>
                   <div class="input-group mb-3 col-sm-5">
                     <div class="input-group-append">
@@ -99,10 +99,9 @@ $previouspage=$curpage - 1;
                       <option value="0">Principal</option>
                       <?php
                       $sql="SELECT IDCATEGORIA,NOMBRE FROM CATEGORIAS WHERE ESTATUS=0 ORDER BY IDCATEGORIA";
-                      $result = $conn->query($sql);
+                      $result=$conn->query($sql);
                       if($result->num_rows > 0){
-                        while($row = $result->fetch_assoc()){
-                          #variabes
+                        while($row=$result->fetch_assoc()){
                           $id=$row['IDCATEGORIA'];
                           $nombre=$row['NOMBRE'];
                           echo "<option value='$id'>$nombre</option>";
@@ -145,7 +144,7 @@ $previouspage=$curpage - 1;
                 <?php } ?>
               </div>
               <?php
-              $sql="SELECT * FROM categorias WHERE ESTATUS=$estatus ORDER BY IDCATEGORIA LIMIT $start, $perpage";
+              $sql="SELECT * FROM CATEGORIAS WHERE ESTATUS=$estatus ORDER BY IDCATEGORIA LIMIT $start, $perpage";
               $result=$conn->query($sql);
               if($result->num_rows>0){ ?>
                 <div class="table-responsive">
@@ -247,12 +246,12 @@ $previouspage=$curpage - 1;
                     </ul>
                   </nav>
                 </center>
-              </div>
             <?php }else{ ?>
               <div class="card">
                 <h6 class="text-center text-secondary">Sin Categorias</h6>
               </div>
             <?php } ?>
+          </div>
           </div>
         </div>
       </div>
@@ -261,7 +260,7 @@ $previouspage=$curpage - 1;
 </div>
 <script src="../assets/libs/popper.js/dist/umd/popper.min.js"></script>
 <script src="../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="../dist/js/custom.min.js"></script>
+<script src="../assets/dist/js/custom.min.js"></script>
 <script src='https://cdn.jsdelivr.net/npm/sweetalert2@7.29.0/dist/sweetalert2.all.min.js'></script>
 </body>
 </html>

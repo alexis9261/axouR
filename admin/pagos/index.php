@@ -9,27 +9,27 @@ if(isset($_GET['orden'],$_GET['id'])){
   $newid=$_GET['id'];
   if($_GET['orden']=='good'){
     #cambiar de estatus
-    $sql="UPDATE `pagos` SET `ESTATUS`='1' WHERE  `IDPAGO`='$newid'";
+    $sql="UPDATE `PAGOS` SET `ESTATUS`='1' WHERE `IDPAGO`='$newid'";
     if($conn->query($sql)===TRUE){
       //Pago procesados - Validar que los fondos son suficientes
       $total=0;
       if(isset($_GET['idp'])){
         $idpedido=$_GET['idp'];
-        $sql="SELECT MONTO FROM `pagos` WHERE IDPEDIDO='$idpedido' and ESTATUS=1";
+        $sql="SELECT MONTO FROM `PAGOS` WHERE IDPEDIDO='$idpedido' and ESTATUS=1";
         $result=$conn->query($sql);
         if($result->num_rows>0){
           while($row=$result->fetch_assoc()){$total=$total+$row['MONTO'];}
           //buscar el monto de la compra en bs
-          $sql2="SELECT MONTO FROM `compras` WHERE IDPEDIDO='$idpedido' LIMIT 1";
+          $sql2="SELECT MONTO FROM `COMPRAS` WHERE IDPEDIDO='$idpedido' LIMIT 1";
           $result = $conn->query($sql2);
           if($result->num_rows>0){while($row=$result->fetch_assoc()){$compra_monto=$row['MONTO'];}}
           if($total>=$compra_monto){
             //actualizamos estatus a pago procesado
-            $sql3="UPDATE `pedidos` SET `ESTATUS`='3' WHERE `IDPEDIDO`='$idpedido'";
+            $sql3="UPDATE `PEDIDOS` SET `ESTATUS`='3' WHERE `IDPEDIDO`='$idpedido'";
             if($conn->query($sql3)===TRUE){}
           }else{
             //fondo insuficientes
-            $sql3="UPDATE `pedidos` SET `ESTATUS`='12' WHERE `IDPEDIDO`='$idpedido'";
+            $sql3="UPDATE `PEDIDOS` SET `ESTATUS`='12' WHERE `IDPEDIDO`='$idpedido'";
             if($conn->query($sql3)===TRUE){}
           }
         }
@@ -37,11 +37,11 @@ if(isset($_GET['orden'],$_GET['id'])){
     }
   }else if($_GET['orden']=='bad'){
     #cambia a estatus de Fallido
-    $sql="UPDATE `pagos` SET `ESTATUS`='2' WHERE `IDPAGO`='$newid'";
+    $sql="UPDATE `PAGOS` SET `ESTATUS`='2' WHERE `IDPAGO`='$newid'";
     if($conn->query($sql)===TRUE){}
   }else if($_GET['orden']=='review'){
     #cambia a estatus de Fallido
-    $sql="UPDATE `pagos` SET `ESTATUS`='0' WHERE `IDPAGO`='$newid'";
+    $sql="UPDATE `PAGOS` SET `ESTATUS`='0' WHERE `IDPAGO`='$newid'";
     if($conn->query($sql)===TRUE){}
   }
   header('location:index.php');
@@ -61,8 +61,8 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
   <link rel="icon" type="image/jpg" sizes="16x16" href="<?php echo $root_folder;?>/admin/img/<?php echo $imageLogo;?>">
   <title><?php echo $nombrePagina;?> - Administración</title>
   <link href="../../css/new.css" rel="stylesheet">
-  <link href="../dist/css/style.min.css" rel="stylesheet">
-  <link href="../../vendor/datatables/datatables.min.css" rel="stylesheet">
+  <link href="../assets/dist/css/style.min.css" rel="stylesheet">
+  <link href="../assets/vendor/datatables/datatables.min.css" rel="stylesheet">
   <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
   <!--[if lt IE 9]>
   <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
@@ -87,7 +87,7 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
                 </div>
               </div>
                 <?php
-                $sql="SELECT * FROM `pagos` WHERE 1 ORDER BY IDPAGO DESC";
+                $sql="SELECT * FROM `PAGOS` WHERE 1 ORDER BY IDPAGO DESC";
                 $result=$conn->query($sql);
                 if($result->num_rows>0){
                   $cont=0;
@@ -240,8 +240,8 @@ $array_dias=array('','Lun','Mar','Mie','Jue','Vie','Sab','Dom');
       </script>
       <script src="../assets/libs/popper.js/dist/umd/popper.min.js"></script>
       <script src="../assets/libs/bootstrap/dist/js/bootstrap.min.js"></script>
-      <script src="../dist/js/custom.min.js"></script>
-      <script src="../../vendor/datatables/datatables.min.js"></script>
+      <script src="../assets/dist/js/custom.min.js"></script>
+      <script src="../assets/vendor/datatables/datatables.min.js"></script>
     </body>
 </html>
 <?php $conn->close(); ?>
