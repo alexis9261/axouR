@@ -5,7 +5,14 @@ include '../cambioDolar/index.php';
 include '../common/datosGenerales.php';
 if(isset($_SESSION['USER'])){
   $user=$_SESSION['USER'];
-  $sql="SELECT * FROM FAVORITOS WHERE USERID='$user'";
+  $sql="SELECT IDUSUARIO FROM USUARIOS WHERE CORREO='$user'";
+  $result=$conn->query($sql);
+  if($result->num_rows>0){
+    while($row=$result->fetch_assoc()){
+      $id_user=$row['IDUSUARIO'];
+    }
+  }
+  $sql="SELECT * FROM FAVORITOS WHERE USERID='$id_user'";
   $result=$conn->query($sql);
   $array_favoritos=array();
   if($result->num_rows>0){
@@ -261,7 +268,7 @@ $url=$_SERVER["REQUEST_URI"];
     $(document).on('click',"span.favorito-vitrina-imagen",function(){
       var aux=$(this);
       var id=aux.attr("id");
-      $.get('../ajax_favoritos.php',{id:id,e:1},v,'text');
+      $.get('ajax_favoritos.php',{id:id,e:1},v,'text');
       function v(r){
         aux.removeClass();
         aux.children("svg").removeClass();
@@ -272,7 +279,7 @@ $url=$_SERVER["REQUEST_URI"];
     $(document).on('click',"span.favorito-vitrina-imagen-select",function(){
       var aux=$(this);
       var id=aux.attr("id");
-      $.get('../ajax_favoritos.php',{id:id,e:2},v,'text');
+      $.get('ajax_favoritos.php',{id:id,e:2},v,'text');
       function v(r){
         aux.removeClass();
         aux.children("svg").removeClass();
@@ -282,7 +289,7 @@ $url=$_SERVER["REQUEST_URI"];
     });
   </script>
   <?php include '../common/footer.php';?>
-  <script src="../admin/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+  <script src="../admin/assets/libs/popper.js/dist/popper.min.js"></script>
   <script src="../admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

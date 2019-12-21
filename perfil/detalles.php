@@ -6,14 +6,14 @@ include '../common/datosGenerales.php';
 $array_meses=array('','Enero','Febrero','Marzo','Abril','Mayo','Junio','Julio','Agosto','Septiembre','Octubre','Noviembre','Diciembre');
 if(isset($_GET['id'])){$idPedido=$_GET['id'];}else {header('location: compras.php');}
 if(isset($_GET['resp'])){$respuesta=$_GET['resp'];}
-$sql="SELECT * FROM `PEDIDOS` WHERE IDPEDIDO='$idPedido'";
+$sql="SELECT p.ESTATUS,p.FECHAPEDIDO,c.MONTO FROM `PEDIDOS` p INNER JOIN `COMPRAS` c ON p.IDPEDIDO=c.PEDIDOID WHERE p.IDPEDIDO='$idPedido' AND p.EMAILUSER='$email_user'";
 $result=$conn->query($sql);
 if($result->num_rows>0){
   while($row=$result->fetch_assoc()){
-    $emailUser=$row['EMAILUSER'];
     $estatusPedido=$row['ESTATUS'];
     $fechaPedido=$row['FECHAPEDIDO'];
     $stingDate=substr($fechaPedido,8,2)." de ".$array_meses[intval(substr($fechaPedido,5,2))]." del ".substr($fechaPedido,0,4);
+    $montoPedido=$row['MONTO'];
   }
 }
 /*switch($estatusPedido){
@@ -47,9 +47,6 @@ if($result->num_rows>0){
     $status='Error';
 }*/
 //Monto Total
-$sql="SELECT * FROM `COMPRAS` WHERE PEDIDOID='$idPedido' LIMIT 1";
-$result=$conn->query($sql);
-if($result->num_rows>0){while($row=$result->fetch_assoc()){$montoPedido=$row['MONTO'];}}
 //buscar los nombres de las tallas
 $nombre_tallas=array();
 $id_tallas_bd=array();
@@ -122,7 +119,7 @@ if($result->num_rows>0){
               $inventarioId=$row['INVENTARIOID'];
               $cantidad=$row['CANTIDAD'];
               $precioProducto=$row['PRECIO'];
-              $sql2="SELECT i.IDMODELO,i.TALLAID,i.PESO,m.IDPRODUCTO,m.COLOR1,m.COLOR2,m.IMAGEN,p.NOMBRE_P,p.GENERO,p.CATEGORIAID,p.MARCAID,p.ESTATUS FROM `INVENTARIO` i INNER JOIN `modelos` m ON i.IDMODELO=m.IDMODELO INNER JOIN `PRODUCTOS` p ON m.IDPRODUCTO=p.IDPRODUCTO WHERE i.IDINVENTARIO='$inventarioId'";
+              $sql2="SELECT i.IDMODELO,i.TALLAID,i.PESO,m.IDPRODUCTO,m.COLOR1,m.COLOR2,m.IMAGEN,p.NOMBRE_P,p.GENERO,p.CATEGORIAID,p.MARCAID,p.ESTATUS FROM `INVENTARIO` i INNER JOIN `MODELOS` m ON i.IDMODELO=m.IDMODELO INNER JOIN `PRODUCTOS` p ON m.IDPRODUCTO=p.IDPRODUCTO WHERE i.IDINVENTARIO='$inventarioId'";
               $result2=$conn->query($sql2);
               if($result2->num_rows>0){
                 while($row2=$result2->fetch_assoc()){

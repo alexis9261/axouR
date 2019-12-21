@@ -55,204 +55,204 @@ if($result->num_rows>0){
             </div>
           </div>
         </div>
-            <div class="container-fluid">
-              <form action="addItem.php" method="POST" enctype="multipart/form-data" id="formulario">
-                <div class="row mt-3">
-                  <div class="input-group mb-3 col-sm-12">
-                    <div class="input-group-append">
-                      <span class="input-group-text"><b>Título</b></span>
-                    </div>
-                    <input type="text" name="nombre_p" class="form-control text-dark" placeholder="Ingrese el nombre (Max. 60 letras)" required maxlength="60">
-                  </div>
-                  <div class="input-group mb-3 col-sm-3">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text"><b>Genero</b></label>
-                    </div>
-                    <select name="genero" class="custom-select text-dark">
-                      <option value="1">Dama</option>
-                      <option value="2">Caballero</option>
-                      <option value="3">Niño</option>
-                      <option value="4">Niña</option>
-                    </select>
-                  </div>
-                  <div class="input-group mb-3 col-sm-3">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text"><b>Prenda</b></label>
-                    </div>
-                    <select name="categoria" class="custom-select text-dark">
-                      <?php
-                      $sql="SELECT IDCATEGORIA,NOMBRE FROM CATEGORIAS WHERE PADRE=0";
-                      $result=$conn->query($sql);
-                      if($result->num_rows>0){
-                        while($row = $result->fetch_assoc()){
-                          $id=$row['IDCATEGORIA'];
-                          $nombre=$row['NOMBRE'];
-                          ?>
-                          <option value="<?php echo $id; ?>"><?php echo $nombre; ?></option>
-                          <?php
-                        }
-                      }
+        <div class="container-fluid">
+          <form action="addItem.php" method="POST" enctype="multipart/form-data" id="formulario">
+            <div class="row mt-3">
+              <div class="input-group mb-3 col-sm-12">
+                <div class="input-group-append">
+                  <span class="input-group-text"><b>Título</b></span>
+                </div>
+                <input type="text" name="nombre_p" class="form-control text-dark" placeholder="Ingrese el nombre (Max. 60 letras)" required maxlength="60">
+              </div>
+              <div class="input-group mb-3 col-sm-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text"><b>Genero</b></label>
+                </div>
+                <select name="genero" class="custom-select text-dark">
+                  <option value="1">Dama</option>
+                  <option value="2">Caballero</option>
+                  <option value="3">Niño</option>
+                  <option value="4">Niña</option>
+                </select>
+              </div>
+              <div class="input-group mb-3 col-sm-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text"><b>Prenda</b></label>
+                </div>
+                <select name="categoria" class="custom-select text-dark">
+                  <?php
+                  $sql="SELECT IDCATEGORIA,NOMBRE FROM CATEGORIAS WHERE PADRE=0";
+                  $result=$conn->query($sql);
+                  if($result->num_rows>0){
+                    while($row = $result->fetch_assoc()){
+                      $id=$row['IDCATEGORIA'];
+                      $nombre=$row['NOMBRE'];
                       ?>
-                    </select>
-                  </div>
-                  <div class="input-group mb-3 col-sm-3">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text"><b>Marca</b></label>
-                    </div>
-                    <select class="custom-select text-dark" name="marca">
+                      <option value="<?php echo $id; ?>"><?php echo $nombre; ?></option>
                       <?php
-                      $sql="SELECT * FROM MARCAS";
-                      $result=$conn->query($sql);
-                      if($result->num_rows>0){
-                        while($row=$result->fetch_assoc()){
-                          ?>
-                          <option value="<?php echo $row['IDMARCA'];?>"><?php echo $row['NOMBREMARCA'];?></option>
-                          <?php
-                        }
-                      }
+                    }
+                  }
+                  ?>
+                </select>
+              </div>
+              <div class="input-group mb-3 col-sm-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text"><b>Marca</b></label>
+                </div>
+                <select class="custom-select text-dark" name="marca">
+                  <?php
+                  $sql="SELECT * FROM MARCAS";
+                  $result=$conn->query($sql);
+                  if($result->num_rows>0){
+                    while($row=$result->fetch_assoc()){
                       ?>
-                    </select>
-                  </div>
-                  <div class="input-group mb-3 col-sm-3">
-                    <div class="input-group-append">
-                      <span class="input-group-text"><b>Precio</b></span>
-                    </div>
-                    <input type="number" name="precio" class="form-control text-dark" placeholder="Precio al detal" required>
-                    <div class="input-group-append" title="Dólares" data-toggle="tooltip">
-                      <span class="input-group-text"><b>$</b></span>
-                    </div>
-                  </div>
+                      <option value="<?php echo $row['IDMARCA'];?>"><?php echo $row['NOMBREMARCA'];?></option>
+                      <?php
+                    }
+                  }
+                  ?>
+                </select>
+              </div>
+              <div class="input-group mb-3 col-sm-3">
+                <div class="input-group-append">
+                  <span class="input-group-text"><b>Precio</b></span>
                 </div>
-                <hr>
-                <h4 class="ml-4">Caracteristicas</h4>
-                <div class="row">
-                  <div class="input-group mb-3 col-sm-4">
-                    <div class="input-group-append">
-                      <span class="input-group-text"><b>Material</b></span>
-                    </div>
-                    <input type="text" name="material" class="form-control text-dark" placeholder="Ej: Algodon" required maxlength="25">
-                  </div>
-                  <div class="input-group mb-3 col-sm-3">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text"><b>Cuello</b></label>
-                    </div>
-                    <select name="cuello" class="custom-select text-dark">
-                      <option value="0">No Aplica</option>
-                      <option value="1">Redondo</option>
-                      <option value="2">En V</option>
-                      <option value="3">Mao</option>
-                      <option value="4">Chemise</option>
-                    </select>
-                  </div>
-                  <div class="input-group mb-3 col-sm-3">
-                    <div class="input-group-prepend">
-                      <label class="input-group-text"><b>Manga</b></label>
-                    </div>
-                    <select name="manga" class="custom-select text-dark">
-                      <option value="0">No Aplica</option>
-                      <option value="1">Corta</option>
-                      <option value="2">3/4</option>
-                      <option value="3">Larga</option>
-                      <option value="4">Sin Manga</option>
-                    </select>
-                  </div>
+                <input type="number" name="precio" class="form-control text-dark" placeholder="Precio al detal" required>
+                <div class="input-group-append" title="Dólares" data-toggle="tooltip">
+                  <span class="input-group-text"><b>$</b></span>
                 </div>
-                <hr>
-                <div class="row">
-                  <div class="col-auto">
-                    <h4 class="ml-4">Modelos</h4>
-                  </div>
-                   <span class="ml-auto mr-3 enlace2" id="agregar_modelo">Agregar Modelo</span>
-                </div>
-                <div class="container-fluid" id="container_modelos">
-                  <div class="row">
-                    <span class="col-auto ml-4 mt-2" id="image_preview0"></span>
-                    <span class="text-primary ml-auto modelos">Modelo 1</span>
-                    <div class="col-12 ml-4">
-                      <label class="text_modelo_imagen labelModeloImage" for="modeloImage0" id="0">Seleccionar Imagen</label>
-                      <input class="form-group modeloImage" name="archivo[]" type="file" required hidden="hidden" id="modeloImage0"/>
-                    </div>
-                    <div class="input-group mb-3 col-sm-4">
-                      <div class="input-group-prepend">
-                        <label class="input-group-text"><b>Color principal</b></label>
-                      </div>
-                      <select class="custom-select text-dark" name="color_primary[]" required>
-                        <?php
-                        $sql="SELECT * FROM COLOR";
-                        $result=$conn->query($sql);
-                        if($result->num_rows>0){
-                          while($row=$result->fetch_assoc()){
-                            ?>
-                            <option value="<?php echo $row['IDCOLOR'];?>"><?php echo $row['COLOR'];?></option>
-                            <?php
-                          }
-                        }
-                        ?>
-                      </select>
-                    </div>
-                    <div class="input-group mb-3 col-sm-4">
-                      <div class="input-group-prepend">
-                        <label class="input-group-text"><b>Color secundario</b></label>
-                      </div>
-                      <select class="custom-select text-dark" name="color_secondary[]" required>
-                        <?php
-                        $sql="SELECT * FROM COLOR";
-                        $result=$conn->query($sql);
-                        if($result->num_rows>0){
-                          while($row=$result->fetch_assoc()){
-                            ?>
-                            <option value="<?php echo $row['IDCOLOR'];?>"><?php echo $row['COLOR'];?></option>
-                            <?php
-                          }
-                        }
-                        ?>
-                      </select>
-                    </div>
-                  </div>
-                  <div class="row">
-                    <div class="input-group mb-3 col-sm-3">
-                      <div class="input-group-append">
-                        <span class="input-group-text"><b>Talla</b></span>
-                      </div>
-                      <select name="talla[]" class="form-control text-dark" required>
-                        <?php
-                        foreach($array_tallas as $value){
-                          $tallas=explode("|", $value);
-                          ?>
-                          <option value="1_<?php echo $tallas[0];?>"><?php echo $tallas[1];?></option>
-                          <?php
-                        }
-                        ?>
-                      </select>
-                    </div>
-                    <div class="input-group mb-3 col-sm-3">
-                      <div class="input-group-append">
-                        <span class="input-group-text"><b>Cantidad</b></span>
-                      </div>
-                      <input type="number" name="cantidad[]" class="form-control text-dark" min="1" required>
-                    </div>
-                    <div class="input-group mb-3 col-sm-3">
-                      <div class="input-group-append">
-                        <span class="input-group-text"><b>Peso (gr)</b></span>
-                      </div>
-                      <input type="number" name="peso[]" step="0.1" min="0.1" class="form-control text-dark">
-                    </div>
-                  </div>
-                  <span class="ml-auto enlace2 agregar_talla" id='t_1'>Agregar Talla</span>
-                </div>
-                <hr>
-                <h4 class="ml-4">Descripción</h4>
-                <div class="row">
-                  <div class="input-group mb-3 col-12">
-                    <textarea class="form-control text-dark" name="descripcion" placeholder="Describa el producto..." rows="8" cols="80" required></textarea>
-                  </div>
-                </div>
-                <div class="row justify-content-center mb-3">
-                  <button type="submit" class="btn btn-outline-primary">Agregar</button>
-                </div>
-              </form>
+              </div>
             </div>
+            <hr>
+            <h4 class="ml-4">Caracteristicas</h4>
+            <div class="row">
+              <div class="input-group mb-3 col-sm-4">
+                <div class="input-group-append">
+                  <span class="input-group-text"><b>Material</b></span>
+                </div>
+                <input type="text" name="material" class="form-control text-dark" placeholder="Ej: Algodon" required maxlength="25">
+              </div>
+              <div class="input-group mb-3 col-sm-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text"><b>Cuello</b></label>
+                </div>
+                <select name="cuello" class="custom-select text-dark">
+                  <option value="0">No Aplica</option>
+                  <option value="1">Redondo</option>
+                  <option value="2">En V</option>
+                  <option value="3">Mao</option>
+                  <option value="4">Chemise</option>
+                </select>
+              </div>
+              <div class="input-group mb-3 col-sm-3">
+                <div class="input-group-prepend">
+                  <label class="input-group-text"><b>Manga</b></label>
+                </div>
+                <select name="manga" class="custom-select text-dark">
+                  <option value="0">No Aplica</option>
+                  <option value="1">Corta</option>
+                  <option value="2">3/4</option>
+                  <option value="3">Larga</option>
+                  <option value="4">Sin Manga</option>
+                </select>
+              </div>
+            </div>
+            <hr>
+            <div class="row">
+              <div class="col-auto">
+                <h4 class="ml-4">Modelos</h4>
+              </div>
+              <span class="ml-auto mr-3 enlace2" id="agregar_modelo">Agregar Modelo</span>
+            </div>
+            <div class="container-fluid" id="container_modelos">
+              <div class="row">
+                <span class="col-auto ml-4 mt-2" id="image_preview0"></span>
+                <span class="text-primary ml-auto modelos">Modelo 1</span>
+                <div class="col-12 ml-4">
+                  <label class="text_modelo_imagen labelModeloImage" for="modeloImage0" id="0">Seleccionar Imagen</label>
+                  <input class="form-group modeloImage" name="archivo[]" type="file" required hidden="hidden" id="modeloImage0"/>
+                </div>
+                <div class="input-group mb-3 col-sm-4">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text"><b>Color principal</b></label>
+                  </div>
+                  <select class="custom-select text-dark" name="color_primary[]" required>
+                    <?php
+                    $sql="SELECT * FROM COLOR";
+                    $result=$conn->query($sql);
+                    if($result->num_rows>0){
+                      while($row=$result->fetch_assoc()){
+                        ?>
+                        <option value="<?php echo $row['IDCOLOR'];?>"><?php echo $row['COLOR'];?></option>
+                        <?php
+                      }
+                    }
+                    ?>
+                  </select>
+                </div>
+                <div class="input-group mb-3 col-sm-4">
+                  <div class="input-group-prepend">
+                    <label class="input-group-text"><b>Color secundario</b></label>
+                  </div>
+                  <select class="custom-select text-dark" name="color_secondary[]" required>
+                    <?php
+                    $sql="SELECT * FROM COLOR";
+                    $result=$conn->query($sql);
+                    if($result->num_rows>0){
+                      while($row=$result->fetch_assoc()){
+                        ?>
+                        <option value="<?php echo $row['IDCOLOR'];?>"><?php echo $row['COLOR'];?></option>
+                        <?php
+                      }
+                    }
+                    ?>
+                  </select>
+                </div>
+              </div>
+              <div class="row">
+                <div class="input-group mb-3 col-sm-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><b>Talla</b></span>
+                  </div>
+                  <select name="talla[]" class="form-control text-dark" required>
+                    <?php
+                    foreach($array_tallas as $value){
+                      $tallas=explode("|", $value);
+                      ?>
+                      <option value="1_<?php echo $tallas[0];?>"><?php echo $tallas[1];?></option>
+                      <?php
+                    }
+                    ?>
+                  </select>
+                </div>
+                <div class="input-group mb-3 col-sm-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><b>Cantidad</b></span>
+                  </div>
+                  <input type="number" name="cantidad[]" class="form-control text-dark" min="1" required>
+                </div>
+                <div class="input-group mb-3 col-sm-3">
+                  <div class="input-group-append">
+                    <span class="input-group-text"><b>Peso (gr)</b></span>
+                  </div>
+                  <input type="number" name="peso[]" step="0.1" min="0.1" class="form-control text-dark">
+                </div>
+              </div>
+              <span class="ml-auto enlace2 agregar_talla" id='t_1'>Agregar Talla</span>
+            </div>
+            <hr>
+            <h4 class="ml-4">Descripción</h4>
+            <div class="row">
+              <div class="input-group mb-3 col-12">
+                <textarea class="form-control text-dark" name="descripcion" placeholder="Describa el producto..." rows="8" cols="80" required></textarea>
+              </div>
+            </div>
+            <div class="row justify-content-center mb-3">
+              <button type="submit" class="btn btn-outline-primary">Agregar</button>
+            </div>
+          </form>
         </div>
+      </div>
     </div>
     <!-- Modal esperar -->
     <input type="hidden" data-toggle="modal" data-target="#loader_modal" id="loader_now">
@@ -348,16 +348,34 @@ if($result->num_rows>0){
     </script>
     <script>
       $(document).ready(function(){
-      <?php if(isset($_GET['r'])){ ?>
-        var respuesta=<?php echo $_GET['r'];?>;
-      <?php } ?>
-      if(respuesta=='1'){
-      const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
-      toast({type:'success',title:'¡El producto fue creado Exitosamente!'})
-      }else{
-      const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
-      toast({type:'error',title:'¡Hubo un pequeño problema! \n Inténtalo de nuevo'})
-      }
+        <?php if(isset($_GET['r'])){ ?>
+          var respuesta=<?php echo $_GET['r'];?>;
+        <?php } ?>
+        if(respuesta=='1'){
+          const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+          toast({type:'success',title:'¡El producto fue creado Exitosamente!'})
+        }else if(respuesta=='2'){
+          const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+          toast({type:'error',title:'¡No se pudo crear el producto! \n Inténtalo de nuevo'})
+        }else if(respuesta=='3'){
+          const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+          toast({type:'error',title:'¡Falto algún valor por llenar! \n Inténtalo de nuevo'})
+        }else if(respuesta=='4'){
+          const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+          toast({type:'error',title:'¡Falto alguna imagen! \n Inténtalo de nuevo'})
+        }else if(respuesta=='5'){
+          const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+          toast({type:'error',title:'¡No se pudo subir la imagen! \n Inténtalo de nuevo'})
+        }else if(respuesta=='6'){
+          const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+          toast({type:'error',title:'¡No se pudieron crear los modelos! \n Inténtalo de nuevo'})
+        }else if(respuesta=='7'){
+          const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+          toast({type:'error',title:'¡No se pudo agregar el producto al inventario! \n Inténtalo de nuevo'})
+        }else if(respuesta=='0'){
+          const toast=swal.mixin({toast:true,position:'top-end',showConfirmButton:false,timer:3500});
+          toast({type:'error',title:'¡Hubo un error! \n Inténtalo de nuevo'})
+        }
       });
     </script>
     <script src="../assets/libs/popper.js/dist/umd/popper.min.js"></script>

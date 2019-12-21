@@ -271,7 +271,7 @@ if($result->num_rows>0){
                                             $inventarioId=$rowa['INVENTARIOID'];
                                             $cantidad=$rowa['CANTIDAD'];
                                             $precioProducto=$rowa['PRECIO'];
-                                            $sqla2="SELECT i.IDMODELO,i.TALLAID,i.PESO,m.IDPRODUCTO,m.COLOR1,m.COLOR2,m.IMAGEN,p.NOMBRE_P,p.GENERO,p.CATEGORIAID,p.MARCAID,p.ESTATUS FROM `inventario` i INNER JOIN `MODELOS` m ON i.IDMODELO=m.IDMODELO INNER JOIN `PRODUCTOS` p ON m.IDPRODUCTO=p.IDPRODUCTO WHERE i.IDINVENTARIO='$inventarioId'";
+                                            $sqla2="SELECT i.IDMODELO,i.TALLAID,i.PESO,m.IDPRODUCTO,m.COLOR1,m.COLOR2,m.IMAGEN,p.NOMBRE_P,p.GENERO,p.CATEGORIAID,p.MARCAID,p.ESTATUS FROM `INVENTARIO` i INNER JOIN `MODELOS` m ON i.IDMODELO=m.IDMODELO INNER JOIN `PRODUCTOS` p ON m.IDPRODUCTO=p.IDPRODUCTO WHERE i.IDINVENTARIO='$inventarioId'";
                                             $resultado2=$conn->query($sqla2);
                                             if($resultado2->num_rows>0){
                                               while($rowa2=$resultado2->fetch_assoc()){

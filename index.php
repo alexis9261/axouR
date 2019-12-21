@@ -8,7 +8,14 @@ include 'common/datosGenerales.php';
 if(isset($_GET['reset'])){unset($_SESSION['carrito']);}
 if(isset($_SESSION['USER'])){
   $user=$_SESSION['USER'];
-  $sql="SELECT * FROM FAVORITOS WHERE USERID='$user'";
+  $sql="SELECT IDUSUARIO FROM USUARIOS WHERE CORREO='$user'";
+  $result=$conn->query($sql);
+  if($result->num_rows>0){
+    while($row=$result->fetch_assoc()){
+      $id_user=$row['IDUSUARIO'];
+    }
+  }
+  $sql="SELECT * FROM FAVORITOS WHERE USERID='$id_user'";
   $result=$conn->query($sql);
   $array_favoritos=array();
   if($result->num_rows>0){
@@ -112,7 +119,7 @@ if($result->num_rows>0){
                   <img class="img-product" src="admin/inventario/img/<?php echo $img;?>" alt="<?php echo $titulo;?>">
                 </div>
                 <h5 class="pl-3 mb-0 pt-2 mt-2 precio-items">Bs. <?php echo number_format($precio*$dolar, 2, ',','.');?></h5>
-                <small class='text-muted px-3 pb-2' style='background-color:#fff;min-width:100%;'><?php echo $titulo;?></small>
+                <small class='text-muted px-3 pb-2' style='background-color:#fff;min-width:100%;' title="<?php echo $titulo;?>"><?php echo substr($titulo,0,30);?></small>
               </a>
               <?php if(isset($_SESSION['ACCESO_USER'])){ ?>
                 <?php if(in_array($idmodelo,$array_favoritos)){$select="-select";$class="svg-heart-select";}else{$select="";$class="svg-heart";} ?>
@@ -158,7 +165,7 @@ if($result->num_rows>0){
                   <img class="img-product" src="admin/inventario/img/<?php echo $img;?>" alt="<?php echo $titulo;?>">
                 </div>
                 <h5 class="pl-3 mb-0 pt-2 mt-2 precio-items">Bs. <?php echo number_format($precio*$dolar, 2, ',','.');?></h5>
-                <small class='text-muted px-3 pb-2' style='background-color:#fff;min-width:100%;'><?php echo $titulo;?></small>
+                <small class='text-muted px-3 pb-2' style='background-color:#fff;min-width:100%;' title="<?php echo $titulo;?>"><?php echo substr($titulo,0,30);?></small>
               </a>
               <?php if(isset($_SESSION['ACCESO_USER'])){ ?>
                 <?php if(in_array($idmodelo,$array_favoritos)){$select="-select";$class="svg-heart-select";}else{$select="";$class="svg-heart";} ?>
@@ -209,7 +216,7 @@ if($result->num_rows>0){
                   <img class="img-product" src="admin/inventario/img/<?php echo $img;?>" alt="<?php echo $titulo;?>">
                 </div>
                 <h5 class="pl-3 mb-0 pt-2 mt-2 precio-items">Bs. <?php echo number_format($precio*$dolar, 2, ',','.');?></h5>
-                <small class='text-muted px-3 pb-2' style='background-color:#fff;min-width:100%;'><?php echo $titulo;?></small>
+                <small class='text-muted px-3 pb-2' style='background-color:#fff;min-width:100%;' title="<?php echo $titulo;?>"><?php echo substr($titulo,0,30);?></small>
               </a>
               <?php if(isset($_SESSION['ACCESO_USER'])){ ?>
                 <?php if(in_array($idmodelo,$array_favoritos)){$select="-select";$class="svg-heart-select";}else{$select="";$class="svg-heart";} ?>
@@ -231,7 +238,7 @@ if($result->num_rows>0){
     })
   </script>
   <?php } ?>
-  <div class="container">
+  <div class="container mb-4">
     <div class="jumbotron bg-dark mb-0">
       <h1 class="display-5 text-muted">¡Disfruta de Nuestras Promociones!</h1>
       <hr class="my-4">
@@ -263,7 +270,7 @@ if($result->num_rows>0){
                   <img class="img-product" src="admin/inventario/img/<?php echo $img;?>" alt="<?php echo $titulo;?>">
                 </div>
                 <h5 class="pl-3 mb-0 pt-2 mt-2 precio-items">Bs. <?php echo number_format($precio*$dolar, 2, ',','.');?></h5>
-                <small class='text-muted px-3 pb-2' style='background-color:#fff;min-width:100%;'><?php echo $titulo;?></small>
+                <small class='text-muted px-3 pb-2' style='background-color:#fff;min-width:100%;' title="<?php echo $titulo;?>"><?php echo substr($titulo,0,30);?></small>
               </a>
               <?php if(isset($_SESSION['ACCESO_USER'])){ ?>
                 <?php if(in_array($idmodelo,$array_favoritos)){$select="-select";$class="svg-heart-select";}else{$select="";$class="svg-heart";} ?>
@@ -309,7 +316,7 @@ if($result->num_rows>0){
                   <img class="img-product" src="admin/inventario/img/<?php echo $img;?>" alt="<?php echo $titulo;?>">
                 </div>
                 <h5 class="pl-3 mb-0 pt-2 mt-2 precio-items">Bs. <?php echo number_format($precio*$dolar, 2, ',','.');?></h5>
-                <small class='text-muted px-3 pb-2' style='background-color:#fff;min-width:100%;'><?php echo $titulo;?></small>
+                <small class='text-muted px-3 pb-2' style='background-color:#fff;min-width:100%;' title="<?php echo $titulo;?>"><?php echo substr($titulo,0,30);?></small>
               </a>
               <?php if(isset($_SESSION['ACCESO_USER'])){ ?>
                 <?php if(in_array($idmodelo,$array_favoritos)){$select="-select";$class="svg-heart-select";}else{$select="";$class="svg-heart";} ?>
@@ -334,7 +341,7 @@ if($result->num_rows>0){
   <!-- Productos varios -->
   <?php if(count($categorias_padres)>1){ ?>
       <?php
-      $sql="SELECT * FROM modelos m INNER JOIN productos p ON m.IDPRODUCTO=p.IDPRODUCTO WHERE p.ESTATUS=0 ORDER BY Rand() LIMIT 8";
+      $sql="SELECT * FROM MODELOS m INNER JOIN PRODUCTOS p ON m.IDPRODUCTO=p.IDPRODUCTO WHERE p.ESTATUS=0 ORDER BY Rand() LIMIT 8";
       $result=$conn->query($sql);
       if($result->num_rows>0){
         ?>
@@ -387,6 +394,7 @@ if($result->num_rows>0){
       var id=aux.attr("id");
       $.get('vitrina/ajax_favoritos.php',{id:id,e:2},v,'text');
       function v(r){
+        alert(r);
         aux.removeClass();
         aux.children("svg").removeClass();
         aux.addClass("favorito-productos-imagen");
@@ -406,7 +414,7 @@ if($result->num_rows>0){
     };
   </script>
   <?php include 'common/footer.php';?>
-  <script src="admin/assets/libs/popper.js/dist/umd/popper.min.js"></script>
+  <script src="admin/assets/libs/popper.js/dist/popper.min.js"></script>
   <script src="admin/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
   <!--script async src="https://www.googletagmanager.com/gtag/js?id=UA-119925583-1"></script>
   <script>
