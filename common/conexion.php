@@ -7,7 +7,7 @@ $dbname="c1660046_mavic";*/
 //localhost
 $username="root";
 $password="";
-$dbname="rouxa2";
+$dbname="rouxa";
 // Create connection
 $conn=new mysqli($servername,$username,$password,$dbname);
 $conn->set_charset("utf8");

@@ -53,7 +53,7 @@ if($result->num_rows>0){
 <body style="background-color:#f0f0f0;">
   <?php include 'common/menu.php'; include 'common/2domenu.php';?>
   <!--Corousel Library-->
-  <div class="owl-carousel owl-theme" id="carousel">
+  <!--div class="owl-carousel owl-theme" id="carousel">
     <?php
         $result=$conn->query("SELECT * FROM `IMAGENES` WHERE `TIPO`='1'");
         if($result->num_rows>0){
@@ -73,7 +73,7 @@ if($result->num_rows>0){
           }
         }
     ?>
-  </div>
+  </div-->
   <script>
     $('#carousel').owlCarousel({
       loop:true,
