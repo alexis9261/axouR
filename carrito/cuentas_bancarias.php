@@ -109,6 +109,14 @@ mail($destino, $titulo, $contenido, $headers);
       </div>
     </div>
     <form action="procesar_pago.php" method="post">
+      <div class="row">
+        <label class="col-auto"><input type="radio" value="transferencia" name='medio_pago[]' checked><span class="checkmark"> Transferencia</span>
+        </label>
+        <label class="col-auto"><input type="radio" value="transferencia" name='medio_pago[]'><span class="checkmark"> Pago Móvil</span>
+        </label>
+        <label class="col-auto"><input type="radio" value="transferencia" name='medio_pago[]'><span class="checkmark"> Otro Medio</span>
+        </label>
+      </div>
       <div class="row my-3">
         <div class="input-group mb-2 col-sm-4">
           <div class="input-group-prepend">
@@ -206,21 +214,34 @@ mail($destino, $titulo, $contenido, $headers);
           </button>
         </div>
         <div class="modal-body">
-          <div class="row">
-            <h6 class="col-sm-6 text-dark"><b>Banesco</b></h5>
-            <h6 class="col-sm-6"><b>N°</b> 0134 0464 03 4641026277</h6>
-            <h6 class="col-sm-6 text-dark"><b>Banco Mercantil</b></h6>
-            <h6 class="col-sm-6"><b>N°</b> 0105 0283 7512 83148412</h6>
-            <h6 class="col-sm-6 text-dark"><b>Banco Provincial</b></h6>
-            <h6 class="col-sm-6"><b>N°</b> 0108 0558 9901 00043593</h6>
-            <h6 class="col-sm-6 text-dark"><b>Banco del Tesoro</b></h6>
-            <h6 class="col-sm-6"><b>N°</b> 0163 0217 1121 73013146</h6>
+          <div class="container">
+            <div class="row align-items-center">
+              <h6 class="col-12 text_bancarias lead"><b>Bancos</b></h6>
+              <span class="col-auto"><img src="../imagen/banesco.jpg" class="img_bancos" style="max-width:20px;border-radius:50%;"><b>Banesco</b></span>
+              <span class="col-auto text_pago_movil lead"> <b>N° 0134-0464-03-4641026277</b></span>
+            </div>
+            <div class="row mt-2">
+              <h6 class="col-auto text_pago_movil lead"><b class="text-muted">Titular: </b>Alpargata Skate, C.A.</h6>
+              <h6 class="col-auto text_pago_movil lead"><b class="text-muted">Cuenta: </b>Corriente</h6>
+              <h6 class="col-auto text_pago_movil lead">J-405852089</h6>
+            </div>
+            <div class="row mt-2 align-items-center">
+              <span class="col-auto"><img src="../imagen/mercantil.jpg" class="img_bancos" style="max-width:20px;border-radius:50%;"> <b> Mercantil</b></span>
+              <span class="col-auto text_pago_movil lead"><b>N° 0105-0283-7512-8314-8412</b></span>
+            </div>
+            <div class="row mt-2">
+              <h6 class="col-auto text_pago_movil lead"><b class="text-muted">Titular: </b>Alpargata Skate, C.A.</h6>
+              <h6 class="col-auto text_pago_movil lead"><b class="text-muted">Cuenta: </b>Corriente</h6>
+              <h6 class="col-auto text_pago_movil lead">J-405852089</h6>
+            </div>
+            <hr>
+            <div class="row">
+              <h6 class="col-12 text_bancarias lead"><b>Pago Móvil</b></h6>
+              <h6 class="col-auto text_pago_movil lead"><b class="text-muted">Banco: </b> <b> Banesco</b></h6>
+              <h6 class="col-auto text_pago_movil lead"><b class="text-muted">Telefono: </b> <b> 0412 4038648</b></h6>
+              <h6 class="col-auto text_pago_movil lead"><b class="text-muted">Documento Identidad: </b> <b> J 405852089</b></h6>
+            </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <h6 class="col-sm-5 text-center"><b>Titular: </b>Alpargata Skate, C.A.</h6>
-          <h6 class="col-sm-3 text-center"><b>RIF: </b>J-XXXXXXX</h6>
-          <h6 class="col-sm-4 text-center"><b>Tipo: </b>Corriente</h6>
         </div>
       </div>
     </div>

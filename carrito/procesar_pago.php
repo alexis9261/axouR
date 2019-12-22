@@ -12,7 +12,6 @@
      $bancor=$_POST['banco_r'];
      $monto=$_POST['monto'];
      if(isset($_POST['moneda'])){$moneda=$_POST['moneda'];}else{$moneda="Bs";}
-     echo "$moneda<br>";
      $ref=$_POST['referencia'];
      $fecha=$_POST['fechapago'];
      if($bancoe!=NULL && $bancor!=NULL && $monto!=NULL && $ref!=NULL && $fecha!=NULL){

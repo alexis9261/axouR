@@ -532,6 +532,16 @@ cursor: pointer;
   font-size: 25px !important;
   font-weight: 300;
 }
+.text_bancarias{
+  font-size: 20px !important;
+}
+.text_pago_movil{
+  font-size: 15px !important;
+}
+.img_bancos{
+  max-width: 20px;
+  border-radius: 50%;
+}
 /*Detalles compra*/
 .textarea_cancelar{
   border-radius: 5px;
