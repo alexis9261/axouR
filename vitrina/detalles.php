@@ -6,6 +6,24 @@ include '../common/datosGenerales.php';
 $array_favoritos=array();
 if(isset($_SESSION['USER'])){
   $user=$_SESSION['USER'];
+  $sql="SELECT IDUSUARIO FROM USUARIOS WHERE CORREO='$user'";
+  $result=$conn->query($sql);
+  if($result->num_rows>0){
+    while($row=$result->fetch_assoc()){
+      $id_user=$row['IDUSUARIO'];
+    }
+  }
+  $sql="SELECT * FROM FAVORITOS WHERE USERID='$id_user'";
+  $result=$conn->query($sql);
+  $array_favoritos=array();
+  if($result->num_rows>0){
+    while($row=$result->fetch_assoc()){
+      array_push($array_favoritos,$row['MODELOID']);
+    }
+  }
+}
+if(isset($_SESSION['USER'])){
+  $user=$_SESSION['USER'];
   $sql="SELECT * FROM FAVORITOS WHERE USERID='$user'";
   $result=$conn->query($sql);
   if($result->num_rows>0){
@@ -165,6 +183,7 @@ if(isset($_GET['idmodelo'])){
                   <div class="col-5">
                     <select class="lista-talla" name="talla" id="tallas" onchange="talla_dis()" required>
                       <?php
+                      $$id_tallas_1="";
                       for($i=0;$i<count($id_tallas_stock);$i++){
                         if($cantidades_tallas[$i]!=0){
                           ?>
@@ -181,8 +200,7 @@ if(isset($_GET['idmodelo'])){
                   </div>
                   <div class="col-2 offset-3" id="cantidad">
                     <?php
-                      $key=array_search($id_tallas_stock[0],$id_tallas_bd);
-                      if($cantidades_tallas[$key]>10){$cantidad_real=10;}else{$cantidad_real=$cantidades_tallas[$key];}
+                      if($cantidades_tallas[0]>10){$cantidad_real=10;}else{$cantidad_real=$cantidades_tallas[0];}
                     ?>
                     <select class="lista-talla" name="cantidad" id="input_cantidad" required>
                       <?php for($i=1;$i<=$cantidad_real;$i++){ ?>

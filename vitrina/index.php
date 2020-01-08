@@ -56,8 +56,22 @@ if($result->num_rows>0){
     array_push($hex_colores,$row['HEX']);
   }
 }
-$publicidad="¡Compra los mejores productos con nosotros!";
-$publicidad2="¡Compra los mejores productos!";
+$imageVitrina="banner.jpg";
+if(isset($_GET['categ'])){
+$imageVitrina="banner1.jpg";
+}elseif(isset($_GET['genero'])){
+  if($_GET['genero']==1){
+    $imageVitrina="banner2.jpg";
+  }elseif($_GET['genero']==2){
+    $imageVitrina="banner3.jpg";
+  }else{
+    $imageVitrina="banner.jpg";
+  }
+}elseif(isset($_GET['marca'])){
+  $imageVitrina="banner.jpg";
+}else{
+  $imageVitrina="banner.jpg";
+}
 #busqueda por categoria
 if(isset($_GET['categ'])){$categoria=$_GET['categ'];}else{$categoria="";}
 #busqueda con marca
@@ -93,7 +107,11 @@ $url=$_SERVER["REQUEST_URI"];
 <body style="background-color:#f0f0f0;">
   <?php include '../common/menu.php';?>
   <?php include '../common/2domenu.php';?>
-  <div class="container-fluid mb-3" style="background-color:#f0f0f0;">
+  <div class="imagenVitrina" style="
+    background-image:url('../admin/img/<?php echo $imageVitrina;?>');
+    width:auto;height:30vh;background-size:cover;background-position:center;">
+  </div>
+  <!--div class="container-fluid mb-3" style="background-color:#f0f0f0;">
     <div class="container text-center py-2" style="font-family: 'Playfair Display', serif;">
       <div class="row d-block d-sm-none">
         <h2 class="display-5"><?php echo $publicidad2;?></h2>
@@ -102,8 +120,8 @@ $url=$_SERVER["REQUEST_URI"];
         <h2 class="display-5"><?php echo $publicidad;?></h2>
       </div>
     </div>
-  </div>
-  <div class="container-fluid">
+  </div-->
+  <div class="container-fluid mt-3">
     <div class="row">
       <div class="d-none d-sm-block col-2">
         <div class="container">

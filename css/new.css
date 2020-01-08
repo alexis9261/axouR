@@ -101,10 +101,21 @@
 }
 /*END FAVORITOS*/
 .imagenPpal{
-  height: 100vh;
+  height: 40vh;
   width: auto;
 }
 .imagenPpal:hover{
+ opacity:0.9;
+ filter:alpha(opacity=100); /* For IE8 and earlier */
+}
+.imagenVitrina{
+  background-image: url("../admin/img/banner4.jpg");
+  width: auto;
+  height: 30vh;
+  background-size: cover;
+  background-position: center;
+}
+.imagenVitrina:hover{
  opacity:0.9;
  filter:alpha(opacity=100); /* For IE8 and earlier */
 }
